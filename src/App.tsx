@@ -3,29 +3,72 @@ import BillsTable from './components/BillsTable';
 import NavBar from './components/NavBar';
 
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import AddBill from './components/AddBill';
+
+type Bill = {
+  amount: number;
+  category: string;
+  date: Date;
+};
 
 function App() {
-  const [shouldShowAddCategory, setShouldShowAddCategory] = useState(true);
+  const [shouldShowAddCategory, setShouldShowAddCategory] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
+  const [bills, setBills] = useState<Bill[]>([]);
+  const [shouldShowAddBill, setShouldShowAddBill] = useState(true);
+
+  useEffect(() => {
+    const categoriesInLocalStorage = localStorage.getItem('categories');
+    const billsInLocalStorage = localStorage.getItem('bills');
+
+    if (categoriesInLocalStorage) {
+      setCategories(JSON.parse(categoriesInLocalStorage) as string[]);
+    } else {
+      setShouldShowAddCategory(true);
+    }
+
+    if (billsInLocalStorage) {
+      setBills(JSON.parse(billsInLocalStorage) as Bill[]);
+    } else {
+      setShouldShowAddBill(true);
+    }
+  }, []);
 
   const addCategory = (category: string) => {
     const updatedCategories = [...(categories || []), category];
     setCategories(updatedCategories);
     setShouldShowAddCategory(false);
+    localStorage.setItem('categories', JSON.stringify(updatedCategories));
+  };
+
+  const showAddCategory = () => {
+    setShouldShowAddCategory(true);
+  };
+
+  const addBill = (amount: number, category: string, date: Date) => {
+    const bill: Bill = { amount, category, date };
+    const updatedBills = [...(bills || []), bill];
+    setBills(updatedBills);
+    setShouldShowAddBill(false);
+    localStorage.setItem('bills', JSON.stringify(updatedBills));
   };
 
   return (
-    <main>
+    <div className='App'>
       {shouldShowAddCategory ? (
         <AddCategory addCategory={addCategory} />
+      ) : shouldShowAddBill ? (
+        <AddBill addBill={addBill} categories={categories} />
       ) : (
-        <>
-          <NavBar />
-          <BillsTable />
-        </>
+        <div>
+          <NavBar categories={categories} showAddCategory={showAddCategory} />
+          <div className='container flex'>
+            <BillsTable />
+          </div>
+        </div>
       )}
-    </main>
+    </div>
   );
 }
 
