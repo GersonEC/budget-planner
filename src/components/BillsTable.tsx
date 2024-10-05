@@ -3,11 +3,16 @@ import type { Bill } from '../App';
 type Props = {
   bills: Bill[];
   showAddBill: () => void;
+  removeBill: (index: number) => void;
 };
 
 function BillsTable(props: Props) {
   const triggerShowAddBill = () => {
     props.showAddBill();
+  };
+
+  const removeBill = (index: number) => {
+    props.removeBill(index);
   };
 
   return (
@@ -27,6 +32,9 @@ function BillsTable(props: Props) {
               <td>{new Date(value.date).toLocaleDateString()}</td>
               <td>${value.amount}</td>
               <td>{value.category}</td>
+              <td>
+                <button onClick={() => removeBill(index)}>X</button>
+              </td>
             </tr>
           );
         })}

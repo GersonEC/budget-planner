@@ -17,6 +17,7 @@ function App() {
   const [categories, setCategories] = useState<string[]>([]);
   const [bills, setBills] = useState<Bill[]>([]);
   const [shouldShowAddBill, setShouldShowAddBill] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('');
 
   useEffect(() => {
     const categoriesInLocalStorage = localStorage.getItem('categories');
@@ -34,6 +35,14 @@ function App() {
       setShouldShowAddBill(true);
     }
   }, []);
+
+  const activeBills = () => {
+    return bills
+      ?.filter((bill) =>
+        activeCategory ? bill.category === activeCategory : true
+      )
+      .sort((a, b) => (new Date(a.date) < new Date(b.date) ? 1 : -1));
+  };
 
   const addCategory = (category: string) => {
     const updatedCategories = [...(categories || []), category];
@@ -58,6 +67,19 @@ function App() {
     setShouldShowAddBill(true);
   };
 
+  const removeBill = (index: number) => {
+    let updatedBills = [...bills];
+    updatedBills = updatedBills
+      .slice(0, index)
+      .concat(updatedBills.slice(index + 1, updatedBills.length));
+    setBills(updatedBills);
+    localStorage.setItem('bills', JSON.stringify(updatedBills));
+  };
+
+  const setNewActiveCategory = (category: string) => {
+    setActiveCategory(category);
+  };
+
   return (
     <div className='App'>
       {shouldShowAddCategory ? (
@@ -66,9 +88,18 @@ function App() {
         <AddBill addBill={addBill} categories={categories} />
       ) : (
         <div>
-          <NavBar categories={categories} showAddCategory={showAddCategory} />
+          <NavBar
+            categories={categories}
+            showAddCategory={showAddCategory}
+            activeCategory={activeCategory}
+            setNewActiveCategory={setNewActiveCategory}
+          />
           <div className='container flex'>
-            <BillsTable bills={bills} showAddBill={showAddBill} />
+            <BillsTable
+              bills={activeBills()}
+              showAddBill={showAddBill}
+              removeBill={removeBill}
+            />
           </div>
         </div>
       )}
