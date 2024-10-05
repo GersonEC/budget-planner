@@ -6,7 +6,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import AddBill from './components/AddBill';
 
-type Bill = {
+export type Bill = {
   amount: number;
   category: string;
   date: Date;
@@ -16,7 +16,7 @@ function App() {
   const [shouldShowAddCategory, setShouldShowAddCategory] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
   const [bills, setBills] = useState<Bill[]>([]);
-  const [shouldShowAddBill, setShouldShowAddBill] = useState(true);
+  const [shouldShowAddBill, setShouldShowAddBill] = useState(false);
 
   useEffect(() => {
     const categoriesInLocalStorage = localStorage.getItem('categories');
@@ -54,6 +54,10 @@ function App() {
     localStorage.setItem('bills', JSON.stringify(updatedBills));
   };
 
+  const showAddBill = () => {
+    setShouldShowAddBill(true);
+  };
+
   return (
     <div className='App'>
       {shouldShowAddCategory ? (
@@ -64,7 +68,7 @@ function App() {
         <div>
           <NavBar categories={categories} showAddCategory={showAddCategory} />
           <div className='container flex'>
-            <BillsTable />
+            <BillsTable bills={bills} showAddBill={showAddBill} />
           </div>
         </div>
       )}
