@@ -1,3 +1,5 @@
+import { Button } from '@/components/ui/button';
+
 interface Props {
   categories: string[];
   showAddCategory: () => void;
