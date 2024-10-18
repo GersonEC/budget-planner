@@ -3,7 +3,7 @@ import BillsTable from './components/BillsTable';
 import NavBar from './components/NavBar';
 
 import './App.css';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddBill from './components/AddBill';
 import { MonthSetup } from './components/MonthSetup';
 
@@ -25,7 +25,11 @@ const initialMonthlyBudget: MonthlyBudget = {
   bills: [],
 };
 
-function App() {
+interface AppProps {
+  children: React.ReactNode;
+}
+
+const App: React.FC<AppProps> = ({ children }) => {
   const [shouldShowAddCategory, setShouldShowAddCategory] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
   const [monthlyBudgetBills, setMonthlyBudgetBills] =
@@ -158,8 +162,9 @@ function App() {
           </div>
         </div>
       )}
+      {children}
     </div>
   );
-}
+};
 
 export default App;
