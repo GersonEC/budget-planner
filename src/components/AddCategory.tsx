@@ -17,7 +17,7 @@ function AddCategory(props: Props) {
       alert('Please enter a category');
       return;
     }
-
+    setCategory('');
     props.addCategory(category);
   };
 

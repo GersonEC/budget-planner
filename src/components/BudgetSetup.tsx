@@ -1,10 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-type Props = {
-  addMonthlyBudget: (monthlyBudget: number) => void;
-};
-
-export function MonthSetup(props: Props) {
+export const BudgetSetup = () => {
   const [monthlyBudget, setMonthlyBudget] = useState<number>();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -13,8 +9,6 @@ export function MonthSetup(props: Props) {
       alert('Please enter a monthly budget');
       return;
     }
-
-    props.addMonthlyBudget(monthlyBudget);
   };
 
   return (
@@ -24,6 +18,7 @@ export function MonthSetup(props: Props) {
     >
       <label htmlFor='monthlyBudget'>Set a monthly budget</label>
       <input
+        className='shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker'
         name='monthlyBudget'
         type='number'
         value={monthlyBudget}
@@ -34,4 +29,4 @@ export function MonthSetup(props: Props) {
       </button>
     </form>
   );
-}
+};

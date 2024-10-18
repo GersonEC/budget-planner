@@ -1,4 +1,3 @@
-import AddCategory from './components/AddCategory';
 import BillsTable from './components/BillsTable';
 import NavBar from './components/NavBar';
 
@@ -6,6 +5,7 @@ import './App.css';
 import React, { useEffect, useState } from 'react';
 import AddBill from './components/AddBill';
 import { MonthSetup } from './components/MonthSetup';
+import { CategoriesProvider } from './context/CategoriesContext';
 
 export type Bill = {
   amount: number;
@@ -30,7 +30,6 @@ interface AppProps {
 }
 
 const App: React.FC<AppProps> = ({ children }) => {
-  const [shouldShowAddCategory, setShouldShowAddCategory] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
   const [monthlyBudgetBills, setMonthlyBudgetBills] =
     useState<MonthlyBudget>(initialMonthlyBudget);
@@ -45,10 +44,7 @@ const App: React.FC<AppProps> = ({ children }) => {
 
     if (categoriesInLocalStorage) {
       setCategories(JSON.parse(categoriesInLocalStorage) as string[]);
-    } else {
-      setShouldShowAddCategory(true);
     }
-
     if (billsInLocalStorage) {
       setMonthlyBudgetBills(JSON.parse(billsInLocalStorage) as MonthlyBudget);
     } /*else {
@@ -62,18 +58,6 @@ const App: React.FC<AppProps> = ({ children }) => {
         activeCategory ? bill.category === activeCategory : true
       )
       .sort((a, b) => (new Date(a.date) < new Date(b.date) ? 1 : -1));
-  };
-
-  const addCategory = (category: string) => {
-    const updatedCategories = [...(categories || []), category];
-    setCategories(updatedCategories);
-    setShouldShowAddCategory(false);
-    setShouldShowAddMonthlyBudget(true);
-    localStorage.setItem('categories', JSON.stringify(updatedCategories));
-  };
-
-  const showAddCategory = () => {
-    setShouldShowAddCategory(true);
   };
 
   const addBill = (amount: number, category: string, date: Date) => {
@@ -103,7 +87,6 @@ const App: React.FC<AppProps> = ({ children }) => {
     };
     setMonthlyBudgetBills(updatedMonthlyBudgetBills);
     setShouldShowAddMonthlyBudget(false);
-    setShouldShowAddCategory(false);
     localStorage.setItem(
       'monthlyBudgetBills',
       JSON.stringify(updatedMonthlyBudgetBills)
@@ -141,29 +124,25 @@ const App: React.FC<AppProps> = ({ children }) => {
   }
 
   return (
-    <div className='App'>
-      {shouldShowAddCategory ? (
-        <AddCategory addCategory={addCategory} />
-      ) : (
-        <div>
-          <NavBar
-            categories={categories}
-            budget={monthlyBudgetBills.budget}
-            showAddCategory={showAddCategory}
-            activeCategory={activeCategory}
-            setNewActiveCategory={setNewActiveCategory}
+    <CategoriesProvider>
+      <div className='App'>
+        {/*<NavBar
+          categories={categories}
+          budget={monthlyBudgetBills.budget}
+          showAddCategory={() => {}}
+          activeCategory={activeCategory}
+          setNewActiveCategory={setNewActiveCategory}
+        />
+        <div className='container flex'>
+          <BillsTable
+            bills={activeBills()}
+            showAddBill={showAddBill}
+            removeBill={removeBill}
           />
-          <div className='container flex'>
-            <BillsTable
-              bills={activeBills()}
-              showAddBill={showAddBill}
-              removeBill={removeBill}
-            />
-          </div>
-        </div>
-      )}
-      {children}
-    </div>
+        </div>*/}
+        {children}
+      </div>
+    </CategoriesProvider>
   );
 };
 

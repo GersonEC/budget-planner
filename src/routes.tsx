@@ -2,6 +2,8 @@ import React from 'react';
 import { Outlet, createRoute, createRootRoute } from '@tanstack/react-router';
 //import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import App from './App';
+import { CategoriesSetup } from './components/CategoriesSetup';
+import { BudgetSetup } from './components/BudgetSetup';
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -17,13 +19,13 @@ export const rootRoute = createRootRoute({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: () => <h1>Categories setup</h1>,
+  component: () => <CategoriesSetup />,
 });
 
 const detailsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/budget',
-  component: () => <h1>Budget Setup</h1>,
+  component: () => <BudgetSetup />,
 });
 
 const profileRoute = createRoute({
