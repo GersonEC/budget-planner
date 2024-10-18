@@ -5,6 +5,7 @@ import NavBar from './components/NavBar';
 import './App.css';
 import { useEffect, useState } from 'react';
 import AddBill from './components/AddBill';
+import { MonthSetup } from './components/MonthSetup';
 
 export type Bill = {
   amount: number;
@@ -12,16 +13,31 @@ export type Bill = {
   date: Date;
 };
 
+export type MonthlyBudget = {
+  month: number;
+  budget: number;
+  bills: Bill[];
+};
+
+const initialMonthlyBudget: MonthlyBudget = {
+  month: new Date().getMonth(),
+  budget: 0,
+  bills: [],
+};
+
 function App() {
   const [shouldShowAddCategory, setShouldShowAddCategory] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
-  const [bills, setBills] = useState<Bill[]>([]);
+  const [monthlyBudgetBills, setMonthlyBudgetBills] =
+    useState<MonthlyBudget>(initialMonthlyBudget);
   const [shouldShowAddBill, setShouldShowAddBill] = useState(false);
+  const [shouldShowAddMonthlyBudget, setShouldShowAddMonthlyBudget] =
+    useState(false);
   const [activeCategory, setActiveCategory] = useState('');
 
   useEffect(() => {
     const categoriesInLocalStorage = localStorage.getItem('categories');
-    const billsInLocalStorage = localStorage.getItem('bills');
+    const billsInLocalStorage = localStorage.getItem('monthlyBudgetBills');
 
     if (categoriesInLocalStorage) {
       setCategories(JSON.parse(categoriesInLocalStorage) as string[]);
@@ -30,14 +46,14 @@ function App() {
     }
 
     if (billsInLocalStorage) {
-      setBills(JSON.parse(billsInLocalStorage) as Bill[]);
-    } else {
+      setMonthlyBudgetBills(JSON.parse(billsInLocalStorage) as MonthlyBudget);
+    } /*else {
       setShouldShowAddBill(true);
-    }
+    }*/
   }, []);
 
   const activeBills = () => {
-    return bills
+    return monthlyBudgetBills.bills
       ?.filter((bill) =>
         activeCategory ? bill.category === activeCategory : true
       )
@@ -48,6 +64,7 @@ function App() {
     const updatedCategories = [...(categories || []), category];
     setCategories(updatedCategories);
     setShouldShowAddCategory(false);
+    setShouldShowAddMonthlyBudget(true);
     localStorage.setItem('categories', JSON.stringify(updatedCategories));
   };
 
@@ -57,10 +74,36 @@ function App() {
 
   const addBill = (amount: number, category: string, date: Date) => {
     const bill: Bill = { amount, category, date };
-    const updatedBills = [...(bills || []), bill];
-    setBills(updatedBills);
+    const updatedMonthlyBudgetBills = [
+      ...(monthlyBudgetBills?.bills || []),
+      bill,
+    ];
+    setMonthlyBudgetBills({
+      month: new Date().getMonth(),
+      budget: 0,
+      bills: updatedMonthlyBudgetBills,
+    });
     setShouldShowAddBill(false);
-    localStorage.setItem('bills', JSON.stringify(updatedBills));
+    setShouldShowAddMonthlyBudget(true);
+    localStorage.setItem(
+      'monthlyBudgetBills',
+      JSON.stringify(updatedMonthlyBudgetBills)
+    );
+  };
+
+  const addMonthlyBudget = (amount: number) => {
+    const updatedMonthlyBudgetBills = {
+      month: new Date().getMonth(),
+      budget: amount,
+      bills: [...(monthlyBudgetBills?.bills || [])],
+    };
+    setMonthlyBudgetBills(updatedMonthlyBudgetBills);
+    setShouldShowAddMonthlyBudget(false);
+    setShouldShowAddCategory(false);
+    localStorage.setItem(
+      'monthlyBudgetBills',
+      JSON.stringify(updatedMonthlyBudgetBills)
+    );
   };
 
   const showAddBill = () => {
@@ -68,11 +111,15 @@ function App() {
   };
 
   const removeBill = (index: number) => {
-    let updatedBills = [...bills];
+    let updatedBills = [...(monthlyBudgetBills?.bills || [])];
     updatedBills = updatedBills
       .slice(0, index)
       .concat(updatedBills.slice(index + 1, updatedBills.length));
-    setBills(updatedBills);
+    const updatedMonthlyBudgetBills = {
+      ...monthlyBudgetBills,
+      bills: updatedBills,
+    };
+    setMonthlyBudgetBills(updatedMonthlyBudgetBills);
     localStorage.setItem('bills', JSON.stringify(updatedBills));
   };
 
@@ -80,16 +127,24 @@ function App() {
     setActiveCategory(category);
   };
 
+  console.log({ shouldShowAddMonthlyBudget });
+  if (shouldShowAddBill) {
+    return <AddBill addBill={addBill} categories={categories} />;
+  }
+
+  if (shouldShowAddMonthlyBudget) {
+    return <MonthSetup addMonthlyBudget={addMonthlyBudget} />;
+  }
+
   return (
     <div className='App'>
       {shouldShowAddCategory ? (
         <AddCategory addCategory={addCategory} />
-      ) : shouldShowAddBill ? (
-        <AddBill addBill={addBill} categories={categories} />
       ) : (
         <div>
           <NavBar
             categories={categories}
+            budget={monthlyBudgetBills.budget}
             showAddCategory={showAddCategory}
             activeCategory={activeCategory}
             setNewActiveCategory={setNewActiveCategory}
