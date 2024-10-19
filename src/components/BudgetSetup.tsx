@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
-import { useNavigate } from '@tanstack/react-router';
 
-export const BudgetSetup = () => {
-  const { setMonthlyBudget } = useMonthlyBudget();
+interface Props {
+  setMonthlyBudget: (monthlyBudget: MonthlyBudget) => void;
+}
+
+export const BudgetSetup: React.FC<Props> = ({ setMonthlyBudget }) => {
   const [budget, setBudget] = useState<number>(0);
-  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,9 +20,6 @@ export const BudgetSetup = () => {
     };
     setMonthlyBudget(updatedMonthlyBudget);
     localStorage.setItem('monthlyBudget', JSON.stringify(updatedMonthlyBudget));
-    navigate({
-      to: '/bills',
-    });
   };
 
   return (

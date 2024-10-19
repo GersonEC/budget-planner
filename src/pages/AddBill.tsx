@@ -1,16 +1,17 @@
 import { ChangeEvent, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useCategories } from '../context/CategoriesContext copy';
+import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
+import { useNavigate } from '@tanstack/react-router';
 
-type Props = {
-  addBill: (amount: number, category: string, date: Date) => void;
-  categories: string[];
-};
-
-function AddBill(props: Props) {
+const AddBill = () => {
+  const { categories } = useCategories();
+  const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
+  const navigate = useNavigate();
   const [amount, setAmount] = useState(0);
-  const [category, setCategory] = useState(props.categories[0]);
   const [date, setDate] = useState(new Date());
+  const [category, setCategory] = useState(categories[0]);
 
   const handleChangeAmount = (event: ChangeEvent) => {
     let newAmount = parseInt((event.target as HTMLInputElement).value, 10);
@@ -22,6 +23,23 @@ function AddBill(props: Props) {
     if (date) setDate(date);
   };
 
+  const addBill = (amount: number, category: string, date: Date) => {
+    const bill: Bill = { amount, category, date };
+    const updatedBills = [...(monthlyBudget?.bills || []), bill];
+    const updatedMonthlyBudgetBills = {
+      ...monthlyBudget,
+      bills: updatedBills,
+    };
+    setMonthlyBudget(updatedMonthlyBudgetBills);
+    localStorage.setItem(
+      'monthlyBudget',
+      JSON.stringify(updatedMonthlyBudgetBills)
+    );
+    navigate({
+      to: '/bills',
+    });
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!amount) {
@@ -29,7 +47,7 @@ function AddBill(props: Props) {
       return;
     }
 
-    props.addBill(amount, category || props.categories[0], date);
+    addBill(amount, category || categories[0], date);
   };
 
   return (
@@ -42,8 +60,8 @@ function AddBill(props: Props) {
           <h1 className='text-grey-darkest'>Enter a new bill</h1>
           <div className='flex mt-4'>
             <select onChange={(e) => setCategory(e.target.value)}>
-              {props.categories
-                ? props.categories.map((value, index) => {
+              {categories
+                ? categories.map((value, index) => {
                     return (
                       <option key={index} value={value}>
                         {value}
@@ -69,6 +87,6 @@ function AddBill(props: Props) {
       </div>
     </form>
   );
-}
+};
 
 export default AddBill;

@@ -1,20 +1,11 @@
-import type { Bill } from '../App';
+import { Link } from '@tanstack/react-router';
 
 type Props = {
   bills: Bill[];
-  showAddBill: () => void;
   removeBill: (index: number) => void;
 };
 
-function BillsTable(props: Props) {
-  const triggerShowAddBill = () => {
-    props.showAddBill();
-  };
-
-  const removeBill = (index: number) => {
-    props.removeBill(index);
-  };
-
+const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
   return (
     <table className='table w-full'>
       <thead className='text-left'>
@@ -26,7 +17,7 @@ function BillsTable(props: Props) {
         </tr>
       </thead>
       <tbody>
-        {props.bills?.map((value, index) => {
+        {bills?.map((value, index) => {
           return (
             <tr className='p4' key={index}>
               <td>{new Date(value.date).toLocaleDateString()}</td>
@@ -40,14 +31,14 @@ function BillsTable(props: Props) {
         })}
         <tr>
           <td colSpan={4} className='text-center pt-5'>
-            <button className='underline' onClick={triggerShowAddBill}>
-              Add new
+            <button className='underline'>
+              <Link to='/add-bill'>Add new</Link>
             </button>
           </td>
         </tr>
       </tbody>
     </table>
   );
-}
+};
 
 export default BillsTable;

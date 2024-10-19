@@ -1,23 +1,17 @@
 import React from 'react';
 import AddCategory from './AddCategory';
-import { Link } from '@tanstack/react-router';
-import { useCategories } from '../context/CategoriesContext copy';
 
-export const CategoriesSetup = () => {
-  const { categories, setCategories } = useCategories();
+interface Props {
+  categories: string[];
+  addCategory: (category: string) => void;
+  removeCategory: (category: string) => void;
+}
 
-  const addCategory = (category: string) => {
-    const updatedCategories = [...categories, category];
-    setCategories(updatedCategories);
-    localStorage.setItem('categories', JSON.stringify(updatedCategories));
-  };
-
-  const handleRemove = (category: string) => {
-    const newCategories = categories.filter((c) => c !== category);
-    setCategories(newCategories);
-    localStorage.setItem('categories', JSON.stringify(newCategories));
-  };
-
+export const CategoriesSetup: React.FC<Props> = ({
+  categories,
+  addCategory,
+  removeCategory,
+}) => {
   return (
     <React.Fragment>
       <AddCategory addCategory={addCategory} />
@@ -25,15 +19,12 @@ export const CategoriesSetup = () => {
         {categories.map((category) => (
           <li key={category}>
             {category}{' '}
-            <button name='remove' onClick={() => handleRemove(category)}>
+            <button name='remove' onClick={() => removeCategory(category)}>
               ⛔️
             </button>
           </li>
         ))}
       </ul>
-      <button className='flex-no-shrink p-2 border-2 rounded bg-teal bg-green-500 text-white border-teal hover:text-white hover:bg-teal'>
-        <Link to='/budget'>Proceed</Link>
-      </button>
     </React.Fragment>
   );
 };

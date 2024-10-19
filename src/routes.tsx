@@ -2,9 +2,9 @@ import React from 'react';
 import { Outlet, createRoute, createRootRoute } from '@tanstack/react-router';
 //import { TanStackRouterDevtools } from '@tanstack/router-devtools';
 import App from './App';
-import { CategoriesSetup } from './components/CategoriesSetup';
-import { BudgetSetup } from './components/BudgetSetup';
-import { MonthlyBills } from './components/MonthlyBills';
+import { MonthSetup } from './pages/MonthSetup';
+import { Bills } from './pages/Bills';
+import AddBill from './pages/AddBill';
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -20,23 +20,23 @@ export const rootRoute = createRootRoute({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
-  component: () => <CategoriesSetup />,
+  component: () => <MonthSetup />,
 });
 
-const budgetSetupRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/budget',
-  component: () => <BudgetSetup />,
-});
-
-const monthlyBillsRoute = createRoute({
+const billsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/bills',
-  component: () => <MonthlyBills />,
+  component: () => <Bills />,
+});
+
+const addBillRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/add-bill',
+  component: () => <AddBill />,
 });
 
 export const routeTree = rootRoute.addChildren([
   indexRoute,
-  budgetSetupRoute,
-  monthlyBillsRoute,
+  billsRoute,
+  addBillRoute,
 ]);
