@@ -1,14 +1,28 @@
 import React, { useState } from 'react';
+import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
+import { useNavigate } from '@tanstack/react-router';
 
 export const BudgetSetup = () => {
-  const [monthlyBudget, setMonthlyBudget] = useState<number>();
+  const { setMonthlyBudget } = useMonthlyBudget();
+  const [budget, setBudget] = useState<number>(0);
+  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!monthlyBudget) {
-      alert('Please enter a monthly budget');
+    if (!budget) {
+      alert('Please enter a budget');
       return;
     }
+    const updatedMonthlyBudget = {
+      month: new Date().getMonth(),
+      budget,
+      bills: [],
+    };
+    setMonthlyBudget(updatedMonthlyBudget);
+    localStorage.setItem('monthlyBudget', JSON.stringify(updatedMonthlyBudget));
+    navigate({
+      to: '/bills',
+    });
   };
 
   return (
@@ -21,8 +35,8 @@ export const BudgetSetup = () => {
         className='shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker'
         name='monthlyBudget'
         type='number'
-        value={monthlyBudget}
-        onChange={(e) => setMonthlyBudget(Number(e.target.value))}
+        value={budget}
+        onChange={(e) => setBudget(Number(e.target.value))}
       />
       <button className='flex-no-shrink p-2 border-2 rounded bg-teal bg-green-500 text-white border-teal hover:text-white hover:bg-teal'>
         Add

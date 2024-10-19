@@ -1,7 +1,7 @@
 import React from 'react';
 import AddCategory from './AddCategory';
-import { useCategories } from '../context/CategoriesContext';
 import { Link } from '@tanstack/react-router';
+import { useCategories } from '../context/CategoriesContext copy';
 
 export const CategoriesSetup = () => {
   const { categories, setCategories } = useCategories();
@@ -12,12 +12,23 @@ export const CategoriesSetup = () => {
     localStorage.setItem('categories', JSON.stringify(updatedCategories));
   };
 
+  const handleRemove = (category: string) => {
+    const newCategories = categories.filter((c) => c !== category);
+    setCategories(newCategories);
+    localStorage.setItem('categories', JSON.stringify(newCategories));
+  };
+
   return (
     <React.Fragment>
       <AddCategory addCategory={addCategory} />
       <ul>
         {categories.map((category) => (
-          <li>{category}</li>
+          <li key={category}>
+            {category}{' '}
+            <button name='remove' onClick={() => handleRemove(category)}>
+              ⛔️
+            </button>
+          </li>
         ))}
       </ul>
       <button className='flex-no-shrink p-2 border-2 rounded bg-teal bg-green-500 text-white border-teal hover:text-white hover:bg-teal'>

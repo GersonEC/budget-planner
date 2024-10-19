@@ -4,8 +4,8 @@ import NavBar from './components/NavBar';
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import AddBill from './components/AddBill';
-import { MonthSetup } from './components/MonthSetup';
-import { CategoriesProvider } from './context/CategoriesContext';
+import { MonthlyBudgetProvider } from './context/MonthlyBudgetContext';
+import { CategoriesProvider } from './context/CategoriesContext copy';
 
 export type Bill = {
   amount: number;
@@ -34,8 +34,6 @@ const App: React.FC<AppProps> = ({ children }) => {
   const [monthlyBudgetBills, setMonthlyBudgetBills] =
     useState<MonthlyBudget>(initialMonthlyBudget);
   const [shouldShowAddBill, setShouldShowAddBill] = useState(false);
-  const [shouldShowAddMonthlyBudget, setShouldShowAddMonthlyBudget] =
-    useState(false);
   const [activeCategory, setActiveCategory] = useState('');
 
   useEffect(() => {
@@ -52,13 +50,13 @@ const App: React.FC<AppProps> = ({ children }) => {
     }*/
   }, []);
 
-  const activeBills = () => {
+  /*const activeBills = () => {
     return monthlyBudgetBills.bills
       ?.filter((bill) =>
         activeCategory ? bill.category === activeCategory : true
       )
       .sort((a, b) => (new Date(a.date) < new Date(b.date) ? 1 : -1));
-  };
+  };*/
 
   const addBill = (amount: number, category: string, date: Date) => {
     const bill: Bill = { amount, category, date };
@@ -79,25 +77,11 @@ const App: React.FC<AppProps> = ({ children }) => {
     );
   };
 
-  const addMonthlyBudget = (amount: number) => {
-    const updatedMonthlyBudgetBills = {
-      month: new Date().getMonth(),
-      budget: amount,
-      bills: [...(monthlyBudgetBills?.bills || [])],
-    };
-    setMonthlyBudgetBills(updatedMonthlyBudgetBills);
-    setShouldShowAddMonthlyBudget(false);
-    localStorage.setItem(
-      'monthlyBudgetBills',
-      JSON.stringify(updatedMonthlyBudgetBills)
-    );
-  };
-
   const showAddBill = () => {
     setShouldShowAddBill(true);
   };
 
-  const removeBill = (index: number) => {
+  /*const removeBill = (index: number) => {
     let updatedBills = [...(monthlyBudgetBills?.bills || [])];
     updatedBills = updatedBills
       .slice(0, index)
@@ -108,25 +92,21 @@ const App: React.FC<AppProps> = ({ children }) => {
     };
     setMonthlyBudgetBills(updatedMonthlyBudgetBills);
     localStorage.setItem('bills', JSON.stringify(updatedBills));
-  };
+  };*/
 
-  const setNewActiveCategory = (category: string) => {
+  /*const setNewActiveCategory = (category: string) => {
     setActiveCategory(category);
-  };
+  };*/
 
-  console.log({ shouldShowAddMonthlyBudget });
   if (shouldShowAddBill) {
     return <AddBill addBill={addBill} categories={categories} />;
   }
 
-  if (shouldShowAddMonthlyBudget) {
-    return <MonthSetup addMonthlyBudget={addMonthlyBudget} />;
-  }
-
   return (
-    <CategoriesProvider>
-      <div className='App'>
-        {/*<NavBar
+    <MonthlyBudgetProvider>
+      <CategoriesProvider>
+        <div className='App'>
+          {/*<NavBar
           categories={categories}
           budget={monthlyBudgetBills.budget}
           showAddCategory={() => {}}
@@ -140,9 +120,10 @@ const App: React.FC<AppProps> = ({ children }) => {
             removeBill={removeBill}
           />
         </div>*/}
-        {children}
-      </div>
-    </CategoriesProvider>
+          {children}
+        </div>
+      </CategoriesProvider>
+    </MonthlyBudgetProvider>
   );
 };
 
