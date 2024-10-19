@@ -1,17 +1,5 @@
 import React from 'react';
 
-export type Bill = {
-  amount: number;
-  category: string;
-  date: Date;
-};
-
-export type MonthlyBudget = {
-  month: number;
-  budget: number;
-  bills: Bill[];
-};
-
 const initialMonthlyBudget: MonthlyBudget = {
   month: new Date().getMonth(),
   budget: 0,
@@ -21,7 +9,7 @@ const initialMonthlyBudget: MonthlyBudget = {
 const MonthlyBudgetContext = React.createContext<
   | {
       monthlyBudget: MonthlyBudget;
-      setMonthlyBudget: React.Dispatch<React.SetStateAction<MonthlyBudget>>;
+      setMonthlyBudget: (newMonthlyBudget: MonthlyBudget) => void;
     }
   | undefined
 >(undefined);
@@ -31,10 +19,18 @@ export function MonthlyBudgetProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [monthlyBudget, setMonthlyBudget] =
+  const [budget, setBudget] =
     React.useState<MonthlyBudget>(initialMonthlyBudget);
 
-  const value = { monthlyBudget, setMonthlyBudget };
+  const setMonthlyBudget = (newMonthlyBudget: MonthlyBudget) => {
+    setBudget(newMonthlyBudget);
+    localStorage.setItem('monthlyBudget', JSON.stringify(newMonthlyBudget));
+  };
+
+  const value = {
+    monthlyBudget: budget,
+    setMonthlyBudget,
+  };
 
   return (
     <MonthlyBudgetContext.Provider value={value}>

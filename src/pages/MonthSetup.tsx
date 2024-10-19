@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useCategories } from '../context/CategoriesContext copy';
+import { useCategories } from '../context/CategoriesContext';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { BudgetSetup } from '../components/BudgetSetup';
 import { CategoriesSetup } from '../components/CategoriesSetup';
@@ -21,18 +21,16 @@ export const MonthSetup = () => {
         JSON.parse(monthlyBudgetInLocalStorage) as MonthlyBudget
       );
     }
-  }, [setCategories, setMonthlyBudget]);
+  }, []);
 
   const addCategory = (category: string) => {
     const updatedCategories = [...categories, category];
     setCategories(updatedCategories);
-    localStorage.setItem('categories', JSON.stringify(updatedCategories));
   };
 
   const removeCategory = (category: string) => {
     const newCategories = categories.filter((c) => c !== category);
     setCategories(newCategories);
-    localStorage.setItem('categories', JSON.stringify(newCategories));
   };
 
   return (

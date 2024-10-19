@@ -1,4 +1,5 @@
 type Bill = {
+  id: string;
   amount: number;
   category: string;
   date: Date;

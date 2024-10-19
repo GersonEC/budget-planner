@@ -19,7 +19,6 @@ export const BudgetSetup: React.FC<Props> = ({ setMonthlyBudget }) => {
       bills: [],
     };
     setMonthlyBudget(updatedMonthlyBudget);
-    localStorage.setItem('monthlyBudget', JSON.stringify(updatedMonthlyBudget));
   };
 
   return (

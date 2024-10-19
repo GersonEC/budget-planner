@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router';
 
 type Props = {
   bills: Bill[];
-  removeBill: (index: number) => void;
+  removeBill: (id: string) => void;
 };
 
 const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
@@ -17,14 +17,14 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
         </tr>
       </thead>
       <tbody>
-        {bills?.map((value, index) => {
+        {bills?.map((bill) => {
           return (
-            <tr className='p4' key={index}>
-              <td>{new Date(value.date).toLocaleDateString()}</td>
-              <td>${value.amount}</td>
-              <td>{value.category}</td>
+            <tr className='p4' key={bill.id}>
+              <td>{new Date(bill.date).toLocaleDateString()}</td>
+              <td>${bill.amount}</td>
+              <td>{bill.category}</td>
               <td>
-                <button onClick={() => removeBill(index)}>X</button>
+                <button onClick={() => removeBill(bill.id)}>X</button>
               </td>
             </tr>
           );

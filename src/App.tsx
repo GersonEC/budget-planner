@@ -1,6 +1,6 @@
 import React from 'react';
 import { MonthlyBudgetProvider } from './context/MonthlyBudgetContext';
-import { CategoriesProvider } from './context/CategoriesContext copy';
+import { CategoriesProvider } from './context/CategoriesContext';
 import './App.css';
 
 interface AppProps {

@@ -6,11 +6,13 @@ interface Props {
   bills: Bill[];
   budget: number;
   categories: string[];
+  updateBills: (newBills: Bill[]) => void;
 }
 export const MonthlyBills: React.FC<Props> = ({
   bills,
   budget,
   categories,
+  updateBills,
 }) => {
   const [activeCategory, setActiveCategory] = useState('');
 
@@ -26,6 +28,11 @@ export const MonthlyBills: React.FC<Props> = ({
     setActiveCategory(category);
   };
 
+  const removeBill = (id: string) => {
+    const newBills = bills.filter((b) => b.id !== id);
+    updateBills(newBills);
+  };
+
   return (
     <React.Fragment>
       <NavBar
@@ -35,10 +42,7 @@ export const MonthlyBills: React.FC<Props> = ({
         activeCategory={activeCategory}
         setNewActiveCategory={setNewActiveCategory}
       />
-      <BillsTable
-        bills={activeBills()}
-        removeBill={() => alert('remove bill')}
-      />
+      <BillsTable bills={activeBills()} removeBill={removeBill} />
     </React.Fragment>
   );
 };

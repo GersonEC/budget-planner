@@ -1,7 +1,7 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useId, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useCategories } from '../context/CategoriesContext copy';
+import { useCategories } from '../context/CategoriesContext';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { useNavigate } from '@tanstack/react-router';
 
@@ -12,6 +12,7 @@ const AddBill = () => {
   const [amount, setAmount] = useState(0);
   const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState(categories[0]);
+  const id = useId();
 
   const handleChangeAmount = (event: ChangeEvent) => {
     let newAmount = parseInt((event.target as HTMLInputElement).value, 10);
@@ -23,18 +24,20 @@ const AddBill = () => {
     if (date) setDate(date);
   };
 
-  const addBill = (amount: number, category: string, date: Date) => {
-    const bill: Bill = { amount, category, date };
+  const addBill = (
+    id: string,
+    amount: number,
+    category: string,
+    date: Date
+  ) => {
+    const bill: Bill = { id, amount, category, date };
     const updatedBills = [...(monthlyBudget?.bills || []), bill];
     const updatedMonthlyBudgetBills = {
       ...monthlyBudget,
+      budget: monthlyBudget.budget - amount,
       bills: updatedBills,
     };
     setMonthlyBudget(updatedMonthlyBudgetBills);
-    localStorage.setItem(
-      'monthlyBudget',
-      JSON.stringify(updatedMonthlyBudgetBills)
-    );
     navigate({
       to: '/bills',
     });
@@ -47,7 +50,7 @@ const AddBill = () => {
       return;
     }
 
-    addBill(amount, category || categories[0], date);
+    addBill(id, amount, category || categories[0], date);
   };
 
   return (
