@@ -4,6 +4,7 @@ import { Outlet, createRoute, createRootRoute } from '@tanstack/react-router';
 import App from './App';
 import { CategoriesSetup } from './components/CategoriesSetup';
 import { BudgetSetup } from './components/BudgetSetup';
+import { MonthlyBills } from './components/MonthlyBills';
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -22,20 +23,20 @@ const indexRoute = createRoute({
   component: () => <CategoriesSetup />,
 });
 
-const detailsRoute = createRoute({
+const budgetSetupRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/budget',
   component: () => <BudgetSetup />,
 });
 
-const profileRoute = createRoute({
+const monthlyBillsRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/bills',
-  component: () => <h1>Month Bills</h1>,
+  component: () => <MonthlyBills />,
 });
 
 export const routeTree = rootRoute.addChildren([
   indexRoute,
-  detailsRoute,
-  profileRoute,
+  budgetSetupRoute,
+  monthlyBillsRoute,
 ]);
