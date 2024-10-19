@@ -14,7 +14,7 @@ export const MonthSetup = () => {
     const monthlyBudgetInLocalStorage = localStorage.getItem('monthlyBudget');
 
     if (categoriesInLocalStorage) {
-      setCategories(JSON.parse(categoriesInLocalStorage) as string[]);
+      setCategories(JSON.parse(categoriesInLocalStorage) as CategoryForm[]);
     }
     if (monthlyBudgetInLocalStorage) {
       setMonthlyBudget(
@@ -23,13 +23,13 @@ export const MonthSetup = () => {
     }
   }, []);
 
-  const addCategory = (category: string) => {
+  const addCategory = (category: CategoryForm) => {
     const updatedCategories = [...categories, category];
     setCategories(updatedCategories);
   };
 
-  const removeCategory = (category: string) => {
-    const newCategories = categories.filter((c) => c !== category);
+  const removeCategory = (categoryName: string) => {
+    const newCategories = categories.filter((c) => c.name !== categoryName);
     setCategories(newCategories);
   };
 

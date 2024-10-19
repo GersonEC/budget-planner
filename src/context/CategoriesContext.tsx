@@ -2,8 +2,8 @@ import React from 'react';
 
 const CategoriesContext = React.createContext<
   | {
-      categories: string[];
-      setCategories: (newCategories: string[]) => void;
+      categories: CategoryForm[];
+      setCategories: (newCategories: CategoryForm[]) => void;
     }
   | undefined
 >(undefined);
@@ -13,9 +13,9 @@ export function CategoriesProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [cat, setCat] = React.useState<string[]>([]);
+  const [cat, setCat] = React.useState<CategoryForm[]>([]);
 
-  const setCategories = (newCategories: string[]) => {
+  const setCategories = (newCategories: CategoryForm[]) => {
     setCat(newCategories);
     localStorage.setItem('categories', JSON.stringify(newCategories));
   };

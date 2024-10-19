@@ -10,9 +10,9 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
     <table className='table w-full'>
       <thead className='text-left'>
         <tr>
-          <th scope='col'>Date</th>
-          <th scope='col'>Amount</th>
           <th scope='col'>Category</th>
+          <th scope='col'>Amount</th>
+          <th scope='col'>Date</th>
           <th scope='col' />
         </tr>
       </thead>
@@ -20,9 +20,9 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
         {bills?.map((bill) => {
           return (
             <tr className='p4' key={bill.id}>
-              <td>{new Date(bill.date).toLocaleDateString()}</td>
-              <td>${bill.amount}</td>
               <td>{bill.category}</td>
+              <td>${bill.amount}</td>
+              <td>{new Date(bill.date).toLocaleDateString()}</td>
               <td>
                 <button onClick={() => removeBill(bill.id)}>X</button>
               </td>

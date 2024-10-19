@@ -2,8 +2,8 @@ import React from 'react';
 import AddCategory from './AddCategory';
 
 interface Props {
-  categories: string[];
-  addCategory: (category: string) => void;
+  categories: CategoryForm[];
+  addCategory: (category: CategoryForm) => void;
   removeCategory: (category: string) => void;
 }
 
@@ -17,9 +17,9 @@ export const CategoriesSetup: React.FC<Props> = ({
       <AddCategory addCategory={addCategory} />
       <ul>
         {categories.map((category) => (
-          <li key={category}>
-            {category}{' '}
-            <button name='remove' onClick={() => removeCategory(category)}>
+          <li key={category.name}>
+            {category.name}{' '}
+            <button name='remove' onClick={() => removeCategory(category.name)}>
               ⛔️
             </button>
           </li>
