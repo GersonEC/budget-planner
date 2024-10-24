@@ -39,7 +39,6 @@ export const MonthlyBills: React.FC<Props> = ({
     <React.Fragment>
       <NavBar
         categories={categories}
-        showAddCategory={() => {}}
         activeCategory={activeCategory}
         setNewActiveCategory={setNewActiveCategory}
       />

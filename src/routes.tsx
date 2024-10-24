@@ -5,6 +5,7 @@ import App from './App';
 import { MonthSetup } from './pages/MonthSetup';
 import { Bills } from './pages/Bills';
 import AddBill from './pages/AddBill';
+import { Categories } from './pages/Categories';
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -35,8 +36,15 @@ const addBillRoute = createRoute({
   component: () => <AddBill />,
 });
 
+const categoriesRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/categories',
+  component: () => <Categories />,
+});
+
 export const routeTree = rootRoute.addChildren([
-  indexRoute,
-  billsRoute,
   addBillRoute,
+  billsRoute,
+  categoriesRoute,
+  indexRoute,
 ]);

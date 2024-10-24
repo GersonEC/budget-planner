@@ -1,13 +1,21 @@
+import { useNavigate } from '@tanstack/react-router';
+
 interface Props {
   categories: string[];
-  showAddCategory: () => void;
   activeCategory: string;
   setNewActiveCategory: (category: string) => void;
 }
 
 function NavBar(props: Props) {
+  const navigate = useNavigate();
   const setNewActiveCategory = (category: string) => {
     props.setNewActiveCategory(category);
+  };
+
+  const handleEditCategories = () => {
+    navigate({
+      to: '/categories',
+    });
   };
 
   const liStyle =
@@ -39,8 +47,8 @@ function NavBar(props: Props) {
             );
           })
         : '<li>No categories</li>'}
-      <li className={liStyle} onClick={() => props.showAddCategory()}>
-        ➕
+      <li className={liStyle} onClick={handleEditCategories}>
+        ✏️
       </li>
     </ul>
   );

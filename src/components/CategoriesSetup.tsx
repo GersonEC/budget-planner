@@ -1,5 +1,6 @@
 import React from 'react';
 import AddCategory from './AddCategory';
+import { CategoryList } from './CategoryList';
 
 interface Props {
   categories: CategoryForm[];
@@ -15,16 +16,7 @@ export const CategoriesSetup: React.FC<Props> = ({
   return (
     <React.Fragment>
       <AddCategory addCategory={addCategory} />
-      <ul>
-        {categories.map((category) => (
-          <li key={category.name}>
-            {category.name}{' '}
-            <button name='remove' onClick={() => removeCategory(category.name)}>
-              ⛔️
-            </button>
-          </li>
-        ))}
-      </ul>
+      <CategoryList categories={categories} removeCategory={removeCategory} />
     </React.Fragment>
   );
 };
