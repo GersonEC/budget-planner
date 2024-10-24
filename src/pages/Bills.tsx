@@ -6,6 +6,7 @@ import { useCategories } from '../context/CategoriesContext';
 export const Bills = () => {
   const { categories } = useCategories();
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
+  const categoriesText = categories.map((c) => c.name);
 
   const updateBills = (newBills: Bill[]) => {
     setMonthlyBudget({
@@ -19,7 +20,8 @@ export const Bills = () => {
       <MonthlyBills
         bills={monthlyBudget.bills}
         budget={monthlyBudget.budget}
-        categories={categories}
+        expenses={monthlyBudget.expenses}
+        categories={categoriesText}
         updateBills={updateBills}
       />
     </React.Fragment>

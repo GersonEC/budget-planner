@@ -16,6 +16,7 @@ export const BudgetSetup: React.FC<Props> = ({ setMonthlyBudget }) => {
     const updatedMonthlyBudget = {
       month: new Date().getMonth(),
       budget,
+      expenses: 0,
       bills: [],
     };
     setMonthlyBudget(updatedMonthlyBudget);

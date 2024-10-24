@@ -6,12 +6,14 @@ interface Props {
   bills: Bill[];
   budget: number;
   categories: string[];
+  expenses: number;
   updateBills: (newBills: Bill[]) => void;
 }
 export const MonthlyBills: React.FC<Props> = ({
   bills,
   budget,
   categories,
+  expenses,
   updateBills,
 }) => {
   const [activeCategory, setActiveCategory] = useState('');
@@ -37,11 +39,13 @@ export const MonthlyBills: React.FC<Props> = ({
     <React.Fragment>
       <NavBar
         categories={categories}
-        budget={budget}
         showAddCategory={() => {}}
         activeCategory={activeCategory}
         setNewActiveCategory={setNewActiveCategory}
       />
+      <p>Monthly Budget: {budget}</p>
+      <p>Expenses: {expenses}</p>
+      <p>Remaining: {budget - expenses}</p>
       <BillsTable bills={activeBills()} removeBill={removeBill} />
     </React.Fragment>
   );

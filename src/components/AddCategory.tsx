@@ -3,6 +3,7 @@ import { useState } from 'react';
 const initialValue: CategoryForm = {
   name: '',
   budget: 0,
+  expenses: 0,
 };
 type Props = {
   addCategory: (category: CategoryForm) => void;

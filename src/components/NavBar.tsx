@@ -1,6 +1,5 @@
 interface Props {
   categories: string[];
-  budget: number;
   showAddCategory: () => void;
   activeCategory: string;
   setNewActiveCategory: (category: string) => void;
@@ -43,7 +42,6 @@ function NavBar(props: Props) {
       <li className={liStyle} onClick={() => props.showAddCategory()}>
         ➕
       </li>
-      <li>Budget: {props.budget}</li>
     </ul>
   );
 }

@@ -3,6 +3,7 @@ import React from 'react';
 const initialMonthlyBudget: MonthlyBudget = {
   month: new Date().getMonth(),
   budget: 0,
+  expenses: 0,
   bills: [],
 };
 

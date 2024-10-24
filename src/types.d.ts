@@ -8,10 +8,12 @@ type Bill = {
 type MonthlyBudget = {
   month: number;
   budget: number;
+  expenses: number;
   bills: Bill[];
 };
 
 type CategoryForm = {
   name: string;
   budget: number;
+  expenses: number;
 };
