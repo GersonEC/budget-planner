@@ -13,6 +13,7 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
           <th scope='col'>Category</th>
           <th scope='col'>Amount</th>
           <th scope='col'>Date</th>
+          <th scope='col'>Description</th>
           <th scope='col' />
         </tr>
       </thead>
@@ -23,6 +24,7 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
               <td>{bill.category}</td>
               <td>${bill.amount}</td>
               <td>{new Date(bill.date).toLocaleDateString()}</td>
+              <td>{bill.description}</td>
               <td>
                 <button onClick={() => removeBill(bill.id)}>X</button>
               </td>

@@ -10,6 +10,7 @@ const AddBill = () => {
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
   const navigate = useNavigate();
   const [amount, setAmount] = useState(0);
+  const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState(categories[0]);
   const id = useId();
@@ -35,9 +36,10 @@ const AddBill = () => {
     id: string,
     amount: number,
     category: string,
-    date: Date
+    date: Date,
+    description: string
   ) => {
-    const bill: Bill = { id, amount, category, date };
+    const bill: Bill = { id, amount, category, date, description };
     const updatedBills = [...(monthlyBudget?.bills || []), bill];
     const updatedMonthlyBudgetBills = {
       ...monthlyBudget,
@@ -60,9 +62,10 @@ const AddBill = () => {
     id: string,
     amount: number,
     category: string,
-    date: Date
+    date: Date,
+    description: string
   ) => {
-    updateMonthlyBudgetBill(id, amount, category, date);
+    updateMonthlyBudgetBill(id, amount, category, date, description);
     updateMonthlyCategoryBudget(amount, category);
     navigate({
       to: '/bills',
@@ -76,14 +79,11 @@ const AddBill = () => {
       return;
     }
 
-    addBill(id, amount, category.name || categories[0].name, date);
+    addBill(id, amount, category.name || categories[0].name, date, description);
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className='h-100 w-full flex items-center justify-center font-sans'
-    >
+    <form onSubmit={handleSubmit}>
       <div className='bg-white rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg'>
         <div className='mb-4'>
           <h1 className='text-grey-darkest'>Enter a new bill</h1>
@@ -105,6 +105,16 @@ const AddBill = () => {
               value={amount}
               onChange={handleChangeAmount}
             />
+            <div>
+              <label htmlFor='description'>Description:</label>
+              <textarea
+                id='description'
+                name='description'
+                rows={2}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </div>
             <div className='mt-2 ml-1'>
               <DatePicker selected={date} onChange={handleChangeDate} />
             </div>

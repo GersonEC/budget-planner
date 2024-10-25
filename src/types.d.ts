@@ -3,6 +3,7 @@ type Bill = {
   amount: number;
   category: string;
   date: Date;
+  description: string;
 };
 
 type MonthlyBudget = {
