@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const initialMonthlyBudget: MonthlyBudget = {
   month: new Date().getMonth(),
@@ -23,9 +23,19 @@ export function MonthlyBudgetProvider({
   const [budget, setBudget] =
     React.useState<MonthlyBudget>(initialMonthlyBudget);
 
+  useEffect(() => {
+    const monthlyBudgetInSessionStorage =
+      sessionStorage.getItem('monthlyBudget');
+    if (monthlyBudgetInSessionStorage) {
+      setMonthlyBudget(
+        JSON.parse(monthlyBudgetInSessionStorage) as MonthlyBudget
+      );
+    }
+  }, []);
+
   const setMonthlyBudget = (newMonthlyBudget: MonthlyBudget) => {
     setBudget(newMonthlyBudget);
-    localStorage.setItem('monthlyBudget', JSON.stringify(newMonthlyBudget));
+    sessionStorage.setItem('monthlyBudget', JSON.stringify(newMonthlyBudget));
   };
 
   const value = {

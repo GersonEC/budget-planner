@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useCategories } from '../context/CategoriesContext';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { BudgetSetup } from '../components/BudgetSetup';
@@ -8,20 +8,6 @@ import { Link } from '@tanstack/react-router';
 export const MonthSetup = () => {
   const { categories, setCategories } = useCategories();
   const { setMonthlyBudget } = useMonthlyBudget();
-
-  useEffect(() => {
-    const categoriesInLocalStorage = localStorage.getItem('categories');
-    const monthlyBudgetInLocalStorage = localStorage.getItem('monthlyBudget');
-
-    if (categoriesInLocalStorage) {
-      setCategories(JSON.parse(categoriesInLocalStorage) as CategoryForm[]);
-    }
-    if (monthlyBudgetInLocalStorage) {
-      setMonthlyBudget(
-        JSON.parse(monthlyBudgetInLocalStorage) as MonthlyBudget
-      );
-    }
-  }, []);
 
   const addCategory = (category: CategoryForm) => {
     const updatedCategories = [...categories, category];

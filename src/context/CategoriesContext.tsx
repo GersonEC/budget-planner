@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const CategoriesContext = React.createContext<
   | {
@@ -15,9 +15,16 @@ export function CategoriesProvider({
 }) {
   const [cat, setCat] = React.useState<CategoryForm[]>([]);
 
+  useEffect(() => {
+    const categoriesInSessionStorage = sessionStorage.getItem('categories');
+    if (categoriesInSessionStorage) {
+      setCategories(JSON.parse(categoriesInSessionStorage) as CategoryForm[]);
+    }
+  }, []);
+
   const setCategories = (newCategories: CategoryForm[]) => {
     setCat(newCategories);
-    localStorage.setItem('categories', JSON.stringify(newCategories));
+    sessionStorage.setItem('categories', JSON.stringify(newCategories));
   };
   const value = {
     categories: cat,
