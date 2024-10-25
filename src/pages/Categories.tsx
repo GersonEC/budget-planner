@@ -3,6 +3,7 @@ import AddCategory from '../components/AddCategory';
 import { CategoryList } from '../components/CategoryList';
 import { useCategories } from '../context/CategoriesContext';
 import { Link } from '@tanstack/react-router';
+import { Button } from '../components/ui/button';
 
 export const Categories = () => {
   const { categories, setCategories } = useCategories();
@@ -24,7 +25,7 @@ export const Categories = () => {
       <Link to='/bills'>⬅ Go to Bills</Link>
       <div className='flex gap-4'>
         <h1>Categories</h1>
-        <button onClick={() => setShowAddCategory(true)}>Add</button>
+        <Button onClick={() => setShowAddCategory(true)}>Add</Button>
       </div>
       {/** TODO: show it in a modal */}
       {showAddCategory && <AddCategory addCategory={addCategory} />}

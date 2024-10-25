@@ -4,6 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useCategories } from '../context/CategoriesContext';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { useNavigate } from '@tanstack/react-router';
+import { Button } from '../components/ui/button';
 
 const AddBill = () => {
   const { categories, setCategories } = useCategories();
@@ -120,9 +121,7 @@ const AddBill = () => {
             </div>
             <p>Allocated budget: {allocatedBudget}</p>
             <p>Remaining budget: {remainingBudget}</p>
-            <button className='flex-no-shrink p-2 border-2 rounded bg-teal bg-green-500 text-white border-teal hover:text-white hover:bg-teal'>
-              Add
-            </button>
+            <Button>Add</Button>
           </div>
         </div>
       </div>

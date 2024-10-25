@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from './ui/button';
 
 interface Props {
   setMonthlyBudget: (monthlyBudget: MonthlyBudget) => void;
@@ -35,9 +36,7 @@ export const BudgetSetup: React.FC<Props> = ({ setMonthlyBudget }) => {
         value={budget}
         onChange={(e) => setBudget(Number(e.target.value))}
       />
-      <button className='flex-no-shrink p-2 border-2 rounded bg-teal bg-green-500 text-white border-teal hover:text-white hover:bg-teal'>
-        Add
-      </button>
+      <Button>Add</Button>
     </form>
   );
 };

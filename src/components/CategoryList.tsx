@@ -1,3 +1,5 @@
+import { Button } from './ui/button';
+
 interface Props {
   categories: CategoryForm[];
   removeCategory: (category: string) => void;
@@ -12,9 +14,14 @@ export const CategoryList: React.FC<Props> = ({
         {categories.map((category) => (
           <li key={category.name}>
             {category.name}{' '}
-            <button name='remove' onClick={() => removeCategory(category.name)}>
+            <Button
+              name='remove'
+              variant='ghost'
+              size='icon'
+              onClick={() => removeCategory(category.name)}
+            >
               ⛔️
-            </button>
+            </Button>
           </li>
         ))}
       </ul>

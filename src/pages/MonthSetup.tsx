@@ -4,6 +4,7 @@ import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { BudgetSetup } from '../components/BudgetSetup';
 import { CategoriesSetup } from '../components/CategoriesSetup';
 import { Link } from '@tanstack/react-router';
+import { Button } from '../components/ui/button';
 
 export const MonthSetup = () => {
   const { categories, setCategories } = useCategories();
@@ -27,9 +28,9 @@ export const MonthSetup = () => {
         addCategory={addCategory}
         removeCategory={removeCategory}
       />
-      <button className='flex-no-shrink p-2 border-2 rounded bg-teal bg-green-500 text-white border-teal hover:text-white hover:bg-teal'>
+      <Button>
         <Link to='/bills'>Proceed</Link>
-      </button>
+      </Button>
     </React.Fragment>
   );
 };

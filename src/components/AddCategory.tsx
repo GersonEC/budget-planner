@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Button } from './ui/button';
 
 const initialValue: CategoryForm = {
   name: '',
@@ -56,9 +57,7 @@ function AddCategory(props: Props) {
               }
               required
             />
-            <button className='flex-no-shrink p-2 border-2 rounded bg-teal bg-green-500 text-white border-teal hover:text-white hover:bg-teal'>
-              Add
-            </button>
+            <Button>Add</Button>
           </div>
         </div>
       </div>

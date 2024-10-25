@@ -1,4 +1,5 @@
 import { Link } from '@tanstack/react-router';
+import { Button } from './ui/button';
 
 type Props = {
   bills: Bill[];
@@ -26,16 +27,16 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
               <td>{new Date(bill.date).toLocaleDateString()}</td>
               <td>{bill.description}</td>
               <td>
-                <button onClick={() => removeBill(bill.id)}>X</button>
+                <Button onClick={() => removeBill(bill.id)}>X</Button>
               </td>
             </tr>
           );
         })}
         <tr>
           <td colSpan={4} className='text-center pt-5'>
-            <button className='underline'>
+            <Button variant='link'>
               <Link to='/add-bill'>Add new</Link>
-            </button>
+            </Button>
           </td>
         </tr>
       </tbody>
