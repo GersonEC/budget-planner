@@ -9,9 +9,14 @@ export const Bills = () => {
   const categoriesText = categories.map((c) => c.name);
 
   const updateBills = (newBills: Bill[]) => {
+    const newExpenses = newBills.reduce(
+      (prevValue, currValue) => prevValue + currValue.amount,
+      0
+    );
     setMonthlyBudget({
       ...monthlyBudget,
       bills: newBills,
+      expenses: newExpenses,
     });
   };
 
