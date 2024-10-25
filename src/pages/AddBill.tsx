@@ -85,11 +85,11 @@ const AddBill = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className='bg-white rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg'>
+      <div className='rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg'>
         <div className='mb-4'>
-          <h1 className='text-grey-darkest'>Enter a new bill</h1>
+          <h1>Enter a new bill</h1>
           <div className='flex mt-4'>
-            <select onChange={handleChangeCategory}>
+            <select className='text-black' onChange={handleChangeCategory}>
               {categories
                 ? categories.map((value, index) => {
                     return (
@@ -101,7 +101,7 @@ const AddBill = () => {
                 : ''}
             </select>
             <input
-              className='shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker'
+              className='text-black shadow appearance-none border rounded w-full py-2 px-3 mr-4'
               placeholder='Add category'
               value={amount}
               onChange={handleChangeAmount}
@@ -109,6 +109,7 @@ const AddBill = () => {
             <div>
               <label htmlFor='description'>Description:</label>
               <textarea
+                className='text-black'
                 id='description'
                 name='description'
                 rows={2}
@@ -117,7 +118,11 @@ const AddBill = () => {
               />
             </div>
             <div className='mt-2 ml-1'>
-              <DatePicker selected={date} onChange={handleChangeDate} />
+              <DatePicker
+                className='text-black'
+                selected={date}
+                onChange={handleChangeDate}
+              />
             </div>
             <p>Allocated budget: {allocatedBudget}</p>
             <p>Remaining budget: {remainingBudget}</p>
