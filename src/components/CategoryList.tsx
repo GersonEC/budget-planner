@@ -9,22 +9,20 @@ export const CategoryList: React.FC<Props> = ({
   removeCategory,
 }) => {
   return (
-    <div>
-      <ul>
-        {categories.map((category) => (
-          <li key={category.name}>
-            {category.name}{' '}
-            <Button
-              name='remove'
-              variant='ghost'
-              size='icon'
-              onClick={() => removeCategory(category.name)}
-            >
-              ⛔️
-            </Button>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <ul className='flex items-center gap-6 justify-center'>
+      {categories.map((category) => (
+        <li key={category.name}>
+          {category.name}{' '}
+          <Button
+            name='remove'
+            variant='ghost'
+            size='icon'
+            onClick={() => removeCategory(category.name)}
+          >
+            ⛔️
+          </Button>
+        </li>
+      ))}
+    </ul>
   );
 };

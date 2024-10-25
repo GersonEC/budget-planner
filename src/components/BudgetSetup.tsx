@@ -1,42 +1,22 @@
-import React, { useState } from 'react';
-import { Button } from './ui/button';
+import React from 'react';
 
 interface Props {
-  setMonthlyBudget: (monthlyBudget: MonthlyBudget) => void;
+  budget: number;
+  setBudget: (budget: number) => void;
 }
 
-export const BudgetSetup: React.FC<Props> = ({ setMonthlyBudget }) => {
-  const [budget, setBudget] = useState<number>(0);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!budget) {
-      alert('Please enter a budget');
-      return;
-    }
-    const updatedMonthlyBudget = {
-      month: new Date().getMonth(),
-      budget,
-      expenses: 0,
-      bills: [],
-    };
-    setMonthlyBudget(updatedMonthlyBudget);
-  };
-
+export const BudgetSetup: React.FC<Props> = ({ budget, setBudget }) => {
   return (
-    <form
-      onSubmit={handleSubmit}
-      className='h-100 w-full flex items-center justify-center font-sans'
-    >
+    <div className='rounded shadow w-full lg:w-3/4 lg:max-w-lg'>
       <label htmlFor='monthlyBudget'>Set a monthly budget</label>
       <input
         className='text-black shadow appearance-none border rounded w-full py-2 px-3 mr-4'
         name='monthlyBudget'
         type='number'
         value={budget}
+        required
         onChange={(e) => setBudget(Number(e.target.value))}
       />
-      <Button>Add</Button>
-    </form>
+    </div>
   );
 };

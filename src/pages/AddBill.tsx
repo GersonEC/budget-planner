@@ -84,52 +84,54 @@ const AddBill = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className='rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg'>
-        <div className='mb-4'>
-          <h1>Enter a new bill</h1>
-          <div className='flex mt-4'>
-            <select className='text-black' onChange={handleChangeCategory}>
-              {categories
-                ? categories.map((value, index) => {
-                    return (
-                      <option key={index} value={value.name}>
-                        {value.name}
-                      </option>
-                    );
-                  })
-                : ''}
-            </select>
-            <input
-              className='text-black shadow appearance-none border rounded w-full py-2 px-3 mr-4'
-              placeholder='Add category'
-              value={amount}
-              onChange={handleChangeAmount}
-            />
-            <div>
-              <label htmlFor='description'>Description:</label>
-              <textarea
-                className='text-black'
-                id='description'
-                name='description'
-                rows={2}
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              />
-            </div>
-            <div className='mt-2 ml-1'>
-              <DatePicker
-                className='text-black'
-                selected={date}
-                onChange={handleChangeDate}
-              />
-            </div>
-            <p>Allocated budget: {allocatedBudget}</p>
-            <p>Remaining budget: {remainingBudget}</p>
-            <Button>Add</Button>
-          </div>
-        </div>
+    <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+      <p>Allocated budget: {allocatedBudget}</p>
+      <p>Remaining budget: {remainingBudget}</p>
+      <label htmlFor='category'>Bill category:</label>
+      <select
+        className='text-black p-2 rounded'
+        name='category'
+        onChange={handleChangeCategory}
+      >
+        {categories
+          ? categories.map((value, index) => {
+              return (
+                <option key={index} value={value.name}>
+                  {value.name}
+                </option>
+              );
+            })
+          : ''}
+      </select>
+      <div>
+        <label htmlFor='amount'>Bill amount:</label>
+        <input
+          className='text-black shadow appearance-none border rounded w-full py-2 px-3'
+          name='amount'
+          value={amount}
+          onChange={handleChangeAmount}
+        />
       </div>
+      <div className='flex flex-col'>
+        <label htmlFor='description'>Bill description:</label>
+        <textarea
+          className='text-black rounded py-2 px-3'
+          name='description'
+          rows={2}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+      <div className='flex flex-col'>
+        <label htmlFor='date'>Bill date:</label>
+        <DatePicker
+          className='text-black w-full rounded p-2'
+          name='date'
+          selected={date}
+          onChange={handleChangeDate}
+        />
+      </div>
+      <Button className='w-full'>Add</Button>
     </form>
   );
 };

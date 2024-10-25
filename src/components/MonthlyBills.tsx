@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import BillsTable from './BillsTable';
-import NavBar from './NavBar';
+import { CategoryNavBar } from './CategoryNavBar';
+import { Button } from './ui/button';
+import { Link } from '@tanstack/react-router';
 
 interface Props {
   bills: Bill[];
@@ -37,14 +39,17 @@ export const MonthlyBills: React.FC<Props> = ({
 
   return (
     <React.Fragment>
-      <NavBar
+      <p>Monthly Budget: {budget}</p>
+      <p className='text-red-400'>Expenses: {expenses}</p>
+      <p className='text-green-400'>Remaining: {budget - expenses}</p>
+      <Button variant='link'>
+        <Link to='/add-bill'>Add new bill</Link>
+      </Button>
+      <CategoryNavBar
         categories={categories}
         activeCategory={activeCategory}
         setNewActiveCategory={setNewActiveCategory}
       />
-      <p>Monthly Budget: {budget}</p>
-      <p>Expenses: {expenses}</p>
-      <p>Remaining: {budget - expenses}</p>
       <BillsTable bills={activeBills()} removeBill={removeBill} />
     </React.Fragment>
   );

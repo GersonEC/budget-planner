@@ -6,7 +6,7 @@ interface Props {
   setNewActiveCategory: (category: string) => void;
 }
 
-function NavBar(props: Props) {
+export function CategoryNavBar(props: Props) {
   const navigate = useNavigate();
   const setNewActiveCategory = (category: string) => {
     props.setNewActiveCategory(category);
@@ -18,11 +18,10 @@ function NavBar(props: Props) {
     });
   };
 
-  const liStyle =
-    'p-4 inline bg-grey-lighter hover:bg-grey-light uppercase font-black cursor-pointer';
+  const liStyle = 'p-2 inline hover:cursor-pointer';
 
   return (
-    <ul className='list-reset flex justify-center border-b-4 mb-0'>
+    <ul className='list-reset flex justify-center border-2 mb-4'>
       <li
         className={
           liStyle +
@@ -38,7 +37,9 @@ function NavBar(props: Props) {
         ? props.categories.map((value, index) => {
             return (
               <li
-                className={liStyle}
+                className={`${liStyle} ${
+                  props.activeCategory === value ? 'underline' : ''
+                }`}
                 key={index}
                 onClick={() => setNewActiveCategory(value)}
               >
@@ -53,5 +54,3 @@ function NavBar(props: Props) {
     </ul>
   );
 }
-
-export default NavBar;
