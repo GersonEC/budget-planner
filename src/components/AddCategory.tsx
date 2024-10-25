@@ -27,7 +27,7 @@ function AddCategory(props: Props) {
     <div className='flex flex-col gap-2'>
       <label htmlFor='name'>Category</label>
       <input
-        className='text-black shadow appearance-none border rounded w-full py-2 px-3'
+        className='bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3'
         name='name'
         placeholder='experiences...'
         value={categoryForm.name}
@@ -40,7 +40,7 @@ function AddCategory(props: Props) {
       />
       <label htmlFor='budget'>Category budget</label>
       <input
-        className='text-black shadow appearance-none border rounded w-full py-2 px-3'
+        className='bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3'
         name='budget'
         type='number'
         value={categoryForm.budget}

@@ -10,7 +10,7 @@ export const BudgetSetup: React.FC<Props> = ({ budget, setBudget }) => {
     <div className='rounded shadow w-full lg:w-3/4 lg:max-w-lg'>
       <label htmlFor='monthlyBudget'>Set a monthly budget</label>
       <input
-        className='text-black shadow appearance-none border rounded w-full py-2 px-3 mr-4'
+        className=' bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3 mr-4'
         name='monthlyBudget'
         type='number'
         value={budget}

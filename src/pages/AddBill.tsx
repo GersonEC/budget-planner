@@ -89,7 +89,7 @@ const AddBill = () => {
       <p>Remaining budget: {remainingBudget}</p>
       <label htmlFor='category'>Bill category:</label>
       <select
-        className='text-black p-2 rounded'
+        className='bg-zinc-800 p-2 rounded'
         name='category'
         onChange={handleChangeCategory}
       >
@@ -106,7 +106,7 @@ const AddBill = () => {
       <div>
         <label htmlFor='amount'>Bill amount:</label>
         <input
-          className='text-black shadow appearance-none border rounded w-full py-2 px-3'
+          className='bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3'
           name='amount'
           value={amount}
           onChange={handleChangeAmount}
@@ -115,7 +115,7 @@ const AddBill = () => {
       <div className='flex flex-col'>
         <label htmlFor='description'>Bill description:</label>
         <textarea
-          className='text-black rounded py-2 px-3'
+          className='bg-zinc-800 rounded py-2 px-3'
           name='description'
           rows={2}
           value={description}
@@ -125,7 +125,7 @@ const AddBill = () => {
       <div className='flex flex-col'>
         <label htmlFor='date'>Bill date:</label>
         <DatePicker
-          className='text-black w-full rounded p-2'
+          className='bg-zinc-800 w-full rounded p-2'
           name='date'
           selected={date}
           onChange={handleChangeDate}
