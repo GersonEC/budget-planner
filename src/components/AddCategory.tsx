@@ -29,14 +29,13 @@ function AddCategory(props: Props) {
       onSubmit={handleSubmit}
       className='h-100 w-full flex items-center justify-center font-sans'
     >
-      <div className='bg-white rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg'>
+      <div className='rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg'>
         <div className='mb-4'>
           <div className='flex mt-4'>
             <label htmlFor='name'>Enter a category bill</label>
             <input
-              className='shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker'
+              className='text-black shadow appearance-none border rounded w-full py-2 px-3 mr-4'
               name='name'
-              placeholder="'Electricity' or 'Gas' or 'Internet'"
               value={categoryForm.name}
               onChange={(e) =>
                 setCategoryForm({ ...categoryForm, name: e.target.value })
@@ -45,7 +44,7 @@ function AddCategory(props: Props) {
             />
             <label htmlFor='budget'>Enter the category budget</label>
             <input
-              className='shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker'
+              className='text-black shadow appearance-none border rounded w-full py-2 px-3 mr-4'
               name='budget'
               type='number'
               value={categoryForm.budget}
@@ -57,7 +56,7 @@ function AddCategory(props: Props) {
               }
               required
             />
-            <Button>Add</Button>
+            <Button variant={'secondary'}>Add</Button>
           </div>
         </div>
       </div>
