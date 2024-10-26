@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
+import { Input } from './ui/input';
 
 const initialValue: CategoryForm = {
   name: '',
@@ -13,7 +14,7 @@ type Props = {
 function AddCategory(props: Props) {
   const [categoryForm, setCategoryForm] = useState<CategoryForm>(initialValue);
 
-  const handleSubmit = () => {
+  const handleAddCategory = () => {
     const { name, budget } = categoryForm;
     if (!name || !budget) {
       alert('Please enter the category and the budget');
@@ -26,7 +27,7 @@ function AddCategory(props: Props) {
   return (
     <div className='flex flex-col gap-2'>
       <label htmlFor='name'>Category</label>
-      <input
+      <Input
         className='bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3'
         name='name'
         placeholder='experiences...'
@@ -39,7 +40,7 @@ function AddCategory(props: Props) {
         }
       />
       <label htmlFor='budget'>Category budget</label>
-      <input
+      <Input
         className='bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3'
         name='budget'
         type='number'
@@ -51,7 +52,11 @@ function AddCategory(props: Props) {
           })
         }
       />
-      <Button className='w-full' onClick={handleSubmit} variant={'secondary'}>
+      <Button
+        className='w-full'
+        onClick={handleAddCategory}
+        variant={'secondary'}
+      >
         Add Category
       </Button>
     </div>

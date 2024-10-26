@@ -26,8 +26,7 @@ export const MonthSetup = () => {
     setCategories(newCategories);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleProceed = () => {
     if (!budget) {
       alert('Please enter a budget');
       return;
@@ -45,14 +44,14 @@ export const MonthSetup = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col gap-6'>
+    <div className='flex flex-col gap-6'>
       <BudgetSetup budget={budget} setBudget={handleSetBudget} />
       <CategoriesSetup
         categories={categories}
         addCategory={addCategory}
         removeCategory={removeCategory}
       />
-      <Button type='submit'>Proceed</Button>
-    </form>
+      <Button onClick={handleProceed}>Proceed</Button>
+    </div>
   );
 };

@@ -5,6 +5,7 @@ import { useCategories } from '../context/CategoriesContext';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { useNavigate } from '@tanstack/react-router';
 import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
 
 const AddBill = () => {
   const { categories, setCategories } = useCategories();
@@ -105,7 +106,7 @@ const AddBill = () => {
       </select>
       <div>
         <label htmlFor='amount'>Bill amount:</label>
-        <input
+        <Input
           className='bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3'
           name='amount'
           value={amount}
