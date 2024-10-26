@@ -1,11 +1,10 @@
 import { ChangeEvent, useId, useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import { useCategories } from '../context/CategoriesContext';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { useNavigate } from '@tanstack/react-router';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { DatePicker } from '../components/ui/date-picker';
 
 const AddBill = () => {
   const { categories, setCategories } = useCategories();
@@ -16,8 +15,8 @@ const AddBill = () => {
   const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState(categories[0]);
   const id = useId();
-  const allocatedBudget = category.budget;
-  const remainingBudget = category.budget - category.expenses;
+  const allocatedBudget = category ? category.budget : 0;
+  const remainingBudget = category ? category.budget - category.expenses : 0;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChangeCategory = (e: any) => {
@@ -30,8 +29,8 @@ const AddBill = () => {
     setAmount(newAmount);
   };
 
-  const handleChangeDate = (date: Date | null) => {
-    if (date) setDate(date);
+  const handleChangeDate = (newDate: Date | undefined) => {
+    if (newDate) setDate(newDate);
   };
 
   const updateMonthlyBudgetBill = (
@@ -125,12 +124,7 @@ const AddBill = () => {
       </div>
       <div className='flex flex-col'>
         <label htmlFor='date'>Bill date:</label>
-        <DatePicker
-          className='bg-zinc-800 w-full rounded p-2'
-          name='date'
-          selected={date}
-          onChange={handleChangeDate}
-        />
+        <DatePicker date={date} setDate={handleChangeDate} />
       </div>
       <Button className='w-full'>Add</Button>
     </form>
