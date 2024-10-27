@@ -5,9 +5,6 @@ import { Button } from './ui/button';
 export const Nav = () => {
   return (
     <nav className=' border-b-2 mb-4 flex justify-end'>
-      <Link to='/'>
-        <Button variant={'link'}>Month setup</Button>
-      </Link>
       <Link to='/bills'>
         <Button variant={'link'}>Bills</Button>
       </Link>

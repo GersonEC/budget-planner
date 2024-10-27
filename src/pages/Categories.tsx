@@ -3,6 +3,7 @@ import AddCategory from '../components/AddCategory';
 import { CategoryList } from '../components/CategoryList';
 import { useCategories } from '../context/CategoriesContext';
 import { Button } from '../components/ui/button';
+import { Nav } from '../components/Nav';
 
 export const Categories = () => {
   const { categories, setCategories } = useCategories();
@@ -21,6 +22,7 @@ export const Categories = () => {
 
   return (
     <div>
+      <Nav />
       <div className='flex gap-4 justify-between'>
         <h1 className='text-xl'>Categories</h1>
         <Button variant={'link'} onClick={() => setShowAddCategory(true)}>

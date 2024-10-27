@@ -2,6 +2,7 @@ import React from 'react';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { MonthlyBills } from '../components/MonthlyBills';
 import { useCategories } from '../context/CategoriesContext';
+import { Nav } from '../components/Nav';
 
 export const Bills = () => {
   const { categories } = useCategories();
@@ -22,6 +23,7 @@ export const Bills = () => {
 
   return (
     <React.Fragment>
+      <Nav />
       <MonthlyBills
         bills={monthlyBudget.bills}
         budget={monthlyBudget.budget}

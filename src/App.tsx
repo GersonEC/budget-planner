@@ -4,7 +4,6 @@ import { CategoriesProvider } from './context/CategoriesContext';
 import './App.css';
 import { ThemeProvider } from './context/ThemeContext';
 import { useNavigate } from '@tanstack/react-router';
-import { Nav } from './components/Nav';
 
 interface AppProps {
   children: React.ReactNode;
@@ -27,10 +26,7 @@ const App: React.FC<AppProps> = ({ children }) => {
     <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
       <MonthlyBudgetProvider>
         <CategoriesProvider>
-          <div className='p-4'>
-            <Nav />
-            {children}
-          </div>
+          <div className='p-4'>{children}</div>
         </CategoriesProvider>
       </MonthlyBudgetProvider>
     </ThemeProvider>
