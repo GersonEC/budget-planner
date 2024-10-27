@@ -5,6 +5,14 @@ import { useNavigate } from '@tanstack/react-router';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { DatePicker } from '../components/ui/date-picker';
+import { Textarea } from '../components/ui/textarea';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../components/ui/select';
 
 const AddBill = () => {
   const { categories, setCategories } = useCategories();
@@ -18,11 +26,6 @@ const AddBill = () => {
   const allocatedBudget = category ? category.budget : 0;
   const remainingBudget = category ? category.budget - category.expenses : 0;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChangeCategory = (e: any) => {
-    const newCategory = categories.find((c) => c.name === e.target.value);
-    if (newCategory) setCategory(newCategory);
-  };
   const handleChangeAmount = (event: ChangeEvent) => {
     let newAmount = parseInt((event.target as HTMLInputElement).value, 10);
     if (isNaN(newAmount)) newAmount = 0;
@@ -73,14 +76,26 @@ const AddBill = () => {
     });
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleSubmit = (event: any) => {
     event.preventDefault();
-    if (!amount) {
-      alert('Please enter an amount');
-      return;
+    const newCategory = categories.find(
+      (c) => c.name === event.currentTarget[1].value
+    );
+    if (newCategory) {
+      if (!amount) {
+        alert('Please enter an amount');
+        return;
+      }
+      setCategory(newCategory);
+      addBill(
+        id,
+        amount,
+        newCategory.name || categories[0].name,
+        date,
+        description
+      );
     }
-
-    addBill(id, amount, category.name || categories[0].name, date, description);
   };
 
   return (
@@ -88,34 +103,29 @@ const AddBill = () => {
       <p>Allocated budget: {allocatedBudget}</p>
       <p>Remaining budget: {remainingBudget}</p>
       <label htmlFor='category'>Bill category:</label>
-      <select
-        className='bg-zinc-800 p-2 rounded'
-        name='category'
-        onChange={handleChangeCategory}
-      >
-        {categories
-          ? categories.map((value, index) => {
-              return (
-                <option key={index} value={value.name}>
-                  {value.name}
-                </option>
-              );
-            })
-          : ''}
-      </select>
+      <Select name='category'>
+        <SelectTrigger className='w-[180px]'>
+          <SelectValue placeholder='Choose a category...' />
+        </SelectTrigger>
+        <SelectContent>
+          {categories
+            ? categories.map((value, index) => {
+                return (
+                  <SelectItem key={index} value={value.name}>
+                    {value.name}
+                  </SelectItem>
+                );
+              })
+            : ''}
+        </SelectContent>
+      </Select>
       <div>
         <label htmlFor='amount'>Bill amount:</label>
-        <Input
-          className='bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3'
-          name='amount'
-          value={amount}
-          onChange={handleChangeAmount}
-        />
+        <Input name='amount' value={amount} onChange={handleChangeAmount} />
       </div>
       <div className='flex flex-col'>
         <label htmlFor='description'>Bill description:</label>
-        <textarea
-          className='bg-zinc-800 rounded py-2 px-3'
+        <Textarea
           name='description'
           rows={2}
           value={description}
@@ -126,7 +136,9 @@ const AddBill = () => {
         <label htmlFor='date'>Bill date:</label>
         <DatePicker date={date} setDate={handleChangeDate} />
       </div>
-      <Button className='w-full'>Add</Button>
+      <Button type='submit' className='w-full'>
+        Add
+      </Button>
     </form>
   );
 };
