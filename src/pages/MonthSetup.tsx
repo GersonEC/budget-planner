@@ -4,14 +4,24 @@ import { BudgetSetup } from '../components/BudgetSetup';
 import { CategoriesSetup } from '../components/CategoriesSetup';
 import { Button } from '../components/ui/button';
 import { useNavigate } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlowForm } from '../components/FlowForm';
+import { CashFlow } from '../components/CashFlow';
 
 export const MonthSetup = () => {
   const [budget, setBudget] = useState<number>(0);
   const { categories, setCategories } = useCategories();
   const { setMonthlyBudget } = useMonthlyBudget();
+  const [isThereCashflow, setIsThereCashflow] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const inflowsInSessionStorage = sessionStorage.getItem('inflow');
+    const outflowsInSessionStorage = sessionStorage.getItem('outflow');
+    if (inflowsInSessionStorage && outflowsInSessionStorage) {
+      setIsThereCashflow(true);
+    }
+  }, []);
 
   const handleSetBudget = (newBudget: number) => {
     setBudget(newBudget);
@@ -48,11 +58,16 @@ export const MonthSetup = () => {
     <div className='flex flex-col gap-6'>
       <h1 className='text-xl'>Cashflow Setting</h1>
 
-      {/** TODO: SHOW ADD INFLOW BOOLEAN VALUE */}
-      <h2>Inflow</h2>
-      <FlowForm type='inflow' />
-      <h2>Outflow</h2>
-      <FlowForm type='outflow' />
+      {isThereCashflow ? (
+        <CashFlow />
+      ) : (
+        <div>
+          <h2>Inflow</h2>
+          <FlowForm type='inflow' />
+          <h2>Outflow</h2>
+          <FlowForm type='outflow' />
+        </div>
+      )}
 
       <BudgetSetup budget={budget} setBudget={handleSetBudget} />
       <CategoriesSetup
