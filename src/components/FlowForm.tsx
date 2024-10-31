@@ -20,7 +20,7 @@ const initialFlowListValue: FlowList = {
 
 export const FlowForm: React.FC<Props> = ({ type }) => {
   const [name, setName] = useState<string>('');
-  const [quantity, setQuantity] = useState<number>(0);
+  const [quantity, setQuantity] = useState<number | ''>('');
   const [flowList, setFlowList] = useState<FlowList>(initialFlowListValue);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,7 +29,7 @@ export const FlowForm: React.FC<Props> = ({ type }) => {
     const inflow: Flow = {
       type,
       name,
-      quantity,
+      quantity: Number(quantity),
     };
     const newFlowList: FlowList = {
       flows: [...flowList.flows, inflow],
@@ -58,6 +58,7 @@ export const FlowForm: React.FC<Props> = ({ type }) => {
           name={`${type}-name`}
           placeholder={`${type} name...`}
           value={name}
+          min={0}
           onChange={(e) => setName(e.target.value)}
           required
         />
@@ -65,6 +66,7 @@ export const FlowForm: React.FC<Props> = ({ type }) => {
           type='number'
           name={`${type}-quantity`}
           value={quantity}
+          min={0}
           onChange={(e) => setQuantity(Number(e.target.value))}
           required
         />

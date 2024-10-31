@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from './ui/input';
 
 interface Props {
-  budget: number;
+  budget: number | string;
   setBudget: (budget: number) => void;
 }
 
@@ -15,6 +15,7 @@ export const BudgetSetup: React.FC<Props> = ({ budget, setBudget }) => {
         name='monthlyBudget'
         type='number'
         value={budget}
+        min={0}
         required
         onChange={(e) => setBudget(Number(e.target.value))}
       />

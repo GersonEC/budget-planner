@@ -15,7 +15,7 @@ type MonthlyBudget = {
 
 type CategoryForm = {
   name: string;
-  budget: number;
+  budget: number | string;
   expenses: number;
 };
 

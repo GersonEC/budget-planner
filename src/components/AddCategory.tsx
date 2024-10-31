@@ -4,7 +4,7 @@ import { Input } from './ui/input';
 
 const initialValue: CategoryForm = {
   name: '',
-  budget: 0,
+  budget: '',
   expenses: 0,
 };
 type Props = {

@@ -9,7 +9,7 @@ import { FlowForm } from '../components/FlowForm';
 import { CashFlow } from '../components/CashFlow';
 
 export const MonthSetup = () => {
-  const [budget, setBudget] = useState<number>(0);
+  const [budget, setBudget] = useState<number | string>('');
   const { categories, setCategories } = useCategories();
   const { setMonthlyBudget } = useMonthlyBudget();
   const [isThereCashflow, setIsThereCashflow] = useState<boolean>(false);
@@ -44,7 +44,7 @@ export const MonthSetup = () => {
     }
     const updatedMonthlyBudget = {
       month: new Date().getMonth(),
-      budget,
+      budget: Number(budget),
       expenses: 0,
       bills: [],
     };

@@ -18,13 +18,15 @@ const AddBill = () => {
   const { categories, setCategories } = useCategories();
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
   const navigate = useNavigate();
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<number | string>('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState(categories[0]);
   const id = useId();
   const allocatedBudget = category ? category.budget : 0;
-  const remainingBudget = category ? category.budget - category.expenses : 0;
+  const remainingBudget = category
+    ? Number(category.budget) - category.expenses
+    : 0;
 
   const handleChangeAmount = (event: ChangeEvent) => {
     let newAmount = parseInt((event.target as HTMLInputElement).value, 10);
@@ -90,7 +92,7 @@ const AddBill = () => {
       setCategory(newCategory);
       addBill(
         id,
-        amount,
+        Number(amount),
         newCategory.name || categories[0].name,
         date,
         description
