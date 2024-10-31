@@ -1,4 +1,4 @@
-import { FlowList } from './FlowList';
+import { FlowList } from '../components/FlowList';
 
 export const CashFlow = () => {
   return (

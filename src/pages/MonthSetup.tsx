@@ -6,7 +6,7 @@ import { Button } from '../components/ui/button';
 import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { FlowForm } from '../components/FlowForm';
-import { CashFlow } from '../components/CashFlow';
+import { CashFlow } from './Cashflow';
 
 export const MonthSetup = () => {
   const [budget, setBudget] = useState<number | string>('');

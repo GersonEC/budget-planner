@@ -14,6 +14,9 @@ export const Nav = () => {
       <Link to='/cashflow'>
         <Button variant={'link'}>Cashflow</Button>
       </Link>
+      <Link to='/subscriptions'>
+        <Button variant={'link'}>Subscriptions</Button>
+      </Link>
       <ModeToggle />
     </nav>
   );

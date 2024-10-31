@@ -29,3 +29,19 @@ type FlowList = {
   flows: Flow[];
   totalFlow: number;
 };
+
+type Subscription = {
+  name: string;
+  status: 'active' | 'canceled';
+  category: string;
+  renewalDate: Date;
+  monthlyCost: number;
+  yearlyCost: number;
+  billing: 'monthly' | 'yearly';
+};
+
+type SubscriptionList = {
+  subscriptions: Subscription[];
+  monthlyTotal: number;
+  yearlyTotal: number;
+};

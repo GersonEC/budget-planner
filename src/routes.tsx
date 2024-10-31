@@ -6,7 +6,8 @@ import { MonthSetup } from './pages/MonthSetup';
 import { Bills } from './pages/Bills';
 import AddBill from './pages/AddBill';
 import { Categories } from './pages/Categories';
-import { CashFlow } from './components/CashFlow';
+import { CashFlow } from './pages/Cashflow';
+import { Subscriptions } from './pages/Subscriptions';
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -49,10 +50,17 @@ const cashflowRoute = createRoute({
   component: () => <CashFlow />,
 });
 
+const subscriptionsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/subscriptions',
+  component: () => <Subscriptions />,
+});
+
 export const routeTree = rootRoute.addChildren([
   addBillRoute,
   billsRoute,
   categoriesRoute,
   cashflowRoute,
+  subscriptionsRoute,
   indexRoute,
 ]);
