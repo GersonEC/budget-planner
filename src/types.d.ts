@@ -24,3 +24,8 @@ type Flow = {
   name: string;
   quantity: number;
 };
+
+type FlowList = {
+  flows: Flow[];
+  totalFlow: number;
+};

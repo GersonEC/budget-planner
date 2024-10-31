@@ -6,10 +6,22 @@ interface Props {
   type: 'inflow' | 'outflow';
 }
 
+const calculateTotalFlow = (flows: Flow[]) => {
+  return flows.reduce(
+    (prevValue, currValue) => prevValue + currValue.quantity,
+    0
+  );
+};
+
+const initialFlowListValue: FlowList = {
+  flows: [],
+  totalFlow: 0,
+};
+
 export const FlowForm: React.FC<Props> = ({ type }) => {
   const [name, setName] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(0);
-  const [flows, setFlows] = useState<Flow[]>([]);
+  const [flowList, setFlowList] = useState<FlowList>(initialFlowListValue);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (e: any) => {
@@ -19,16 +31,23 @@ export const FlowForm: React.FC<Props> = ({ type }) => {
       name,
       quantity,
     };
-    const newFlows = [...flows, inflow];
-    setFlows(newFlows);
+    const newFlowList: FlowList = {
+      flows: [...flowList.flows, inflow],
+      totalFlow: calculateTotalFlow([...flowList.flows, inflow]),
+    };
+    setFlowList(newFlowList);
     setName('');
     setQuantity(0);
-    sessionStorage.setItem(type, JSON.stringify(newFlows));
+    sessionStorage.setItem(type, JSON.stringify(newFlowList));
   };
 
   const removeFlow = (name: string) => {
-    const newFlows = flows.filter((f) => f.name !== name);
-    setFlows(newFlows);
+    const newFlows = flowList.flows.filter((f) => f.name !== name);
+    const newFlowList: FlowList = {
+      flows: newFlows,
+      totalFlow: calculateTotalFlow(newFlows),
+    };
+    setFlowList(newFlowList);
     sessionStorage.setItem(type, JSON.stringify(newFlows));
   };
 
@@ -52,7 +71,7 @@ export const FlowForm: React.FC<Props> = ({ type }) => {
         <Button variant={'outline'}>Add</Button>
       </form>
       <ul>
-        {flows.map((flow) => (
+        {flowList.flows.map((flow) => (
           <li key={flow.name}>
             {flow.name}: {flow.quantity}
             <Button
