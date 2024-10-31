@@ -56,12 +56,11 @@ export const MonthSetup = () => {
 
   return (
     <div className='flex flex-col gap-6'>
-      <h1 className='text-xl'>Cashflow Setting</h1>
-
       {isThereCashflow ? (
         <CashFlow />
       ) : (
         <div>
+          <h1 className='text-xl'>Cashflow Setting</h1>
           <h2>Inflow</h2>
           <FlowForm type='inflow' />
           <h2>Outflow</h2>
