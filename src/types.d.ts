@@ -18,3 +18,9 @@ type CategoryForm = {
   budget: number;
   expenses: number;
 };
+
+type Flow = {
+  type: 'inflow' | 'outflow';
+  name: string;
+  quantity: number;
+};

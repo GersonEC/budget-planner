@@ -5,6 +5,7 @@ import { CategoriesSetup } from '../components/CategoriesSetup';
 import { Button } from '../components/ui/button';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
+import { FlowForm } from '../components/FlowForm';
 
 export const MonthSetup = () => {
   const [budget, setBudget] = useState<number>(0);
@@ -45,6 +46,14 @@ export const MonthSetup = () => {
 
   return (
     <div className='flex flex-col gap-6'>
+      <h1 className='text-xl'>Cashflow Setting</h1>
+
+      {/** TODO: SHOW ADD INFLOW BOOLEAN VALUE */}
+      <h2>Inflow</h2>
+      <FlowForm type='inflow' />
+      <h2>Outflow</h2>
+      <FlowForm type='outflow' />
+
       <BudgetSetup budget={budget} setBudget={handleSetBudget} />
       <CategoriesSetup
         categories={categories}
