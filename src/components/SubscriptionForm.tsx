@@ -48,41 +48,39 @@ export const SubscriptionForm: React.FC<Props> = ({ addSubscription }) => {
   });
 
   return (
-    <div>
-      <h1>Add new Subscription</h1>
-      <form
-        className=' mt-4 flex flex-col gap-6'
-        onSubmit={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          form.handleSubmit();
-        }}
-      >
-        <div>
-          <form.Field
-            name='name'
-            validators={{
-              onChange: ({ value }) =>
-                !value ? 'A subscription name is required' : undefined,
-            }}
-            children={(field) => {
-              return (
-                <>
-                  <label htmlFor={field.name}>Name:</label>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
-                  <FieldInfo field={field} />
-                </>
-              );
-            }}
-          />
-        </div>
-        {/*<div>
+    <form
+      className=' mt-4 flex flex-col gap-6'
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+    >
+      <div>
+        <form.Field
+          name='name'
+          validators={{
+            onChange: ({ value }) =>
+              !value ? 'A subscription name is required' : undefined,
+          }}
+          children={(field) => {
+            return (
+              <>
+                <label htmlFor={field.name}>Name:</label>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                <FieldInfo field={field} />
+              </>
+            );
+          }}
+        />
+      </div>
+      {/*<div>
           <form.Field
             name='status'
             children={(field) => (
@@ -107,36 +105,36 @@ export const SubscriptionForm: React.FC<Props> = ({ addSubscription }) => {
             )}
           />
         </div>*/}
-        <div>
-          <form.Field
-            name='category'
-            validators={{
-              onChangeAsyncDebounceMs: 500,
-              onChangeAsync: async ({ value }) => {
-                await new Promise((resolve) => setTimeout(resolve, 1000));
-                return (
-                  value.includes('error') && 'No "error" allowed in category'
-                );
-              },
-            }}
-            children={(field) => {
+      <div>
+        <form.Field
+          name='category'
+          validators={{
+            onChangeAsyncDebounceMs: 500,
+            onChangeAsync: async ({ value }) => {
+              await new Promise((resolve) => setTimeout(resolve, 1000));
               return (
-                <>
-                  <label htmlFor={field.name}>Category:</label>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                  />
-                  <FieldInfo field={field} />
-                </>
+                value.includes('error') && 'No "error" allowed in category'
               );
-            }}
-          />
-        </div>
-        {/*<div>
+            },
+          }}
+          children={(field) => {
+            return (
+              <>
+                <label htmlFor={field.name}>Category:</label>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                />
+                <FieldInfo field={field} />
+              </>
+            );
+          }}
+        />
+      </div>
+      {/*<div>
           <form.Field
             name='renewalDate'
             children={(field) => {
@@ -150,57 +148,57 @@ export const SubscriptionForm: React.FC<Props> = ({ addSubscription }) => {
             }}
           />
         </div>*/}
-        <div>
-          <form.Field
-            name='monthlyCost'
-            validators={{
-              onChange: ({ value }) =>
-                !value ? 'A monthly cost is required' : undefined,
-            }}
-            children={(field) => {
-              return (
-                <>
-                  <label htmlFor={field.name}>Monthly Cost:</label>
-                  <Input
-                    type='number'
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(Number(e.target.value))}
-                  />
-                  <FieldInfo field={field} />
-                </>
-              );
-            }}
-          />
-        </div>
-        <div>
-          <form.Field
-            name='yearlyCost'
-            validators={{
-              onChange: ({ value }) =>
-                !value ? 'A yearly cost is required' : undefined,
-            }}
-            children={(field) => {
-              return (
-                <>
-                  <label htmlFor={field.name}>Yearly Cost:</label>
-                  <Input
-                    type='number'
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(Number(e.target.value))}
-                  />
-                  <FieldInfo field={field} />
-                </>
-              );
-            }}
-          />
-        </div>
-        {/*<div>
+      <div>
+        <form.Field
+          name='monthlyCost'
+          validators={{
+            onChange: ({ value }) =>
+              !value ? 'A monthly cost is required' : undefined,
+          }}
+          children={(field) => {
+            return (
+              <>
+                <label htmlFor={field.name}>Monthly Cost:</label>
+                <Input
+                  type='number'
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(Number(e.target.value))}
+                />
+                <FieldInfo field={field} />
+              </>
+            );
+          }}
+        />
+      </div>
+      <div>
+        <form.Field
+          name='yearlyCost'
+          validators={{
+            onChange: ({ value }) =>
+              !value ? 'A yearly cost is required' : undefined,
+          }}
+          children={(field) => {
+            return (
+              <>
+                <label htmlFor={field.name}>Yearly Cost:</label>
+                <Input
+                  type='number'
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(Number(e.target.value))}
+                />
+                <FieldInfo field={field} />
+              </>
+            );
+          }}
+        />
+      </div>
+      {/*<div>
           <form.Field
             name='billing'
             children={(field) => (
@@ -224,15 +222,14 @@ export const SubscriptionForm: React.FC<Props> = ({ addSubscription }) => {
             )}
           />
         </div>*/}
-        <form.Subscribe
-          selector={(state) => [state.canSubmit, state.isSubmitting]}
-          children={([canSubmit, isSubmitting]) => (
-            <Button type='submit' disabled={!canSubmit}>
-              {isSubmitting ? '...' : 'Submit'}
-            </Button>
-          )}
-        />
-      </form>
-    </div>
+      <form.Subscribe
+        selector={(state) => [state.canSubmit, state.isSubmitting]}
+        children={([canSubmit, isSubmitting]) => (
+          <Button type='submit' disabled={!canSubmit}>
+            {isSubmitting ? '...' : 'Submit'}
+          </Button>
+        )}
+      />
+    </form>
   );
 };
