@@ -11,6 +11,7 @@ import {
   DialogTrigger,
 } from '../components/ui/dialog';
 import { DialogTitle } from '@radix-ui/react-dialog';
+import { Heading } from '../components/Heading';
 
 export const Categories = () => {
   const { categories, setCategories } = useCategories();
@@ -31,11 +32,14 @@ export const Categories = () => {
     <div>
       <Nav />
       <div className='flex gap-4 justify-between'>
-        <h1 className='text-xl'>Categories</h1>
+        <Heading variant='title'>Categories</Heading>
       </div>
 
       <Dialog open={isOpen}>
-        <DialogTrigger onClick={() => setIsOpen(true)}>
+        <DialogTrigger
+          className='hover:underline'
+          onClick={() => setIsOpen(true)}
+        >
           Add new category
         </DialogTrigger>
         <DialogContent>

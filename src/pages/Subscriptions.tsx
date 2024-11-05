@@ -9,6 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../components/ui/dialog';
+import { SubscriptionList } from '../components/SubscriptionList';
+import { Heading } from '../components/Heading';
 
 export const Subscriptions = () => {
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
@@ -22,6 +24,12 @@ export const Subscriptions = () => {
     }
   }, []);
 
+  const handleRemove = (name: string) => {
+    const newSubscriptions = subscriptions.filter((s) => s.name !== name);
+    setSubscriptions(newSubscriptions);
+    sessionStorage.setItem('subscriptions', JSON.stringify(newSubscriptions));
+  };
+
   const addSubscription = (newSubscription: Subscription) => {
     const newSubscriptions = [...subscriptions, newSubscription];
     setSubscriptions(newSubscriptions);
@@ -32,9 +40,12 @@ export const Subscriptions = () => {
   return (
     <div>
       <Nav />
-      <h1>Subscription Page</h1>
+      <Heading variant='title'>Subscriptions</Heading>
       <Dialog open={isOpen}>
-        <DialogTrigger onClick={() => setIsOpen(true)}>
+        <DialogTrigger
+          className='hover:underline'
+          onClick={() => setIsOpen(true)}
+        >
           Add new subscription
         </DialogTrigger>
         <DialogContent>
@@ -48,11 +59,10 @@ export const Subscriptions = () => {
         </DialogContent>
       </Dialog>
 
-      <ul>
-        {subscriptions.map((sub) => (
-          <li key={sub.name}>{sub.name}</li>
-        ))}
-      </ul>
+      <SubscriptionList
+        subscriptions={subscriptions}
+        removeSubscription={handleRemove}
+      />
     </div>
   );
 };

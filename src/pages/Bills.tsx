@@ -3,6 +3,7 @@ import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { MonthlyBills } from '../components/MonthlyBills';
 import { useCategories } from '../context/CategoriesContext';
 import { Nav } from '../components/Nav';
+import { Heading } from '../components/Heading';
 
 export const Bills = () => {
   const { categories } = useCategories();
@@ -24,6 +25,7 @@ export const Bills = () => {
   return (
     <React.Fragment>
       <Nav />
+      <Heading variant='title'>Bills</Heading>
       <MonthlyBills
         bills={monthlyBudget.bills}
         budget={monthlyBudget.budget}

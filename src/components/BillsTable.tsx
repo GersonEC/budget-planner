@@ -1,3 +1,4 @@
+import { currencyFormat } from '../lib/utils';
 import { Button } from './ui/button';
 
 type Props = {
@@ -22,7 +23,7 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
           return (
             <tr className='p4' key={bill.id}>
               <td>{bill.category}</td>
-              <td>${bill.amount}</td>
+              <td>{currencyFormat(bill.amount)}</td>
               <td>{new Date(bill.date).toLocaleDateString()}</td>
               <td>{bill.description}</td>
               <td>

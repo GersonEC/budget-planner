@@ -3,6 +3,7 @@ import BillsTable from './BillsTable';
 import { CategoryNavBar } from './CategoryNavBar';
 import { Button } from './ui/button';
 import { Link } from '@tanstack/react-router';
+import { currencyFormat } from '../lib/utils';
 
 interface Props {
   bills: Bill[];
@@ -39,9 +40,11 @@ export const MonthlyBills: React.FC<Props> = ({
 
   return (
     <React.Fragment>
-      <p>Monthly Budget: {budget}</p>
-      <p className='text-red-400'>Expenses: {expenses}</p>
-      <p className='text-green-400'>Remaining: {budget - expenses}</p>
+      <p className='text-blue-400'>Monthly Budget: {currencyFormat(budget)}</p>
+      <p className='text-red-400'>Expenses: {currencyFormat(expenses)}</p>
+      <p className='text-green-400'>
+        Remaining: {currencyFormat(budget - expenses)}
+      </p>
       <Button variant='link'>
         <Link to='/add-bill'>Add new bill</Link>
       </Button>

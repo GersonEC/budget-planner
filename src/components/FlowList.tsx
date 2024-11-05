@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { currencyFormat } from '../lib/utils';
 
 interface Props {
   type: 'inflow' | 'outflow';
@@ -21,10 +22,10 @@ export const FlowList: React.FC<Props> = ({ type }) => {
     <ul>
       {flowList.flows.map((flow) => (
         <li key={flow.name}>
-          {flow.name} - {flow.quantity}
+          {flow.name} - {currencyFormat(flow.quantity)}
         </li>
       ))}
-      Total {type} = {flowList.totalFlow}
+      Total {type} = {currencyFormat(flowList.totalFlow)}
     </ul>
   );
 };

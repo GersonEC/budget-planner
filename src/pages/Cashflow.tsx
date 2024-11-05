@@ -1,14 +1,15 @@
 import { FlowList } from '../components/FlowList';
 import { Nav } from '../components/Nav';
+import { Heading } from '../components/Heading';
 
 export const CashFlow = () => {
   return (
     <div>
       <Nav />
-      <h1>Cashflow</h1>
-      <h2>Inflow</h2>
+      <Heading variant='title'>Cashflow</Heading>
+      <Heading variant='subtitle'>Inflow</Heading>
       <FlowList type='inflow' />
-      <h2>OutFlow</h2>
+      <Heading variant='subtitle'>Outflow</Heading>
       <FlowList type='outflow' />
     </div>
   );
