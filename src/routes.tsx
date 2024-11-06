@@ -8,6 +8,7 @@ import AddBill from './pages/AddBill';
 import { Categories } from './pages/Categories';
 import { CashFlow } from './pages/Cashflow';
 import { Subscriptions } from './pages/Subscriptions';
+import { Installments } from './pages/Installments';
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -56,11 +57,18 @@ const subscriptionsRoute = createRoute({
   component: () => <Subscriptions />,
 });
 
+const installmentsRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/installments',
+  component: () => <Installments />,
+});
+
 export const routeTree = rootRoute.addChildren([
   addBillRoute,
   billsRoute,
   categoriesRoute,
   cashflowRoute,
   subscriptionsRoute,
+  installmentsRoute,
   indexRoute,
 ]);

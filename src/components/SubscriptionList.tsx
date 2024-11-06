@@ -1,3 +1,4 @@
+import { currencyFormat } from '../lib/utils';
 import { Button } from './ui/button';
 
 interface Props {
@@ -9,10 +10,14 @@ export const SubscriptionList: React.FC<Props> = ({
   removeSubscription,
 }) => {
   return (
-    <ul className='flex items-center gap-6 justify-center'>
+    <ul className='flex flex-col'>
       {subscriptions.map((subscription) => (
         <li key={subscription.name}>
-          {subscription.name}{' '}
+          <span className=' text-indigo-300'>
+            {subscription.name}
+            {': '}
+          </span>
+          {currencyFormat(subscription.monthlyCost)}
           <Button
             name='remove'
             variant='ghost'

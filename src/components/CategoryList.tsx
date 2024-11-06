@@ -9,7 +9,7 @@ export const CategoryList: React.FC<Props> = ({
   removeCategory,
 }) => {
   return (
-    <ul className='flex items-center gap-6 justify-center'>
+    <ul className='flex flex-col'>
       {categories.map((category) => (
         <li key={category.name}>
           {category.name}{' '}

@@ -45,3 +45,13 @@ type SubscriptionList = {
   monthlyTotal: number;
   yearlyTotal: number;
 };
+
+type Installment = {
+  name: string;
+  monthlyCost: number;
+};
+
+type InstallmentList = {
+  installments: Installment[];
+  monthlyCost: number;
+};

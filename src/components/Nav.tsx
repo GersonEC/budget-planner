@@ -17,6 +17,9 @@ export const Nav = () => {
       <Link to='/subscriptions'>
         <Button variant={'link'}>Subscriptions</Button>
       </Link>
+      <Link to='/installments'>
+        <Button variant={'link'}>Installments</Button>
+      </Link>
       <ModeToggle />
     </nav>
   );
