@@ -53,5 +53,15 @@ type Installment = {
 
 type InstallmentList = {
   installments: Installment[];
-  monthlyCost: number;
+  monthlyTotal: number;
+};
+
+type Loan = {
+  borrower: string;
+  dividend: number;
+};
+
+type LoanList = {
+  loans: Loan[];
+  monthlyTotal: number;
 };
