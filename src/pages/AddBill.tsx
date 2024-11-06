@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
+import { Heading } from '../components/Heading';
 
 const AddBill = () => {
   const { categories, setCategories } = useCategories();
@@ -32,6 +33,11 @@ const AddBill = () => {
     let newAmount = parseInt((event.target as HTMLInputElement).value, 10);
     if (isNaN(newAmount)) newAmount = 0;
     setAmount(newAmount);
+  };
+
+  const handleChangeCategory = (value: string) => {
+    const updatedCategory = categories.find((c) => c.name === value);
+    if (updatedCategory) setCategory(updatedCategory);
   };
 
   const handleChangeDate = (newDate: Date | undefined) => {
@@ -102,10 +108,14 @@ const AddBill = () => {
 
   return (
     <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-      <p>Allocated budget: {allocatedBudget}</p>
-      <p>Remaining budget: {remainingBudget}</p>
+      <Heading variant='title'>Add new bill</Heading>
+      <p className='text-yellow-400'>Allocated budget: {allocatedBudget}</p>
+      <p className=' text-green-400'>Remaining budget: {remainingBudget}</p>
       <label htmlFor='category'>Bill category:</label>
-      <Select name='category'>
+      <Select
+        name='category'
+        onValueChange={(value) => handleChangeCategory(value)}
+      >
         <SelectTrigger className='w-[180px]'>
           <SelectValue placeholder='Choose a category...' />
         </SelectTrigger>

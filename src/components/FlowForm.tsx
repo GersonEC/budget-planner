@@ -53,7 +53,7 @@ export const FlowForm: React.FC<Props> = ({ type }) => {
 
   return (
     <>
-      <form className='flex' onSubmit={handleSubmit}>
+      <form className='flex gap-2' onSubmit={handleSubmit}>
         <Input
           name={`${type}-name`}
           placeholder={`${type} name...`}

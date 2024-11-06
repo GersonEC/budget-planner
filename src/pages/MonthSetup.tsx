@@ -7,6 +7,7 @@ import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { FlowForm } from '../components/FlowForm';
 import { CashFlow } from './Cashflow';
+import { Heading } from '../components/Heading';
 
 export const MonthSetup = () => {
   const [budget, setBudget] = useState<number | string>('');
@@ -56,19 +57,21 @@ export const MonthSetup = () => {
 
   return (
     <div className='flex flex-col gap-6'>
+      <Heading variant='title'>Month Setup</Heading>
       {isThereCashflow ? (
         <CashFlow />
       ) : (
         <div>
-          <h1 className='text-xl'>Cashflow Setting</h1>
+          <Heading variant='subtitle'>Cashflow Setting</Heading>
           <h2>Inflow</h2>
           <FlowForm type='inflow' />
           <h2>Outflow</h2>
           <FlowForm type='outflow' />
         </div>
       )}
-
+      <Heading variant='subtitle'>Budget Setting</Heading>
       <BudgetSetup budget={budget} setBudget={handleSetBudget} />
+      <Heading variant='subtitle'>Categories Setting</Heading>
       <CategoriesSetup
         categories={categories}
         addCategory={addCategory}

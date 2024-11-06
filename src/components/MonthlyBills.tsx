@@ -40,20 +40,26 @@ export const MonthlyBills: React.FC<Props> = ({
 
   return (
     <React.Fragment>
-      <p className='text-blue-400'>Monthly Budget: {currencyFormat(budget)}</p>
-      <p className='text-red-400'>Expenses: {currencyFormat(expenses)}</p>
-      <p className='text-green-400'>
-        Remaining: {currencyFormat(budget - expenses)}
-      </p>
-      <Button variant='link'>
-        <Link to='/add-bill'>Add new bill</Link>
-      </Button>
-      <CategoryNavBar
-        categories={categories}
-        activeCategory={activeCategory}
-        setNewActiveCategory={setNewActiveCategory}
-      />
-      <BillsTable bills={activeBills()} removeBill={removeBill} />
+      <div className='flex justify-between'>
+        <p className='text-blue-400'>
+          Monthly Budget: {currencyFormat(budget)}
+        </p>
+        <p className='text-red-400'>Expenses: {currencyFormat(expenses)}</p>
+        <p className='text-green-400'>
+          Remaining: {currencyFormat(budget - expenses)}
+        </p>
+      </div>
+      <div className='flex flex-col'>
+        <Button variant='link'>
+          <Link to='/add-bill'>Add new bill</Link>
+        </Button>
+        <CategoryNavBar
+          categories={categories}
+          activeCategory={activeCategory}
+          setNewActiveCategory={setNewActiveCategory}
+        />
+        <BillsTable bills={activeBills()} removeBill={removeBill} />
+      </div>
     </React.Fragment>
   );
 };
