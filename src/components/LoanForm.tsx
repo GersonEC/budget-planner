@@ -19,21 +19,23 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 }
 
 interface Props {
-  addInstallment: (installment: Installment) => void;
+  addLoan: (loan: Loan) => void;
 }
 
-export const InstallmentForm: React.FC<Props> = ({ addInstallment }) => {
+export const LoanForm: React.FC<Props> = ({ addLoan }) => {
   const form = useForm({
     defaultValues: {
-      name: '',
-      monthlyCost: 0,
+      borrower: '',
+      quantity: 0,
+      dividend: 0,
     },
     onSubmit: async ({ value }) => {
-      const newInstallment: Installment = {
-        name: value.name,
-        monthlyCost: value.monthlyCost,
+      const newLoan: Loan = {
+        borrower: value.borrower,
+        dividend: value.dividend,
+        quantity: value.quantity,
       };
-      addInstallment(newInstallment);
+      addLoan(newLoan);
     },
   });
 
@@ -48,10 +50,10 @@ export const InstallmentForm: React.FC<Props> = ({ addInstallment }) => {
     >
       <div>
         <form.Field
-          name='name'
+          name='borrower'
           validators={{
             onChange: ({ value }) =>
-              !value ? 'An installment name is required' : undefined,
+              !value ? 'A borrower name is required' : undefined,
           }}
           children={(field) => {
             return (
@@ -72,15 +74,40 @@ export const InstallmentForm: React.FC<Props> = ({ addInstallment }) => {
       </div>
       <div>
         <form.Field
-          name='monthlyCost'
+          name='quantity'
           validators={{
             onChange: ({ value }) =>
-              !value ? 'A monthly cost is required' : undefined,
+              !value ? 'A quantity is required' : undefined,
           }}
           children={(field) => {
             return (
               <>
-                <label htmlFor={field.name}>Monthly Cost:</label>
+                <label htmlFor={field.name}>Quantity:</label>
+                <Input
+                  type='number'
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(Number(e.target.value))}
+                />
+                <FieldInfo field={field} />
+              </>
+            );
+          }}
+        />
+      </div>
+      <div>
+        <form.Field
+          name='dividend'
+          validators={{
+            onChange: ({ value }) =>
+              !value ? 'A dividend is required' : undefined,
+          }}
+          children={(field) => {
+            return (
+              <>
+                <label htmlFor={field.name}>Dividend:</label>
                 <Input
                   type='number'
                   id={field.name}

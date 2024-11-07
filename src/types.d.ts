@@ -58,6 +58,7 @@ type InstallmentList = {
 
 type Loan = {
   borrower: string;
+  quantity: number;
   dividend: number;
 };
 

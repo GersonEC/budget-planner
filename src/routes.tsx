@@ -9,6 +9,7 @@ import { Categories } from './pages/Categories';
 import { CashFlow } from './pages/Cashflow';
 import { Subscriptions } from './pages/Subscriptions';
 import { Installments } from './pages/Installments';
+import { Loans } from './pages/Loans';
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -63,6 +64,12 @@ const installmentsRoute = createRoute({
   component: () => <Installments />,
 });
 
+const loansRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/loans',
+  component: () => <Loans />,
+});
+
 export const routeTree = rootRoute.addChildren([
   addBillRoute,
   billsRoute,
@@ -70,5 +77,6 @@ export const routeTree = rootRoute.addChildren([
   cashflowRoute,
   subscriptionsRoute,
   installmentsRoute,
+  loansRoute,
   indexRoute,
 ]);

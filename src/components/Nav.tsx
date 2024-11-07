@@ -20,6 +20,9 @@ export const Nav = () => {
       <Link to='/installments'>
         <Button variant={'link'}>Installments</Button>
       </Link>
+      <Link to='/loans'>
+        <Button variant={'link'}>Loans</Button>
+      </Link>
       <ModeToggle />
     </nav>
   );
