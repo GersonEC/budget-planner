@@ -26,7 +26,7 @@ function AddCategory(props: Props) {
 
   return (
     <div className='flex flex-col gap-2'>
-      <label htmlFor='name'>Category</label>
+      <label htmlFor='name'>Category name</label>
       <Input
         className='bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3'
         name='name'
@@ -35,7 +35,7 @@ function AddCategory(props: Props) {
         onChange={(e) =>
           setCategoryForm({
             ...categoryForm,
-            name: e.target.value.toUpperCase(),
+            name: e.target.value,
           })
         }
       />

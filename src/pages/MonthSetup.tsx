@@ -14,6 +14,8 @@ export const MonthSetup = () => {
   const { categories, setCategories } = useCategories();
   const { setMonthlyBudget } = useMonthlyBudget();
   const [isThereCashflow, setIsThereCashflow] = useState<boolean>(false);
+  const [isCategoryModalOpen, setIsCategoryModalOpen] =
+    useState<boolean>(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,14 +30,32 @@ export const MonthSetup = () => {
     setBudget(newBudget);
   };
 
-  const addCategory = (category: CategoryForm) => {
+  const handleAddCategory = (category: CategoryForm) => {
     const updatedCategories = [...categories, category];
     setCategories(updatedCategories);
+    setIsCategoryModalOpen(false);
   };
 
-  const removeCategory = (categoryName: string) => {
+  const handleRemoveCategory = (categoryName: string) => {
     const newCategories = categories.filter((c) => c.name !== categoryName);
     setCategories(newCategories);
+  };
+
+  const handleCopyFromOutflow = () => {
+    const outflowsInSessionStorage = sessionStorage.getItem('outflow');
+    if (outflowsInSessionStorage) {
+      const outflows = JSON.parse(outflowsInSessionStorage) as FlowList;
+      const newCategories: CategoryForm[] = [];
+      outflows.flows.forEach((flow) => {
+        const category: CategoryForm = {
+          name: flow.name,
+          budget: flow.quantity,
+          expenses: 0,
+        };
+        newCategories.push(category);
+      });
+      setCategories(newCategories);
+    }
   };
 
   const handleProceed = () => {
@@ -74,8 +94,11 @@ export const MonthSetup = () => {
       <Heading variant='subtitle'>Categories Setting</Heading>
       <CategoriesSetup
         categories={categories}
-        addCategory={addCategory}
-        removeCategory={removeCategory}
+        addCategory={handleAddCategory}
+        copyFromOutflow={handleCopyFromOutflow}
+        removeCategory={handleRemoveCategory}
+        isOpen={isCategoryModalOpen}
+        setIsOpen={(isOpen) => setIsCategoryModalOpen(isOpen)}
       />
       <Button onClick={handleProceed}>Proceed</Button>
     </div>
