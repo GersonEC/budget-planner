@@ -1,3 +1,4 @@
+import { currencyFormat } from '../lib/utils';
 import { Button } from './ui/button';
 
 interface Props {
@@ -12,7 +13,9 @@ export const CategoryList: React.FC<Props> = ({
     <ul className='flex flex-col'>
       {categories.map((category) => (
         <li key={category.name}>
-          {category.name}{' '}
+          {category.name}
+          {': '}
+          {currencyFormat(Number(category.budget))}
           <Button
             name='remove'
             variant='ghost'

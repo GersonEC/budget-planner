@@ -12,10 +12,22 @@ import {
 } from '../components/ui/dialog';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { Heading } from '../components/Heading';
+import { PieChart, PieChartData } from '../components/PieChart';
+
+const createPieChartDataFromCategory = (category: CategoryForm) => {
+  const data: PieChartData = {
+    name: category.name,
+    value: Number(category.budget),
+  };
+  return data;
+};
 
 export const Categories = () => {
   const { categories, setCategories } = useCategories();
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const pieChartData: PieChartData[] = categories.map((cat) =>
+    createPieChartDataFromCategory(cat)
+  );
 
   const removeCategory = (categoryName: string) => {
     const newCategories = categories.filter((c) => c.name !== categoryName);
@@ -34,7 +46,6 @@ export const Categories = () => {
       <div className='flex gap-4 justify-between'>
         <Heading variant='title'>Categories</Heading>
       </div>
-
       <Dialog open={isOpen}>
         <DialogTrigger
           className='hover:underline'
@@ -53,6 +64,7 @@ export const Categories = () => {
         </DialogContent>
       </Dialog>
       <CategoryList categories={categories} removeCategory={removeCategory} />
+      <PieChart data={pieChartData} />
     </div>
   );
 };
