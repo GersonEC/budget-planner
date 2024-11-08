@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { FlowForm } from '../components/FlowForm';
 import { CashFlow } from './Cashflow';
 import { Heading } from '../components/Heading';
+import { BarChart } from '../components/BarChart';
 
 export const MonthSetup = () => {
   const [budget, setBudget] = useState<number | string>('');
@@ -74,6 +75,8 @@ export const MonthSetup = () => {
       to: '/bills',
     });
   };
+
+  return <BarChart />;
 
   return (
     <div className='flex flex-col gap-6'>
