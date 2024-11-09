@@ -2,23 +2,8 @@
 
 import { PieChart as PieRechart, Pie, Cell } from 'recharts';
 
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from './ui/chart';
-
-const chartConfig = {
-  name: {
-    label: 'name',
-    color: '#2563eb',
-  },
-  mobile: {
-    label: 'Mobile',
-    color: '#60a5fa',
-  },
-} satisfies ChartConfig;
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from './ui/chart';
+import { chartConfig } from '../lib/utils';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -33,7 +18,10 @@ interface Props {
 
 export const PieChart: React.FC<Props> = ({ data }) => {
   return (
-    <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[200px] '>
+    <ChartContainer
+      config={chartConfig}
+      className=' border h-full w-full min-h-[200px] '
+    >
       <PieRechart width={600} height={600}>
         <Pie
           dataKey='value'

@@ -13,14 +13,7 @@ import {
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { Heading } from '../components/Heading';
 import { PieChart, PieChartData } from '../components/PieChart';
-
-const createPieChartDataFromCategory = (category: CategoryForm) => {
-  const data: PieChartData = {
-    name: category.name,
-    value: Number(category.budget),
-  };
-  return data;
-};
+import { createPieChartDataFromCategory } from '../lib/utils';
 
 export const Categories = () => {
   const { categories, setCategories } = useCategories();
