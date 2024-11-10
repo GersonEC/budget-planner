@@ -12,15 +12,11 @@ import {
 } from '../components/ui/dialog';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { Heading } from '../components/Heading';
-import { PieChart, PieChartData } from '../components/PieChart';
-import { createPieChartDataFromCategory } from '../lib/utils';
+import { CategoriesPieChart } from '../components/CategoriesPieChart';
 
 export const Categories = () => {
   const { categories, setCategories } = useCategories();
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const pieChartData: PieChartData[] = categories.map((cat) =>
-    createPieChartDataFromCategory(cat)
-  );
 
   const removeCategory = (categoryName: string) => {
     const newCategories = categories.filter((c) => c.name !== categoryName);
@@ -57,7 +53,7 @@ export const Categories = () => {
         </DialogContent>
       </Dialog>
       <CategoryList categories={categories} removeCategory={removeCategory} />
-      <PieChart data={pieChartData} />
+      <CategoriesPieChart />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { PieChartData } from '../components/PieChart';
+import { PieChartData } from '../components/CategoriesPieChart';
 import { ChartConfig } from '../components/ui/chart';
 
 export function cn(...inputs: ClassValue[]) {

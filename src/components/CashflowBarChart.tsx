@@ -26,7 +26,7 @@ const chartData = [
 
 export function CashflowBarChart() {
   return (
-    <ChartContainer config={chartConfig} className=' h-64 w-96 min-h-[200px] '>
+    <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
       <BarChart
         width={500}
         height={300}
