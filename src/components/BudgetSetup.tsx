@@ -8,7 +8,7 @@ interface Props {
 
 export const BudgetSetup: React.FC<Props> = ({ budget, setBudget }) => {
   return (
-    <div className='rounded shadow w-full lg:w-3/4 lg:max-w-lg'>
+    <div className='rounded shadow w-full'>
       <label htmlFor='monthlyBudget'>Set a monthly budget</label>
       <Input
         className=' bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3 mr-4'

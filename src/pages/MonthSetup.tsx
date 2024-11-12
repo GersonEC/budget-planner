@@ -76,7 +76,7 @@ export const MonthSetup = () => {
   };
 
   return (
-    <div className='flex flex-col gap-6'>
+    <div className='flex flex-col gap-6 border p-4 max-w-4xl'>
       <Heading variant='title'>Month Setup</Heading>
       {isThereCashflow ? (
         <CashFlow />

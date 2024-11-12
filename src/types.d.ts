@@ -10,6 +10,7 @@ type MonthlyBudget = {
   month: number;
   budget: number;
   expenses: number;
+  cashflow: Cashflow;
   bills: Bill[];
 };
 
@@ -17,6 +18,12 @@ type CategoryForm = {
   name: string;
   budget: number | string;
   expenses: number;
+};
+
+type Cashflow = {
+  inflow: number;
+  outflow: number;
+  netflow: number;
 };
 
 type Flow = {

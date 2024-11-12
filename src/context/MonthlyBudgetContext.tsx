@@ -4,6 +4,11 @@ const initialMonthlyBudget: MonthlyBudget = {
   month: new Date().getMonth(),
   budget: 0,
   expenses: 0,
+  cashflow: {
+    inflow: 0,
+    outflow: 0,
+    netflow: 0,
+  },
   bills: [],
 };
 
@@ -30,6 +35,23 @@ export function MonthlyBudgetProvider({
       setMonthlyBudget(
         JSON.parse(monthlyBudgetInSessionStorage) as MonthlyBudget
       );
+    }
+  }, []);
+
+  useEffect(() => {
+    const inflowInSessionStorage = sessionStorage.getItem('inflow');
+    const outflowInSessionStorage = sessionStorage.getItem('outflow');
+    if (inflowInSessionStorage && outflowInSessionStorage) {
+      const inflow = JSON.parse(inflowInSessionStorage) as FlowList;
+      const outflow = JSON.parse(outflowInSessionStorage) as FlowList;
+      setBudget({
+        ...budget,
+        cashflow: {
+          inflow: inflow.totalFlow,
+          outflow: outflow.totalFlow,
+          netflow: inflow.totalFlow - outflow.totalFlow,
+        },
+      });
     }
   }, []);
 

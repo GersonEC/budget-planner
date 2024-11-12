@@ -7,6 +7,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function toCapitalize(str: string) {
+  const newString = str.toLowerCase();
+  return newString[0].toUpperCase() + newString.slice(1);
+}
+
 export function currencyFormat(number: number) {
   const EURO = Intl.NumberFormat('it-IT', {
     style: 'currency',

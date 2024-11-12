@@ -17,14 +17,17 @@ import {
   ChartTooltipContent,
 } from './ui/chart';
 import { chartConfig } from '../lib/utils';
-
-const chartData = [
-  { name: 'Inflow', value: 2400 },
-  { name: 'Outflow', value: -2100 },
-  { name: 'Netflow', value: 300 },
-];
+import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 
 export function CashflowBarChart() {
+  const { monthlyBudget } = useMonthlyBudget();
+
+  const chartData = [
+    { name: 'Inflow', value: monthlyBudget.cashflow.inflow },
+    { name: 'Outflow', value: -monthlyBudget.cashflow.outflow },
+    { name: 'Netflow', value: monthlyBudget.cashflow.netflow },
+  ];
+
   return (
     <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
       <BarChart
