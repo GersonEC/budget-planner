@@ -1,5 +1,5 @@
 'use client';
-
+import { useEffect, useState } from 'react';
 import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts';
 
 import {
@@ -10,32 +10,45 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from './ui/chart';
+import { useCategories } from '../context/CategoriesContext';
 
-const chartData = [
-  { category: 'Ale', budget: 300, expenses: 300 },
-  { category: 'Casa', budget: 350, expenses: 0 },
-  { category: 'Spesa', budget: 50, expenses: 20 },
-  { category: 'Formazione', budget: 150, expenses: 0 },
-  { category: 'Experiences', budget: 150, expenses: 0 },
-  { category: 'Benzina', budget: 40, expenses: 20 },
-  { category: 'Capelli', budget: 10, expenses: 0 },
-  { category: 'Celullare', budget: 10, expenses: 0 },
-  { category: 'Gym', budget: 40, expenses: 0 },
-  { category: 'ATM', budget: 30, expenses: 30 },
-];
-
-const chartConfig = {
-  desktop: {
-    label: 'Desktop',
-    color: '#2563eb',
-  },
-  mobile: {
-    label: 'Mobile',
-    color: '#60a5fa',
-  },
-} satisfies ChartConfig;
+type BillsBarChartData = {
+  category: string;
+  budget: number;
+  expenses: number;
+};
 
 export const BillsBarChart = () => {
+  const { categories } = useCategories();
+  const [chartData, setChartData] = useState<BillsBarChartData[]>([]);
+
+  useEffect(() => {
+    const buildChartData = () => {
+      const data: BillsBarChartData[] = [];
+      categories.map((category) => {
+        const item: BillsBarChartData = {
+          category: category.name,
+          budget: Number(category.budget),
+          expenses: category.expenses,
+        };
+        data.push(item);
+      });
+      setChartData(data);
+    };
+    buildChartData();
+  }, [categories]);
+
+  const chartConfig = {
+    desktop: {
+      label: 'Desktop',
+      color: '#2563eb',
+    },
+    mobile: {
+      label: 'Mobile',
+      color: '#60a5fa',
+    },
+  } satisfies ChartConfig;
+
   return (
     <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
       <BarChart accessibilityLayer data={chartData}>
