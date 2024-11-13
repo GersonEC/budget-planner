@@ -8,6 +8,10 @@ import { useEffect, useState } from 'react';
 import { FlowForm } from '../components/FlowForm';
 import { CashFlow } from './Cashflow';
 import { Heading } from '../components/Heading';
+import {
+  getCurrentMonthInString,
+  getFlowQuantityFromStorage,
+} from '../lib/utils';
 
 export const MonthSetup = () => {
   const [budget, setBudget] = useState<number | string>('');
@@ -69,9 +73,11 @@ export const MonthSetup = () => {
       expenses: 0,
       bills: [],
       cashflow: {
-        inflow: 0,
-        outflow: 0,
-        netflow: 0,
+        inflow: getFlowQuantityFromStorage('inflow'),
+        outflow: getFlowQuantityFromStorage('outflow'),
+        netflow:
+          getFlowQuantityFromStorage('inflow') -
+          getFlowQuantityFromStorage('outflow'),
       },
     };
     setMonthlyBudget(updatedMonthlyBudget);
@@ -82,7 +88,9 @@ export const MonthSetup = () => {
 
   return (
     <div className='flex flex-col gap-6 border p-4 max-w-4xl'>
-      <Heading variant='title'>Month Setup</Heading>
+      <Heading variant='title'>
+        Month Setup - {getCurrentMonthInString()}
+      </Heading>
       {isThereCashflow ? (
         <CashFlow />
       ) : (
