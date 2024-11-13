@@ -4,14 +4,6 @@ import {
   calculateSubsYearlyTotal,
 } from '../lib/utils';
 
-const PersonalFinanceContext = React.createContext<
-  | {
-      finances: PersonalFinance;
-      setFinances: (newFinances: PersonalFinance) => void;
-    }
-  | undefined
->(undefined);
-
 const initialFinances: PersonalFinance = {
   installmentList: {
     installments: [],
@@ -28,6 +20,14 @@ const initialFinances: PersonalFinance = {
   },
 };
 
+const PersonalFinanceContext = React.createContext<{
+  finances: PersonalFinance;
+  setFinances: (newFinances: PersonalFinance) => void;
+}>({
+  finances: initialFinances,
+  setFinances: () => {},
+});
+
 export function PersonalFinanceProvider({
   children,
 }: {
@@ -41,17 +41,29 @@ export function PersonalFinanceProvider({
       const finances: PersonalFinance = JSON.parse(
         financesInSessionStorage
       ) as PersonalFinance;
+      const { installmentList, loanList, subscriptionList } = finances;
+
       setData({
-        installmentList: {} as InstallmentList,
-        loanList: {} as LoanList,
+        installmentList: {
+          installments: installmentList.installments,
+          monthlyTotal: installmentList.installments.reduce(
+            (prev, curr) => prev + curr.monthlyCost,
+            0
+          ),
+        },
+        loanList: {
+          loans: loanList.loans,
+          monthlyTotal: loanList.loans.reduce(
+            (prev, curr) => prev + curr.quantity,
+            0
+          ),
+        },
         subscriptionList: {
-          subscriptions: finances.subscriptionList.subscriptions,
+          subscriptions: subscriptionList.subscriptions,
           monthlyTotal: calculateSubsMonthlyTotal(
-            finances.subscriptionList.subscriptions
+            subscriptionList.subscriptions
           ),
-          yearlyTotal: calculateSubsYearlyTotal(
-            finances.subscriptionList.subscriptions
-          ),
+          yearlyTotal: calculateSubsYearlyTotal(subscriptionList.subscriptions),
         },
       });
     }

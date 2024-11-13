@@ -14,32 +14,18 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from './ui/chart';
-
-const data = [
-  {
-    borrower: 'Tia Janet',
-    quantity: 5000,
-    dividend: 0,
-  },
-  {
-    borrower: 'Maria',
-    quantity: 2000,
-    dividend: 100,
-  },
-  {
-    borrower: 'Roberto',
-    quantity: 500,
-    dividend: 50,
-  },
-];
+import { usePersonalFinance } from '../context/PersonalFinanceContext';
 
 export const LoansBarChart = () => {
+  const { finances } = usePersonalFinance();
+  const loans = finances.loanList.loans;
+
   return (
     <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
       <BarChart
         width={500}
         height={300}
-        data={data}
+        data={loans}
         margin={{
           top: 5,
           right: 30,

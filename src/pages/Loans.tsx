@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Nav } from '../components/Nav';
 import {
   Dialog,
@@ -11,28 +11,35 @@ import {
 import { Heading } from '../components/Heading';
 import { LoanForm } from '../components/LoanForm';
 import { LoanList } from '../components/LoanList';
+import { usePersonalFinance } from '../context/PersonalFinanceContext';
 
 export const Loans = () => {
-  const [loans, setLoans] = useState<Loan[]>([]);
+  const { finances, setFinances } = usePersonalFinance();
+  const loans: Loan[] = finances.loanList.loans;
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    const loansInSessionStorage = sessionStorage.getItem('loans');
-    if (loansInSessionStorage) {
-      setLoans(JSON.parse(loansInSessionStorage));
-    }
-  }, []);
 
   const handleRemove = (borrower: string) => {
     const newLoans = loans.filter((l) => l.borrower !== borrower);
-    setLoans(newLoans);
-    sessionStorage.setItem('loans', JSON.stringify(newLoans));
+    const newFinances: PersonalFinance = {
+      ...finances,
+      loanList: {
+        loans: newLoans,
+        monthlyTotal: newLoans.reduce((prev, curr) => prev + curr.quantity, 0),
+      },
+    };
+    setFinances(newFinances);
   };
 
   const handleAddLoan = (newLoan: Loan) => {
     const newLoans = [...loans, newLoan];
-    setLoans(newLoans);
-    sessionStorage.setItem('loans', JSON.stringify(newLoans));
+    const newFinances: PersonalFinance = {
+      ...finances,
+      loanList: {
+        loans: newLoans,
+        monthlyTotal: newLoans.reduce((prev, curr) => prev + curr.quantity, 0),
+      },
+    };
+    setFinances(newFinances);
     setIsOpen(false);
   };
 
