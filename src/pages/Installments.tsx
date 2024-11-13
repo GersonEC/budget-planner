@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Nav } from '../components/Nav';
 import {
   Dialog,
@@ -11,28 +11,42 @@ import {
 import { Heading } from '../components/Heading';
 import { InstallmentList } from '../components/InstallmentList';
 import { InstallmentForm } from '../components/InstallmentForm';
+import { usePersonalFinance } from '../context/PersonalFinanceContext';
 
 export const Installments = () => {
-  const [installments, setInstallments] = useState<Installment[]>([]);
+  const { finances, setFinances } = usePersonalFinance();
+  const installments: Installment[] =
+    finances.installmentList.installments ?? [];
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    const installmentsInSessionStorage = sessionStorage.getItem('installments');
-    if (installmentsInSessionStorage) {
-      setInstallments(JSON.parse(installmentsInSessionStorage));
-    }
-  }, []);
 
   const handleRemove = (name: string) => {
     const newInstallments = installments.filter((i) => i.name !== name);
-    setInstallments(newInstallments);
-    sessionStorage.setItem('installments', JSON.stringify(newInstallments));
+    const newFinances: PersonalFinance = {
+      ...finances,
+      installmentList: {
+        installments: newInstallments,
+        monthlyTotal: newInstallments.reduce(
+          (prevValue, currValue) => prevValue + currValue.monthlyCost,
+          0
+        ),
+      },
+    };
+    setFinances(newFinances);
   };
 
   const addInstallment = (newInstallment: Installment) => {
     const newInstallments = [...installments, newInstallment];
-    setInstallments(newInstallments);
-    sessionStorage.setItem('installments', JSON.stringify(newInstallments));
+    const newFinances: PersonalFinance = {
+      ...finances,
+      installmentList: {
+        installments: newInstallments,
+        monthlyTotal: newInstallments.reduce(
+          (prevValue, currValue) => prevValue + currValue.monthlyCost,
+          0
+        ),
+      },
+    };
+    setFinances(newFinances);
     setIsOpen(false);
   };
 
@@ -59,7 +73,7 @@ export const Installments = () => {
       </Dialog>
 
       <InstallmentList
-        installments={installments}
+        installments={installments ?? []}
         removeInstallment={handleRemove}
       />
     </div>

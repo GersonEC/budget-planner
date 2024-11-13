@@ -9,6 +9,7 @@ export const InstallmentList: React.FC<Props> = ({
   installments,
   removeInstallment,
 }) => {
+  console.log({ installments });
   return (
     <ul className='flex  flex-col '>
       {installments.map((installment) => (
