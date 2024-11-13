@@ -16,37 +16,49 @@ export const Dashboard: React.FC = () => {
       <section className='flex flex-wrap justify-evenly'>
         <div>
           <Heading variant='subtitle'>
-            <Link to='/bills'>Bills</Link>
+            <Link className='hover:underline' to='/bills'>
+              Bills
+            </Link>
           </Heading>
           <BillsBarChart />
         </div>
         <div>
           <Heading variant='subtitle'>
-            <Link to='/categories'>Categories</Link>
+            <Link className='hover:underline' to='/categories'>
+              Categories
+            </Link>
           </Heading>
           <CategoriesPieChart />
         </div>
         <div>
           <Heading variant='subtitle'>
-            <Link to='/cashflow'>Cashflow</Link>
+            <Link className='hover:underline' to='/cashflow'>
+              Cashflow
+            </Link>
           </Heading>
           <CashflowBarChart />
         </div>
         <div>
           <Heading variant='subtitle'>
-            <Link to='/subscriptions'>Subscriptions</Link>
+            <Link className='hover:underline' to='/subscriptions'>
+              Subscriptions
+            </Link>
           </Heading>
           <SubscriptionsPieChart />
         </div>
         <div>
           <Heading variant='subtitle'>
-            <Link to='/installments'>Installments</Link>
+            <Link className='hover:underline' to='/installments'>
+              Installments
+            </Link>
           </Heading>
           <InstallmentsPieChart />
         </div>
         <div>
           <Heading variant='subtitle'>
-            <Link to='/loans'>Loans</Link>
+            <Link className='hover:underline' to='/loans'>
+              Loans
+            </Link>
           </Heading>
           <LoansBarChart />
         </div>

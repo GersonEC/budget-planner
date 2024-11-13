@@ -11,29 +11,33 @@ export const InstallmentsPieChart = () => {
 
   return (
     <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
-      <PieChart width={400} height={400}>
-        <Pie
-          dataKey='monthlyCost'
-          startAngle={180}
-          endAngle={0}
-          data={installments}
-          cx='50%'
-          cy='50%'
-          outerRadius={80}
-          fill='#8884d8'
-          label
-        >
-          {installments.map((entry, index) => (
-            <Cell
-              key={`cell-${entry.name}`}
-              fill={COLORS[index % COLORS.length]}
-              stroke='gray'
-              strokeWidth='1px'
-            />
-          ))}
-        </Pie>
-        <ChartTooltip content={<ChartTooltipContent />} />
-      </PieChart>
+      {installments.length === 0 ? (
+        <p className=' text-base'>There are no installments data</p>
+      ) : (
+        <PieChart width={400} height={400}>
+          <Pie
+            dataKey='monthlyCost'
+            startAngle={180}
+            endAngle={0}
+            data={installments}
+            cx='50%'
+            cy='50%'
+            outerRadius={80}
+            fill='#8884d8'
+            label
+          >
+            {installments.map((entry, index) => (
+              <Cell
+                key={`cell-${entry.name}`}
+                fill={COLORS[index % COLORS.length]}
+                stroke='gray'
+                strokeWidth='1px'
+              />
+            ))}
+          </Pie>
+          <ChartTooltip content={<ChartTooltipContent />} />
+        </PieChart>
+      )}
     </ChartContainer>
   );
 };

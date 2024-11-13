@@ -51,20 +51,24 @@ export const BillsBarChart = () => {
 
   return (
     <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
-      <BarChart accessibilityLayer data={chartData}>
-        <CartesianGrid vertical={false} />
-        <XAxis
-          dataKey='category'
-          tickLine={false}
-          tickMargin={10}
-          axisLine={false}
-          tickFormatter={(value) => value.slice(0, 3)}
-        />
-        <ChartTooltip content={<ChartTooltipContent />} />
-        <ChartLegend content={<ChartLegendContent />} />
-        <Bar dataKey='budget' fill='var(--color-desktop)' radius={4} />
-        <Bar dataKey='expenses' fill='var(--color-mobile)' radius={4} />
-      </BarChart>
+      {chartData.length === 0 ? (
+        <p className=' text-base'>There are no bills data</p>
+      ) : (
+        <BarChart accessibilityLayer data={chartData}>
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey='category'
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+            tickFormatter={(value) => value.slice(0, 3)}
+          />
+          <ChartTooltip content={<ChartTooltipContent />} />
+          <ChartLegend content={<ChartLegendContent />} />
+          <Bar dataKey='budget' fill='var(--color-desktop)' radius={4} />
+          <Bar dataKey='expenses' fill='var(--color-mobile)' radius={4} />
+        </BarChart>
+      )}
     </ChartContainer>
   );
 };

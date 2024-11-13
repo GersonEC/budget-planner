@@ -22,33 +22,37 @@ export const LoansBarChart = () => {
 
   return (
     <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
-      <BarChart
-        width={500}
-        height={300}
-        data={loans}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray='3 3' />
-        <XAxis dataKey='borrower' />
-        <YAxis />
-        <ChartTooltip content={<ChartTooltipContent />} />
-        <ChartLegend content={<ChartLegendContent />} />
-        <Bar
-          dataKey='quantity'
-          fill='#8884d8'
-          activeBar={<Rectangle fill='pink' stroke='blue' />}
-        />
-        <Bar
-          dataKey='dividend'
-          fill='#82ca9d'
-          activeBar={<Rectangle fill='gold' stroke='purple' />}
-        />
-      </BarChart>
+      {loans.length === 0 ? (
+        <p className=' text-base'>There are no loans data</p>
+      ) : (
+        <BarChart
+          width={500}
+          height={300}
+          data={loans}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray='3 3' />
+          <XAxis dataKey='borrower' />
+          <YAxis />
+          <ChartTooltip content={<ChartTooltipContent />} />
+          <ChartLegend content={<ChartLegendContent />} />
+          <Bar
+            dataKey='quantity'
+            fill='#8884d8'
+            activeBar={<Rectangle fill='pink' stroke='blue' />}
+          />
+          <Bar
+            dataKey='dividend'
+            fill='#82ca9d'
+            activeBar={<Rectangle fill='gold' stroke='purple' />}
+          />
+        </BarChart>
+      )}
     </ChartContainer>
   );
 };
