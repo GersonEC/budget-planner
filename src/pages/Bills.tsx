@@ -4,6 +4,7 @@ import { MonthlyBills } from '../components/MonthlyBills';
 import { useCategories } from '../context/CategoriesContext';
 import { Nav } from '../components/Nav';
 import { Heading } from '../components/Heading';
+import { getCurrentMonthInString } from '../lib/utils';
 
 export const Bills = () => {
   const { categories } = useCategories();
@@ -25,7 +26,7 @@ export const Bills = () => {
   return (
     <React.Fragment>
       <Nav />
-      <Heading variant='title'>Bills</Heading>
+      <Heading variant='title'>Bills of {getCurrentMonthInString()}</Heading>
       <MonthlyBills
         bills={monthlyBudget.bills}
         budget={monthlyBudget.budget}
