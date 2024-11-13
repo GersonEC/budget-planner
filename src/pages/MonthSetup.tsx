@@ -63,11 +63,16 @@ export const MonthSetup = () => {
       alert('Please enter a budget');
       return;
     }
-    const updatedMonthlyBudget = {
+    const updatedMonthlyBudget: MonthlyBudget = {
       month: new Date().getMonth(),
       budget: Number(budget),
       expenses: 0,
       bills: [],
+      cashflow: {
+        inflow: 0,
+        outflow: 0,
+        netflow: 0,
+      },
     };
     setMonthlyBudget(updatedMonthlyBudget);
     navigate({
