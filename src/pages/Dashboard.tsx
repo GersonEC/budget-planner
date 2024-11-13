@@ -30,7 +30,7 @@ export const Dashboard: React.FC = () => {
           <Heading variant='subtitle'>
             <Link to='/cashflow'>Cashflow</Link>
           </Heading>
-          {/* <CashflowBarChart /> */}
+          <CashflowBarChart />
         </div>
         <div>
           <Heading variant='subtitle'>
