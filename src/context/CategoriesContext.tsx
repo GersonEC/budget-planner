@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 const CategoriesContext = React.createContext<
   | {
@@ -22,10 +22,11 @@ export function CategoriesProvider({
     }
   }, []);
 
-  const setCategories = (newCategories: CategoryForm[]) => {
+  const setCategories = useCallback((newCategories: CategoryForm[]) => {
     setCat(newCategories);
     sessionStorage.setItem('categories', JSON.stringify(newCategories));
-  };
+  }, []);
+
   const value = {
     categories: cat,
     setCategories,

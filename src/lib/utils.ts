@@ -39,3 +39,61 @@ export const createPieChartDataFromCategory = (category: CategoryForm) => {
   };
   return data;
 };
+
+export const calculateSubsMonthlyTotal = (
+  subscriptions: Subscription[] = []
+) => {
+  return subscriptions.reduce(
+    (prevValue, currValue) => prevValue + currValue.monthlyCost,
+    0
+  );
+};
+
+export const calculateSubsYearlyTotal = (
+  subscriptions: Subscription[] = []
+) => {
+  return subscriptions.reduce(
+    (prevValue, currValue) => prevValue + currValue.yearlyCost,
+    0
+  );
+};
+
+type SubscriptionCharData = {
+  name: string;
+  value: number;
+};
+export const buildSubscriptionsCategoryCharData = (
+  subscriptions: Subscription[] = []
+): SubscriptionCharData[] => {
+  const subsGroupByCategory = subscriptions.map((sub) => {
+    return {
+      name: sub.category,
+      value: sub.monthlyCost,
+    };
+  });
+  const subsCategoryData: SubscriptionCharData[] = [];
+  subsGroupByCategory.forEach((obj) => {
+    const isNameAlreadyIn = subsCategoryData.find(
+      (sub) => sub.name === obj.name
+    );
+    if (Boolean(isNameAlreadyIn) === false) {
+      subsCategoryData.push(obj);
+    } else {
+      const index = subsCategoryData.findIndex((sub) => sub.name === obj.name);
+      subsCategoryData[index].value += obj.value;
+    }
+  });
+  return subsCategoryData;
+};
+
+export const buildSubscriptionsNameCharData = (
+  subscriptions: Subscription[] = []
+): SubscriptionCharData[] => {
+  let response: SubscriptionCharData[] = [];
+  response = subscriptions.map((sub) => ({
+    name: sub.name,
+    value: sub.monthlyCost,
+  }));
+
+  return response;
+};

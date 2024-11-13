@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Nav } from '../components/Nav';
 import { SubscriptionForm } from '../components/SubscriptionForm';
 import {
@@ -11,29 +11,43 @@ import {
 } from '../components/ui/dialog';
 import { SubscriptionList } from '../components/SubscriptionList';
 import { Heading } from '../components/Heading';
+import {
+  calculateSubsMonthlyTotal,
+  calculateSubsYearlyTotal,
+} from '../lib/utils';
+import { usePersonalFinance } from '../context/PersonalFinanceContext';
 
 export const Subscriptions = () => {
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const { finances, setFinances } = usePersonalFinance();
+  const subscriptions = finances.subscriptionList.subscriptions;
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    const subscriptionsInSessionStorage =
-      sessionStorage.getItem('subscriptions');
-    if (subscriptionsInSessionStorage) {
-      setSubscriptions(JSON.parse(subscriptionsInSessionStorage));
-    }
-  }, []);
-
   const handleRemove = (name: string) => {
-    const newSubscriptions = subscriptions.filter((s) => s.name !== name);
-    setSubscriptions(newSubscriptions);
-    sessionStorage.setItem('subscriptions', JSON.stringify(newSubscriptions));
+    const newSubscriptions = subscriptions.filter(
+      (s: Subscription) => s.name !== name
+    );
+    const newFinances: PersonalFinance = {
+      ...finances,
+      subscriptionList: {
+        subscriptions: newSubscriptions,
+        monthlyTotal: calculateSubsMonthlyTotal(newSubscriptions),
+        yearlyTotal: calculateSubsYearlyTotal(newSubscriptions),
+      },
+    };
+    setFinances(newFinances);
   };
 
   const addSubscription = (newSubscription: Subscription) => {
     const newSubscriptions = [...subscriptions, newSubscription];
-    setSubscriptions(newSubscriptions);
-    sessionStorage.setItem('subscriptions', JSON.stringify(newSubscriptions));
+    const newFinances: PersonalFinance = {
+      ...finances,
+      subscriptionList: {
+        subscriptions: newSubscriptions,
+        monthlyTotal: calculateSubsMonthlyTotal(newSubscriptions),
+        yearlyTotal: calculateSubsYearlyTotal(newSubscriptions),
+      },
+    };
+    setFinances(newFinances);
     setIsOpen(false);
   };
 

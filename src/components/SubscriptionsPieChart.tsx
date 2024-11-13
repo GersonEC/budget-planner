@@ -1,28 +1,27 @@
 import { PieChart, Pie, Cell } from 'recharts';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from './ui/chart';
-import { chartConfig } from '../lib/utils';
-
-const data01 = [
-  { name: 'Entertainment', value: 20 },
-  { name: 'Learning', value: 30 },
-  { name: 'Productivity', value: 50 },
-];
-const data02 = [
-  { name: 'Netflix', value: 8 },
-  { name: 'Amazon Prime', value: 10 },
-  { name: 'Spotify', value: 2 },
-  { name: 'Headspace', value: 20 },
-  { name: 'Notion', value: 50 },
-];
+import {
+  buildSubscriptionsCategoryCharData,
+  buildSubscriptionsNameCharData,
+  chartConfig,
+} from '../lib/utils';
+import { usePersonalFinance } from '../context/PersonalFinanceContext';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 export const SubscriptionsPieChart = () => {
+  const { finances } = usePersonalFinance();
+  const subscriptions = finances.subscriptionList.subscriptions;
+  const subscriptionsCategoryCharData =
+    buildSubscriptionsCategoryCharData(subscriptions);
+  const subscriptionsNameCharData =
+    buildSubscriptionsNameCharData(subscriptions);
+
   return (
     <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
       <PieChart width={400} height={400}>
         <Pie
-          data={data01}
+          data={subscriptionsCategoryCharData}
           dataKey='value'
           cx='50%'
           cy='50%'
@@ -30,7 +29,7 @@ export const SubscriptionsPieChart = () => {
           fill='#8884d8'
           stroke='darkgrey'
         >
-          {data01.map((entry, index) => (
+          {subscriptionsCategoryCharData.map((entry, index) => (
             <Cell
               key={`cell-${entry.name}`}
               fill={COLORS[index % COLORS.length]}
@@ -40,7 +39,7 @@ export const SubscriptionsPieChart = () => {
           ))}
         </Pie>
         <Pie
-          data={data02}
+          data={subscriptionsNameCharData}
           dataKey='value'
           cx='50%'
           cy='50%'

@@ -73,3 +73,9 @@ type LoanList = {
   loans: Loan[];
   monthlyTotal: number;
 };
+
+type PersonalFinance = {
+  subscriptionList: SubscriptionList;
+  installmentList: InstallmentList;
+  loanList: LoanList;
+};
