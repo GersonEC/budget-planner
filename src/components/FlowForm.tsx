@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 
 interface Props {
   type: 'inflow' | 'outflow';
+  handleSubmit: (type: 'inflow' | 'outflow', flowList: FlowList) => void;
 }
 
 const calculateTotalFlow = (flows: Flow[]) => {
@@ -18,13 +19,13 @@ const initialFlowListValue: FlowList = {
   totalFlow: 0,
 };
 
-export const FlowForm: React.FC<Props> = ({ type }) => {
+export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
   const [name, setName] = useState<string>('');
   const [quantity, setQuantity] = useState<number | ''>('');
   const [flowList, setFlowList] = useState<FlowList>(initialFlowListValue);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSubmit = (e: any) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
     const inflow: Flow = {
       type,
@@ -38,6 +39,7 @@ export const FlowForm: React.FC<Props> = ({ type }) => {
     setFlowList(newFlowList);
     setName('');
     setQuantity(0);
+    handleSubmit(type, newFlowList);
     sessionStorage.setItem(type, JSON.stringify(newFlowList));
   };
 
@@ -53,7 +55,7 @@ export const FlowForm: React.FC<Props> = ({ type }) => {
 
   return (
     <>
-      <form className='flex gap-2' onSubmit={handleSubmit}>
+      <form className='flex gap-2' onSubmit={onSubmit}>
         <Input
           name={`${type}-name`}
           placeholder={`${type} name...`}

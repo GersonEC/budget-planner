@@ -6,24 +6,10 @@ type Bill = {
   description: string;
 };
 
-type MonthlyBudget = {
-  month: number;
-  budget: number;
-  expenses: number;
-  cashflow: Cashflow;
-  bills: Bill[];
-};
-
 type CategoryForm = {
   name: string;
   budget: number | string;
   expenses: number;
-};
-
-type Cashflow = {
-  inflow: number;
-  outflow: number;
-  netflow: number;
 };
 
 type Flow = {
@@ -35,6 +21,20 @@ type Flow = {
 type FlowList = {
   flows: Flow[];
   totalFlow: number;
+};
+
+type Cashflow = {
+  inflow: FlowList;
+  outflow: FlowList;
+  netflow: number;
+};
+
+type MonthlyBudget = {
+  month: number;
+  budget: number;
+  expenses: number;
+  cashflow: Cashflow;
+  bills: Bill[];
 };
 
 type Subscription = {

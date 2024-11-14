@@ -8,15 +8,12 @@ import { useEffect, useState } from 'react';
 import { FlowForm } from '../components/FlowForm';
 import { CashFlow } from './Cashflow';
 import { Heading } from '../components/Heading';
-import {
-  getCurrentMonthInString,
-  getFlowQuantityFromStorage,
-} from '../lib/utils';
+import { getCurrentMonthInString } from '../lib/utils';
 
 export const MonthSetup = () => {
   const [budget, setBudget] = useState<number | string>('');
   const { categories, setCategories } = useCategories();
-  const { setMonthlyBudget } = useMonthlyBudget();
+  const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
   const [isThereCashflow, setIsThereCashflow] = useState<boolean>(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] =
     useState<boolean>(false);
@@ -73,17 +70,38 @@ export const MonthSetup = () => {
       expenses: 0,
       bills: [],
       cashflow: {
-        inflow: getFlowQuantityFromStorage('inflow'),
-        outflow: getFlowQuantityFromStorage('outflow'),
+        ...monthlyBudget.cashflow,
         netflow:
-          getFlowQuantityFromStorage('inflow') -
-          getFlowQuantityFromStorage('outflow'),
+          monthlyBudget.cashflow.inflow.totalFlow -
+          monthlyBudget.cashflow.outflow.totalFlow,
       },
     };
     setMonthlyBudget(updatedMonthlyBudget);
     navigate({
       to: '/bills',
     });
+  };
+
+  const handleFlowSubmit = (type: 'inflow' | 'outflow', flowList: FlowList) => {
+    let updatedMonthlyBudget: MonthlyBudget;
+    if (type === 'inflow') {
+      updatedMonthlyBudget = {
+        ...monthlyBudget,
+        cashflow: {
+          ...monthlyBudget.cashflow,
+          inflow: flowList,
+        },
+      };
+    } else {
+      updatedMonthlyBudget = {
+        ...monthlyBudget,
+        cashflow: {
+          ...monthlyBudget.cashflow,
+          outflow: flowList,
+        },
+      };
+    }
+    setMonthlyBudget(updatedMonthlyBudget);
   };
 
   return (
@@ -97,9 +115,9 @@ export const MonthSetup = () => {
         <div>
           <Heading variant='subtitle'>Cashflow Setting</Heading>
           <h2>Inflow</h2>
-          <FlowForm type='inflow' />
+          <FlowForm type='inflow' handleSubmit={handleFlowSubmit} />
           <h2>Outflow</h2>
-          <FlowForm type='outflow' />
+          <FlowForm type='outflow' handleSubmit={handleFlowSubmit} />
         </div>
       )}
       <Heading variant='subtitle'>Budget Setting</Heading>

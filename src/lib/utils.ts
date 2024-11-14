@@ -98,18 +98,13 @@ export const buildSubscriptionsNameCharData = (
   return response;
 };
 
-export const getFlowQuantityFromStorage = (
-  type: 'inflow' | 'outflow'
-): number => {
-  const flowFromStorage = sessionStorage.getItem(type);
-  if (flowFromStorage) {
-    const flow = JSON.parse(flowFromStorage) as FlowList;
-    return flow.totalFlow;
-  }
-  return 0;
-};
-
 export const getCurrentMonthInString = () => {
   const today = new Date();
   return today.toLocaleString('default', { month: 'long' });
+};
+
+export const hasMonthChanged = (): boolean => {
+  const today = new Date();
+  const yesterday = new Date(today.getDate() - 1);
+  return today.getMonth() !== yesterday.getMonth();
 };
