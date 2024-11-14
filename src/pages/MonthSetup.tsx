@@ -20,8 +20,8 @@ export const MonthSetup = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const inflowsInSessionStorage = sessionStorage.getItem('inflow');
-    const outflowsInSessionStorage = sessionStorage.getItem('outflow');
+    const inflowsInSessionStorage = localStorage.getItem('inflow');
+    const outflowsInSessionStorage = localStorage.getItem('outflow');
     if (inflowsInSessionStorage && outflowsInSessionStorage) {
       setIsThereCashflow(true);
     }
@@ -43,7 +43,7 @@ export const MonthSetup = () => {
   };
 
   const handleCopyFromOutflow = () => {
-    const outflowsInSessionStorage = sessionStorage.getItem('outflow');
+    const outflowsInSessionStorage = localStorage.getItem('outflow');
     if (outflowsInSessionStorage) {
       const outflows = JSON.parse(outflowsInSessionStorage) as FlowList;
       const newCategories: CategoryForm[] = [];

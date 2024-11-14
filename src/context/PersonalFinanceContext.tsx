@@ -36,7 +36,7 @@ export function PersonalFinanceProvider({
   const [data, setData] = React.useState<PersonalFinance>(initialFinances);
 
   useEffect(() => {
-    const financesInSessionStorage = sessionStorage.getItem('finances');
+    const financesInSessionStorage = localStorage.getItem('finances');
     if (financesInSessionStorage) {
       const finances: PersonalFinance = JSON.parse(
         financesInSessionStorage
@@ -71,7 +71,7 @@ export function PersonalFinanceProvider({
 
   const _setData = React.useCallback((newFinances: PersonalFinance) => {
     setData(newFinances);
-    sessionStorage.setItem('finances', JSON.stringify(newFinances));
+    localStorage.setItem('finances', JSON.stringify(newFinances));
   }, []);
 
   const value = {

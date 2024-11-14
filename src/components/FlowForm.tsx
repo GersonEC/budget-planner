@@ -40,7 +40,7 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
     setName('');
     setQuantity(0);
     handleSubmit(type, newFlowList);
-    sessionStorage.setItem(type, JSON.stringify(newFlowList));
+    localStorage.setItem(type, JSON.stringify(newFlowList));
   };
 
   const removeFlow = (name: string) => {
@@ -50,7 +50,7 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
       totalFlow: calculateTotalFlow(newFlows),
     };
     setFlowList(newFlowList);
-    sessionStorage.setItem(type, JSON.stringify(newFlows));
+    localStorage.setItem(type, JSON.stringify(newFlows));
   };
 
   return (

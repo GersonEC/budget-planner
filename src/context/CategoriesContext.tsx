@@ -16,7 +16,7 @@ export function CategoriesProvider({
   const [cat, setCat] = React.useState<CategoryForm[]>([]);
 
   useEffect(() => {
-    const categoriesInSessionStorage = sessionStorage.getItem('categories');
+    const categoriesInSessionStorage = localStorage.getItem('categories');
     if (categoriesInSessionStorage) {
       setCategories(JSON.parse(categoriesInSessionStorage) as CategoryForm[]);
     }
@@ -24,7 +24,7 @@ export function CategoriesProvider({
 
   const setCategories = useCallback((newCategories: CategoryForm[]) => {
     setCat(newCategories);
-    sessionStorage.setItem('categories', JSON.stringify(newCategories));
+    localStorage.setItem('categories', JSON.stringify(newCategories));
   }, []);
 
   const value = {

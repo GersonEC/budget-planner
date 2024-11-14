@@ -42,8 +42,7 @@ export function MonthlyBudgetProvider({
 
   /** Check if there is monthly budget in session storage. */
   useEffect(() => {
-    const monthlyBudgetInSessionStorage =
-      sessionStorage.getItem('monthlyBudget');
+    const monthlyBudgetInSessionStorage = localStorage.getItem('monthlyBudget');
     if (monthlyBudgetInSessionStorage) {
       setMonthlyBudget(
         JSON.parse(monthlyBudgetInSessionStorage) as MonthlyBudget
@@ -53,8 +52,8 @@ export function MonthlyBudgetProvider({
 
   /** Check if there is cashflow in session storage. */
   useEffect(() => {
-    const inflowInSessionStorage = sessionStorage.getItem('inflow');
-    const outflowInSessionStorage = sessionStorage.getItem('outflow');
+    const inflowInSessionStorage = localStorage.getItem('inflow');
+    const outflowInSessionStorage = localStorage.getItem('outflow');
     if (inflowInSessionStorage && outflowInSessionStorage) {
       const inflow = JSON.parse(inflowInSessionStorage) as FlowList;
       const outflow = JSON.parse(outflowInSessionStorage) as FlowList;
@@ -75,10 +74,10 @@ export function MonthlyBudgetProvider({
       if (hasMonthChanged()) {
         setBudgetPlanner([...budgetPlanner, budget]);
         setMonthlyBudget(initialMonthlyBudget);
-        sessionStorage.removeItem('monthlyBudget');
-        sessionStorage.removeItem('inflow');
-        sessionStorage.removeItem('outflow');
-        sessionStorage.removeItem('categories');
+        localStorage.removeItem('monthlyBudget');
+        localStorage.removeItem('inflow');
+        localStorage.removeItem('outflow');
+        localStorage.removeItem('categories');
       }
     };
     checkIfNewMonth();
@@ -86,7 +85,7 @@ export function MonthlyBudgetProvider({
 
   const setMonthlyBudget = (newMonthlyBudget: MonthlyBudget) => {
     setBudget(newMonthlyBudget);
-    sessionStorage.setItem('monthlyBudget', JSON.stringify(newMonthlyBudget));
+    localStorage.setItem('monthlyBudget', JSON.stringify(newMonthlyBudget));
   };
 
   const value = {

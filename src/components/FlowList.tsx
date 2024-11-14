@@ -14,7 +14,7 @@ export const FlowList: React.FC<Props> = ({ type }) => {
   const [flowList, setFlowList] = useState<FlowList>(initialFlowListValue);
 
   useEffect(() => {
-    const flowsInSessionStorage = sessionStorage.getItem(type);
+    const flowsInSessionStorage = localStorage.getItem(type);
     if (flowsInSessionStorage) setFlowList(JSON.parse(flowsInSessionStorage));
   }, [type]);
 
