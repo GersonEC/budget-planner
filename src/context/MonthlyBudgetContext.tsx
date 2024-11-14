@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { hasMonthChanged } from '../lib/utils';
+import { hasMonthChanged, isThereMonthlyBudgetInMemory } from '../lib/utils';
 
 const initialMonthlyBudget: MonthlyBudget = {
   month: new Date().getMonth(),
@@ -35,20 +35,11 @@ export function MonthlyBudgetProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [budget, setBudget] =
-    React.useState<MonthlyBudget>(initialMonthlyBudget);
+  const [budget, setBudget] = React.useState<MonthlyBudget>(
+    isThereMonthlyBudgetInMemory() || initialMonthlyBudget
+  );
   const [budgetPlanner, setBudgetPlanner] =
     React.useState<BudgetPlanner>(initialBudgetPlanner);
-
-  /** Check if there is monthly budget in session storage. */
-  useEffect(() => {
-    const monthlyBudgetInSessionStorage = localStorage.getItem('monthlyBudget');
-    if (monthlyBudgetInSessionStorage) {
-      setMonthlyBudget(
-        JSON.parse(monthlyBudgetInSessionStorage) as MonthlyBudget
-      );
-    }
-  }, []);
 
   /** Check if there is cashflow in session storage. */
   useEffect(() => {
@@ -72,12 +63,16 @@ export function MonthlyBudgetProvider({
   useEffect(() => {
     const checkIfNewMonth = () => {
       if (hasMonthChanged()) {
-        setBudgetPlanner([...budgetPlanner, budget]);
-        setMonthlyBudget(initialMonthlyBudget);
-        localStorage.removeItem('monthlyBudget');
+        const newBudgetPlanner = [...budgetPlanner, budget];
+        setBudgetPlanner(newBudgetPlanner);
+        localStorage.setItem(
+          'budget-planner',
+          JSON.stringify(newBudgetPlanner)
+        );
         localStorage.removeItem('inflow');
         localStorage.removeItem('outflow');
         localStorage.removeItem('categories');
+        localStorage.removeItem('monthlyBudget');
       }
     };
     checkIfNewMonth();

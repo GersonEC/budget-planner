@@ -104,8 +104,15 @@ export const getCurrentMonthInString = () => {
 };
 
 export const hasMonthChanged = (): boolean => {
-  return true;
   const today = new Date();
   const yesterday = new Date(today.getDate() - 1);
   return today.getMonth() !== yesterday.getMonth();
+};
+
+export const isThereMonthlyBudgetInMemory = () => {
+  const monthlyBudgetInSessionStorage = localStorage.getItem('monthlyBudget');
+  if (monthlyBudgetInSessionStorage) {
+    return JSON.parse(monthlyBudgetInSessionStorage) as MonthlyBudget;
+  }
+  return null;
 };
