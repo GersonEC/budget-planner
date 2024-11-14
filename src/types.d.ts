@@ -37,6 +37,8 @@ type MonthlyBudget = {
   bills: Bill[];
 };
 
+type BudgetPlanner = MonthlyBudget[];
+
 type Subscription = {
   name: string;
   status: 'active' | 'canceled';

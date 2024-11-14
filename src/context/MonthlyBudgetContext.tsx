@@ -1,16 +1,25 @@
 import React, { useEffect } from 'react';
+import { hasMonthChanged } from '../lib/utils';
 
 const initialMonthlyBudget: MonthlyBudget = {
   month: new Date().getMonth(),
   budget: 0,
   expenses: 0,
   cashflow: {
-    inflow: 0,
-    outflow: 0,
+    inflow: {
+      flows: [],
+      totalFlow: 0,
+    },
+    outflow: {
+      flows: [],
+      totalFlow: 0,
+    },
     netflow: 0,
   },
   bills: [],
 };
+
+const initialBudgetPlanner: BudgetPlanner = [];
 
 const MonthlyBudgetContext = React.createContext<
   | {
@@ -27,7 +36,10 @@ export function MonthlyBudgetProvider({
 }) {
   const [budget, setBudget] =
     React.useState<MonthlyBudget>(initialMonthlyBudget);
+  const [budgetPlanner, setBudgetPlanner] =
+    React.useState<BudgetPlanner>(initialBudgetPlanner);
 
+  /** Check if there is monthly budget in session storage. */
   useEffect(() => {
     const monthlyBudgetInSessionStorage =
       sessionStorage.getItem('monthlyBudget');
@@ -38,6 +50,7 @@ export function MonthlyBudgetProvider({
     }
   }, []);
 
+  /** Check if there is cashflow in session storage. */
   useEffect(() => {
     const inflowInSessionStorage = sessionStorage.getItem('inflow');
     const outflowInSessionStorage = sessionStorage.getItem('outflow');
@@ -47,12 +60,23 @@ export function MonthlyBudgetProvider({
       setBudget({
         ...budget,
         cashflow: {
-          inflow: inflow.totalFlow,
-          outflow: outflow.totalFlow,
+          inflow,
+          outflow,
           netflow: inflow.totalFlow - outflow.totalFlow,
         },
       });
     }
+  }, []);
+
+  /** Check if the month has changed to reset the monthly budget. */
+  useEffect(() => {
+    const checkIfNewMonth = () => {
+      if (hasMonthChanged()) {
+        setBudgetPlanner([...budgetPlanner, budget]);
+        setMonthlyBudget(initialMonthlyBudget);
+      }
+    };
+    checkIfNewMonth();
   }, []);
 
   const setMonthlyBudget = (newMonthlyBudget: MonthlyBudget) => {
@@ -63,6 +87,7 @@ export function MonthlyBudgetProvider({
   const value = {
     monthlyBudget: budget,
     setMonthlyBudget,
+    budgetPlanner,
   };
 
   return (
