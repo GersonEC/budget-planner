@@ -66,6 +66,7 @@ export const MonthSetup = () => {
     }
     const updatedMonthlyBudget: MonthlyBudget = {
       month: new Date().getMonth(),
+      year: new Date().getFullYear(),
       budget: Number(budget),
       expenses: 0,
       bills: [],

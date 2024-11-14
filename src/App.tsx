@@ -16,7 +16,11 @@ const App: React.FC<AppProps> = ({ children }) => {
   useEffect(() => {
     const categoriesInSessionStorage = sessionStorage.getItem('categories');
     const budgetInSessionStorage = sessionStorage.getItem('monthlyBudget');
-    if (categoriesInSessionStorage && budgetInSessionStorage) {
+    if (!budgetInSessionStorage) {
+      navigate({
+        to: '/',
+      });
+    } else if (categoriesInSessionStorage && budgetInSessionStorage) {
       navigate({
         to: '/bills',
       });

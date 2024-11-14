@@ -3,6 +3,7 @@ import { hasMonthChanged } from '../lib/utils';
 
 const initialMonthlyBudget: MonthlyBudget = {
   month: new Date().getMonth(),
+  year: new Date().getFullYear(),
   budget: 0,
   expenses: 0,
   cashflow: {
@@ -74,6 +75,10 @@ export function MonthlyBudgetProvider({
       if (hasMonthChanged()) {
         setBudgetPlanner([...budgetPlanner, budget]);
         setMonthlyBudget(initialMonthlyBudget);
+        sessionStorage.removeItem('monthlyBudget');
+        sessionStorage.removeItem('inflow');
+        sessionStorage.removeItem('outflow');
+        sessionStorage.removeItem('categories');
       }
     };
     checkIfNewMonth();

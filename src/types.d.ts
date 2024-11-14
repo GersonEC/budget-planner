@@ -31,6 +31,7 @@ type Cashflow = {
 
 type MonthlyBudget = {
   month: number;
+  year: number;
   budget: number;
   expenses: number;
   cashflow: Cashflow;
