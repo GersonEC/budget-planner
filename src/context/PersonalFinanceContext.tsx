@@ -3,22 +3,7 @@ import {
   calculateSubsMonthlyTotal,
   calculateSubsYearlyTotal,
 } from '../lib/utils';
-
-const initialFinances: PersonalFinance = {
-  installmentList: {
-    installments: [],
-    monthlyTotal: 0,
-  },
-  subscriptionList: {
-    subscriptions: [],
-    monthlyTotal: 0,
-    yearlyTotal: 0,
-  },
-  loanList: {
-    loans: [],
-    monthlyTotal: 0,
-  },
-};
+import { initialFinances } from '../lib/fakes';
 
 const PersonalFinanceContext = React.createContext<{
   finances: PersonalFinance;

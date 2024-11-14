@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
+import { initialFlowListValue } from '../lib/fakes';
 
 interface Props {
   type: 'inflow' | 'outflow';
@@ -12,11 +13,6 @@ const calculateTotalFlow = (flows: Flow[]) => {
     (prevValue, currValue) => prevValue + currValue.quantity,
     0
   );
-};
-
-const initialFlowListValue: FlowList = {
-  flows: [],
-  totalFlow: 0,
 };
 
 export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {

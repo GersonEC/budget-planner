@@ -1,18 +1,15 @@
 import { useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import { initialCategoryValue } from '../lib/fakes';
 
-const initialValue: CategoryForm = {
-  name: '',
-  budget: '',
-  expenses: 0,
-};
 type Props = {
   addCategory: (category: CategoryForm) => void;
 };
 
 function AddCategory(props: Props) {
-  const [categoryForm, setCategoryForm] = useState<CategoryForm>(initialValue);
+  const [categoryForm, setCategoryForm] =
+    useState<CategoryForm>(initialCategoryValue);
 
   const handleAddCategory = () => {
     const { name, budget } = categoryForm;
@@ -20,7 +17,7 @@ function AddCategory(props: Props) {
       alert('Please enter the category and the budget');
       return;
     }
-    setCategoryForm(initialValue);
+    setCategoryForm(initialCategoryValue);
     props.addCategory(categoryForm);
   };
 

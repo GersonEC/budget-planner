@@ -1,14 +1,10 @@
 import { useEffect, useState } from 'react';
 import { currencyFormat } from '../lib/utils';
+import { initialFlowListValue } from '../lib/fakes';
 
 interface Props {
   type: 'inflow' | 'outflow';
 }
-
-const initialFlowListValue: FlowList = {
-  flows: [],
-  totalFlow: 0,
-};
 
 export const FlowList: React.FC<Props> = ({ type }) => {
   const [flowList, setFlowList] = useState<FlowList>(initialFlowListValue);

@@ -1,26 +1,6 @@
 import React, { useEffect } from 'react';
 import { hasMonthChanged, isThereMonthlyBudgetInMemory } from '../lib/utils';
-
-const initialMonthlyBudget: MonthlyBudget = {
-  month: new Date().getMonth(),
-  year: new Date().getFullYear(),
-  budget: 0,
-  expenses: 0,
-  cashflow: {
-    inflow: {
-      flows: [],
-      totalFlow: 0,
-    },
-    outflow: {
-      flows: [],
-      totalFlow: 0,
-    },
-    netflow: 0,
-  },
-  bills: [],
-};
-
-const initialBudgetPlanner: BudgetPlanner = [];
+import { initialBudgetPlanner, initialMonthlyBudget } from '../lib/fakes';
 
 const MonthlyBudgetContext = React.createContext<
   | {
