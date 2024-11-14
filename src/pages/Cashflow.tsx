@@ -18,12 +18,12 @@ export const CashFlow = () => {
       <Heading variant='subtitle'>Net flow</Heading>
       <p>
         <span className=' font-semibold text-green-300'>
-          {currencyFormat(monthlyBudget.cashflow.inflow)}
+          {currencyFormat(monthlyBudget.cashflow.inflow.totalFlow)}
         </span>{' '}
         -{' '}
         <span className=' font-semibold text-red-300'>
           {' '}
-          {currencyFormat(monthlyBudget.cashflow.outflow)}
+          {currencyFormat(monthlyBudget.cashflow.outflow.totalFlow)}
         </span>{' '}
         ={' '}
         <span className=' font-semibold text-blue-400'>
