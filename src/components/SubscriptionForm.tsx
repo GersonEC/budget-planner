@@ -2,9 +2,17 @@ import { useForm } from '@tanstack/react-form';
 import type { FieldApi } from '@tanstack/react-form';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-//import { DatePicker } from './ui/date-picker';
+import { DatePicker } from './ui/date-picker';
+import { useState } from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+//eslint-disable-next-line @typescript-eslint/no-explicit-any
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
     <>
@@ -22,6 +30,21 @@ interface Props {
   addSubscription: (subscription: Subscription) => void;
 }
 
+const subscriptionCategories = [
+  {
+    id: 1,
+    name: 'Entertainment',
+  },
+  {
+    id: 2,
+    name: 'Productivity',
+  },
+  {
+    id: 3,
+    name: 'Wealth',
+  },
+];
+
 export const SubscriptionForm: React.FC<Props> = ({ addSubscription }) => {
   const form = useForm({
     defaultValues: {
@@ -37,8 +60,8 @@ export const SubscriptionForm: React.FC<Props> = ({ addSubscription }) => {
       const newSubscription: Subscription = {
         name: value.name,
         status: 'active',
-        category: value.category,
-        renewalDate: new Date(),
+        category: subCategory,
+        renewalDate: date,
         monthlyCost: value.monthlyCost,
         yearlyCost: value.yearlyCost,
         billing: 'monthly',
@@ -46,6 +69,12 @@ export const SubscriptionForm: React.FC<Props> = ({ addSubscription }) => {
       addSubscription(newSubscription);
     },
   });
+  const [date, setDate] = useState(new Date());
+  const [subCategory, setSubCategory] = useState('');
+
+  const handleChangeDate = (newDate: Date | undefined) => {
+    if (newDate) setDate(newDate);
+  };
 
   return (
     <form
@@ -108,41 +137,51 @@ export const SubscriptionForm: React.FC<Props> = ({ addSubscription }) => {
       <div>
         <form.Field
           name='category'
-          validators={{
-            onChange: ({ value }) =>
-              !value ? 'A subscription category is required' : undefined,
-          }}
+          // validators={{
+          //   onChange: ({ value }) =>
+          //     !value ? 'A subscription category is required' : undefined,
+          // }}
           children={(field) => {
             return (
               <>
                 <label htmlFor={field.name}>Category:</label>
-                <Input
-                  id={field.name}
+                <Select
                   name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                />
+                  onValueChange={(value) => setSubCategory(value)}
+                >
+                  <SelectTrigger className='w-full'>
+                    <SelectValue placeholder='Choose a category...' />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {subscriptionCategories.map((value) => {
+                      return (
+                        <SelectItem key={value.id} value={value.name}>
+                          {value.name}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
                 <FieldInfo field={field} />
               </>
             );
           }}
         />
       </div>
-      {/*<div>
-          <form.Field
-            name='renewalDate'
-            children={(field) => {
-              return (
-                <>
-                  <label htmlFor={field.name}>Renewal Date:</label>
-                  <DatePicker date={field.state.value} setDate={() => {}} />
-                  <FieldInfo field={field} />
-                </>
-              );
-            }}
-          />
-        </div>*/}
+      <div>
+        <form.Field
+          name='renewalDate'
+          children={(field) => {
+            return (
+              <div className='flex flex-col'>
+                <label htmlFor={field.name}>Renewal Date:</label>
+                <DatePicker date={date} setDate={handleChangeDate} />
+                <FieldInfo field={field} />
+              </div>
+            );
+          }}
+        />
+      </div>
       <div>
         <form.Field
           name='monthlyCost'
