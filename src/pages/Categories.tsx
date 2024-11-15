@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useErrorBoundary } from 'react-error-boundary';
 import { AddCategoryForm } from '../components/AddCategoryForm';
 import { CategoryList } from '../components/CategoryList';
 import { useCategories } from '../context/CategoriesContext';
@@ -17,29 +16,17 @@ import { useToast } from '../hooks/use-toast';
 
 export const Categories = () => {
   const { toast } = useToast();
-  const { showBoundary } = useErrorBoundary();
   const { categories, setCategories } = useCategories();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const removeCategory = (categoryName: string) => {
-    try {
-      throw new Error('IMpossible to remove');
-      const newCategories = categories.filter((c) => c.name !== categoryName);
-      setCategories(newCategories);
-      toast({
-        variant: 'success',
-        title: 'Category removed successfully',
-        description: `Category removed: ${categoryName}`,
-      });
-      const error = new Error('Something went wrong');
-      showBoundary(error);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: error,
-      });
-    }
+    const newCategories = categories.filter((c) => c.name !== categoryName);
+    setCategories(newCategories);
+    toast({
+      variant: 'success',
+      title: 'Category removed successfully',
+      description: `Category removed: ${categoryName}`,
+    });
   };
 
   const addCategory = (category: CategoryForm) => {

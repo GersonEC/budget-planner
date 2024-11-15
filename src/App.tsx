@@ -8,6 +8,7 @@ import { Toaster } from './components/ui/toaster';
 import './App.css';
 import { ErrorBoundary } from 'react-error-boundary';
 import { Nav } from './components/Nav';
+import { Error } from './pages/Error';
 
 interface AppProps {
   children: React.ReactNode;
@@ -32,7 +33,7 @@ const App: React.FC<AppProps> = ({ children }) => {
 
   return (
     <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-      <ErrorBoundary FallbackComponent={() => <div>ERROR PAGE</div>}>
+      <ErrorBoundary FallbackComponent={() => <Error />}>
         <PersonalFinanceProvider>
           <MonthlyBudgetProvider>
             <CategoriesProvider>
