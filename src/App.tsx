@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { MonthlyBudgetProvider } from './context/MonthlyBudgetContext';
 import { CategoriesProvider } from './context/CategoriesContext';
-import './App.css';
 import { ThemeProvider } from './context/ThemeContext';
 import { useNavigate } from '@tanstack/react-router';
 import { PersonalFinanceProvider } from './context/PersonalFinanceContext';
+import { Toaster } from './components/ui/toaster';
+import './App.css';
 
 interface AppProps {
   children: React.ReactNode;
@@ -32,7 +33,10 @@ const App: React.FC<AppProps> = ({ children }) => {
       <PersonalFinanceProvider>
         <MonthlyBudgetProvider>
           <CategoriesProvider>
-            <div className='p-4'>{children}</div>
+            <div className='p-4 max-w-xl m-auto'>
+              <Toaster />
+              {children}
+            </div>
           </CategoriesProvider>
         </MonthlyBudgetProvider>
       </PersonalFinanceProvider>

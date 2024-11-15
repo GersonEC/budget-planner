@@ -9,8 +9,10 @@ import { FlowForm } from '../components/FlowForm';
 import { CashFlow } from './Cashflow';
 import { Heading } from '../components/Heading';
 import { getCurrentMonthInString } from '../lib/utils';
+import { useToast } from '../hooks/use-toast';
 
 export const MonthSetup = () => {
+  const { toast } = useToast();
   const [budget, setBudget] = useState<number | string>('');
   const { categories, setCategories } = useCategories();
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
@@ -56,6 +58,11 @@ export const MonthSetup = () => {
         newCategories.push(category);
       });
       setCategories(newCategories);
+      toast({
+        variant: 'success',
+        title: 'Elements copied from outflow',
+        description: 'The categories has been added correctly.',
+      });
     }
   };
 
@@ -107,7 +114,7 @@ export const MonthSetup = () => {
 
   return (
     <div className='flex flex-col gap-6 border p-4 max-w-4xl'>
-      <Heading variant='title'>
+      <Heading variant='title' className='m-auto'>
         Month Setup - {getCurrentMonthInString()}
       </Heading>
       {isThereCashflow ? (

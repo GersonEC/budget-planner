@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { initialFlowListValue } from '../lib/fakes';
+import { useToast } from '../hooks/use-toast';
+import { toCapitalize } from '../lib/utils';
 
 interface Props {
   type: 'inflow' | 'outflow';
@@ -16,6 +18,7 @@ const calculateTotalFlow = (flows: Flow[]) => {
 };
 
 export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
+  const { toast } = useToast();
   const [name, setName] = useState<string>('');
   const [quantity, setQuantity] = useState<number | ''>('');
   const [flowList, setFlowList] = useState<FlowList>(initialFlowListValue);
@@ -35,6 +38,11 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
     setFlowList(newFlowList);
     setName('');
     setQuantity(0);
+    toast({
+      variant: 'success',
+      title: `${toCapitalize(type)} element added`,
+      description: `${name}: ${quantity}`,
+    });
     handleSubmit(type, newFlowList);
     localStorage.setItem(type, JSON.stringify(newFlowList));
   };
