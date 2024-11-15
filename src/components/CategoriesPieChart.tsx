@@ -19,34 +19,38 @@ export const CategoriesPieChart = () => {
   const categoryPieChart: PieChartData[] = categories.map((cat) =>
     createPieChartDataFromCategory(cat)
   );
+
+  if (categories.length === 0)
+    return (
+      <div className=' h-20 w-96 '>
+        <p className=' text-base'>There are no categories data</p>
+      </div>
+    );
+
   return (
     <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
-      {categories.length === 0 ? (
-        <p className=' text-base'>There are no categories data</p>
-      ) : (
-        <PieRechart width={600} height={600}>
-          <Pie
-            dataKey='value'
-            isAnimationActive={false}
-            data={categoryPieChart}
-            cx='50%'
-            cy='50%'
-            outerRadius={100}
-            fill='green'
-            label
-          >
-            {categoryPieChart.map((entry, index) => (
-              <Cell
-                key={`cell-${entry.name}`}
-                fill={COLORS[index % COLORS.length]}
-                stroke='gray'
-                strokeWidth='1px'
-              />
-            ))}
-          </Pie>
-          <ChartTooltip content={<ChartTooltipContent />} />
-        </PieRechart>
-      )}
+      <PieRechart width={600} height={600}>
+        <Pie
+          dataKey='value'
+          isAnimationActive={false}
+          data={categoryPieChart}
+          cx='50%'
+          cy='50%'
+          outerRadius={100}
+          fill='green'
+          label
+        >
+          {categoryPieChart.map((entry, index) => (
+            <Cell
+              key={`cell-${entry.name}`}
+              fill={COLORS[index % COLORS.length]}
+              stroke='gray'
+              strokeWidth='1px'
+            />
+          ))}
+        </Pie>
+        <ChartTooltip content={<ChartTooltipContent />} />
+      </PieRechart>
     </ChartContainer>
   );
 };

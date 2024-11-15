@@ -13,7 +13,7 @@ export const Dashboard: React.FC = () => {
     <div>
       <Nav />
       <Heading variant='title'>Dashboard</Heading>
-      <section className='flex flex-wrap justify-evenly'>
+      <section className='flex flex-wrap justify-evenly border'>
         <div>
           <Heading variant='subtitle'>
             <Link className='hover:underline' to='/bills'>

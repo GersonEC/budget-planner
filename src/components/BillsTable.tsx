@@ -24,7 +24,7 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
             <tr className='p4' key={bill.id}>
               <td>{bill.category}</td>
               <td>{currencyFormat(bill.amount)}</td>
-              <td>{new Date(bill.date).toLocaleDateString()}</td>
+              <td>{new Date(bill.date).toLocaleDateString('it-IT')}</td>
               <td>{bill.description}</td>
               <td>
                 <Button

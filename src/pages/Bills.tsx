@@ -26,7 +26,9 @@ export const Bills = () => {
   return (
     <React.Fragment>
       <Nav />
-      <Heading variant='title'>Bills of {getCurrentMonthInString()}</Heading>
+      <div className=' text-center'>
+        <Heading variant='title'>Bills of {getCurrentMonthInString()}</Heading>
+      </div>
       <MonthlyBills
         bills={monthlyBudget.bills}
         budget={monthlyBudget.budget}
