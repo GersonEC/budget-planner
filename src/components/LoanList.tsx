@@ -7,15 +7,23 @@ interface Props {
 }
 export const LoanList: React.FC<Props> = ({ loans, removeLoan }) => {
   return (
-    <ul className='flex  flex-col '>
+    <ul className=''>
       {loans.map((loan) => (
-        <li className='flex-col items-center' key={loan.borrower}>
-          <span className=' text-indigo-300'>
-            {loan.borrower}
-            {': '}
-          </span>
-
-          <span>{currencyFormat(loan.quantity)}</span>
+        <li
+          className='flex justify-around items-center mb-4'
+          key={loan.borrower}
+        >
+          <p className=' text-indigo-300'>{loan.borrower}</p>
+          <div className='flex gap-4'>
+            <div>
+              <p className=' text-xs border-b-2'>Quantity</p>
+              <p>{currencyFormat(loan.quantity)}</p>
+            </div>
+            <div>
+              <p className=' text-xs border-b-2'>Dividends</p>
+              <p>{currencyFormat(loan.dividend)}</p>
+            </div>
+          </div>
           <Button
             name='remove'
             variant='ghost'
@@ -24,7 +32,6 @@ export const LoanList: React.FC<Props> = ({ loans, removeLoan }) => {
           >
             ⛔️
           </Button>
-          <p>Dividends: {currencyFormat(loan.dividend)}</p>
         </li>
       ))}
     </ul>

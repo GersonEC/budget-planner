@@ -6,14 +6,17 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '../components/ui/dialog';
 import { Heading } from '../components/Heading';
 import { InstallmentList } from '../components/InstallmentList';
 import { InstallmentForm } from '../components/InstallmentForm';
 import { usePersonalFinance } from '../context/PersonalFinanceContext';
+import { Button } from '../components/ui/button';
+import { useToast } from '../hooks/use-toast';
+import { currencyFormat } from '../lib/utils';
 
 export const Installments = () => {
+  const { toast } = useToast();
   const { finances, setFinances } = usePersonalFinance();
   const installments: Installment[] =
     finances.installmentList.installments ?? [];
@@ -32,6 +35,11 @@ export const Installments = () => {
       },
     };
     setFinances(newFinances);
+    toast({
+      variant: 'success',
+      title: 'Installment removed successfully',
+      description: `Installment: ${name}`,
+    });
   };
 
   const addInstallment = (newInstallment: Installment) => {
@@ -48,19 +56,27 @@ export const Installments = () => {
     };
     setFinances(newFinances);
     setIsOpen(false);
+    toast({
+      variant: 'success',
+      title: 'Installment added successfully',
+      description: `Installment: ${newInstallment.name} - ${currencyFormat(
+        newInstallment.monthlyCost
+      )}`,
+    });
   };
 
   return (
     <div>
       <Nav />
-      <Heading variant='title'>Installments</Heading>
-      <Dialog open={isOpen}>
-        <DialogTrigger
-          className='hover:underline'
-          onClick={() => setIsOpen(true)}
-        >
+      <div className='flex justify-between'>
+        <Heading variant='title'>Installments</Heading>
+        <Button variant={'secondary'} onClick={() => setIsOpen(true)}>
           Add new installment
-        </DialogTrigger>
+        </Button>
+      </div>
+
+      {/**TODO: Move subscription dialog into a separate component */}
+      <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Add new Installment</DialogTitle>

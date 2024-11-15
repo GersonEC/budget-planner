@@ -100,10 +100,6 @@ export const LoanForm: React.FC<Props> = ({ addLoan }) => {
       <div>
         <form.Field
           name='dividend'
-          validators={{
-            onChange: ({ value }) =>
-              !value ? 'A dividend is required' : undefined,
-          }}
           children={(field) => {
             return (
               <>
