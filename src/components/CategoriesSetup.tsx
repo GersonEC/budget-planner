@@ -1,5 +1,5 @@
 import React from 'react';
-import AddCategory from './AddCategory';
+import { AddCategoryForm } from './AddCategoryForm';
 import { CategoryList } from './CategoryList';
 import { Button } from './ui/button';
 import {
@@ -46,7 +46,7 @@ export const CategoriesSetup: React.FC<Props> = ({
             <DialogHeader>
               <DialogTitle>Add new Category</DialogTitle>
               <DialogDescription>insert a new category</DialogDescription>
-              <AddCategory addCategory={addCategory} />
+              <AddCategoryForm addCategory={addCategory} />
             </DialogHeader>
           </DialogContent>
         </Dialog>

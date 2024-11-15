@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { FlowForm } from '../components/FlowForm';
 import { CashFlow } from './Cashflow';
 import { Heading } from '../components/Heading';
-import { getCurrentMonthInString } from '../lib/utils';
+import { currencyFormat, getCurrentMonthInString } from '../lib/utils';
 import { useToast } from '../hooks/use-toast';
 
 export const MonthSetup = () => {
@@ -37,6 +37,13 @@ export const MonthSetup = () => {
     const updatedCategories = [...categories, category];
     setCategories(updatedCategories);
     setIsCategoryModalOpen(false);
+    toast({
+      variant: 'success',
+      title: 'Category added successfully',
+      description: `Category added: ${category.name} - ${currencyFormat(
+        Number(category.budget)
+      )}`,
+    });
   };
 
   const handleRemoveCategory = (categoryName: string) => {

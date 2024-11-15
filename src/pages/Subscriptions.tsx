@@ -7,17 +7,20 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '../components/ui/dialog';
 import { SubscriptionList } from '../components/SubscriptionList';
 import { Heading } from '../components/Heading';
 import {
   calculateSubsMonthlyTotal,
   calculateSubsYearlyTotal,
+  currencyFormat,
 } from '../lib/utils';
 import { usePersonalFinance } from '../context/PersonalFinanceContext';
+import { Button } from '../components/ui/button';
+import { useToast } from '../hooks/use-toast';
 
 export const Subscriptions = () => {
+  const { toast } = useToast();
   const { finances, setFinances } = usePersonalFinance();
   const subscriptions = finances.subscriptionList.subscriptions;
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -35,6 +38,11 @@ export const Subscriptions = () => {
       },
     };
     setFinances(newFinances);
+    toast({
+      variant: 'success',
+      title: 'Subscription removed successfully',
+      description: `Subscription removed: ${name}`,
+    });
   };
 
   const addSubscription = (newSubscription: Subscription) => {
@@ -49,19 +57,26 @@ export const Subscriptions = () => {
     };
     setFinances(newFinances);
     setIsOpen(false);
+    toast({
+      variant: 'success',
+      title: 'Subscription added successfully',
+      description: `New subscription: ${newSubscription.name} - ${
+        newSubscription.category
+      } - ${currencyFormat(newSubscription.monthlyCost)}`,
+    });
   };
 
   return (
     <div>
       <Nav />
-      <Heading variant='title'>Subscriptions</Heading>
-      <Dialog open={isOpen}>
-        <DialogTrigger
-          className='hover:underline'
-          onClick={() => setIsOpen(true)}
-        >
+      <div className='flex  justify-between items-baseline'>
+        <Heading variant='title'>Subscriptions</Heading>
+        <Button variant={'secondary'} onClick={() => setIsOpen(true)}>
           Add new subscription
-        </DialogTrigger>
+        </Button>
+      </div>
+      {/**TODO: Move subscription dialog into a separate component */}
+      <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Add new Subscription</DialogTitle>

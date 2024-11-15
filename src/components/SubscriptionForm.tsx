@@ -109,13 +109,8 @@ export const SubscriptionForm: React.FC<Props> = ({ addSubscription }) => {
         <form.Field
           name='category'
           validators={{
-            onChangeAsyncDebounceMs: 500,
-            onChangeAsync: async ({ value }) => {
-              await new Promise((resolve) => setTimeout(resolve, 1000));
-              return (
-                value.includes('error') && 'No "error" allowed in category'
-              );
-            },
+            onChange: ({ value }) =>
+              !value ? 'A subscription category is required' : undefined,
           }}
           children={(field) => {
             return (

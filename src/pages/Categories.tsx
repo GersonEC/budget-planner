@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AddCategory from '../components/AddCategory';
+import { AddCategoryForm } from '../components/AddCategoryForm';
 import { CategoryList } from '../components/CategoryList';
 import { useCategories } from '../context/CategoriesContext';
 import { Nav } from '../components/Nav';
@@ -8,19 +8,26 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTrigger,
 } from '../components/ui/dialog';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { Heading } from '../components/Heading';
 import { CategoriesPieChart } from '../components/CategoriesPieChart';
+import { Button } from '../components/ui/button';
+import { useToast } from '../hooks/use-toast';
 
 export const Categories = () => {
+  const { toast } = useToast();
   const { categories, setCategories } = useCategories();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const removeCategory = (categoryName: string) => {
     const newCategories = categories.filter((c) => c.name !== categoryName);
     setCategories(newCategories);
+    toast({
+      variant: 'success',
+      title: 'Category removed successfully',
+      description: `Category removed: ${categoryName}`,
+    });
   };
 
   const addCategory = (category: CategoryForm) => {
@@ -32,23 +39,21 @@ export const Categories = () => {
   return (
     <div>
       <Nav />
-      <div className='flex gap-4 justify-between'>
+      <div className='flex justify-between items-baseline'>
         <Heading variant='title'>Categories</Heading>
-      </div>
-      <Dialog open={isOpen}>
-        <DialogTrigger
-          className='hover:underline'
-          onClick={() => setIsOpen(true)}
-        >
+        <Button variant='secondary' onClick={() => setIsOpen(true)}>
           Add new category
-        </DialogTrigger>
+        </Button>
+      </div>
+      {/**TODO: Move subscription dialog into a separate component */}
+      <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Add new Category</DialogTitle>
             <DialogDescription>
               insert the data about your new category.
             </DialogDescription>
-            <AddCategory addCategory={addCategory} />
+            <AddCategoryForm addCategory={addCategory} />
           </DialogHeader>
         </DialogContent>
       </Dialog>
