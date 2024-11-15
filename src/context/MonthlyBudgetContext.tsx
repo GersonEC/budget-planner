@@ -42,7 +42,8 @@ export function MonthlyBudgetProvider({
   /** Check if the month has changed to reset the monthly budget. */
   useEffect(() => {
     const checkIfNewMonth = () => {
-      if (hasMonthChanged()) {
+      const currentMonth: number = budget.month;
+      if (hasMonthChanged(currentMonth)) {
         const newBudgetPlanner = [...budgetPlanner, budget];
         setBudgetPlanner(newBudgetPlanner);
         localStorage.setItem(

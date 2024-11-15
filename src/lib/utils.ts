@@ -103,10 +103,9 @@ export const getCurrentMonthInString = () => {
   return today.toLocaleString('default', { month: 'long' });
 };
 
-export const hasMonthChanged = (): boolean => {
+export const hasMonthChanged = (currentMonth: number): boolean => {
   const today = new Date();
-  const yesterday = new Date(today.getDate() - 1);
-  return today.getMonth() !== yesterday.getMonth();
+  return today.getMonth() !== currentMonth;
 };
 
 export const isThereMonthlyBudgetInMemory = () => {
