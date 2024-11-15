@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Nav } from '../components/Nav';
 import {
   Dialog,
   DialogContent,
@@ -67,7 +66,6 @@ export const Installments = () => {
 
   return (
     <div>
-      <Nav />
       <div className='flex justify-between'>
         <Heading variant='title'>Installments</Heading>
         <Button variant={'secondary'} onClick={() => setIsOpen(true)}>

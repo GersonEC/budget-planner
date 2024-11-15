@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Nav } from '../components/Nav';
 import { SubscriptionForm } from '../components/SubscriptionForm';
 import {
   Dialog,
@@ -68,7 +67,6 @@ export const Subscriptions = () => {
 
   return (
     <div>
-      <Nav />
       <div className='flex  justify-between items-baseline'>
         <Heading variant='title'>Subscriptions</Heading>
         <Button variant={'secondary'} onClick={() => setIsOpen(true)}>

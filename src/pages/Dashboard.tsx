@@ -1,7 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { CashflowBarChart } from '../components/CashflowBarChart';
 import { Heading } from '../components/Heading';
-import { Nav } from '../components/Nav';
 import { CategoriesPieChart } from '../components/CategoriesPieChart';
 import { BillsBarChart } from '../components/BillsBarChart';
 import { SubscriptionsPieChart } from '../components/SubscriptionsPieChart';
@@ -11,7 +10,6 @@ import { LoansBarChart } from '../components/LoansBarChart';
 export const Dashboard: React.FC = () => {
   return (
     <div>
-      <Nav />
       <Heading variant='title'>Dashboard</Heading>
       <section className='flex flex-wrap justify-evenly border'>
         <div>

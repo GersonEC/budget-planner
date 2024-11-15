@@ -6,6 +6,8 @@ import { useNavigate } from '@tanstack/react-router';
 import { PersonalFinanceProvider } from './context/PersonalFinanceContext';
 import { Toaster } from './components/ui/toaster';
 import './App.css';
+import { ErrorBoundary } from 'react-error-boundary';
+import { Nav } from './components/Nav';
 
 interface AppProps {
   children: React.ReactNode;
@@ -30,16 +32,19 @@ const App: React.FC<AppProps> = ({ children }) => {
 
   return (
     <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-      <PersonalFinanceProvider>
-        <MonthlyBudgetProvider>
-          <CategoriesProvider>
-            <div className='p-4 max-w-xl m-auto'>
-              <Toaster />
-              {children}
-            </div>
-          </CategoriesProvider>
-        </MonthlyBudgetProvider>
-      </PersonalFinanceProvider>
+      <ErrorBoundary FallbackComponent={() => <div>ERROR PAGE</div>}>
+        <PersonalFinanceProvider>
+          <MonthlyBudgetProvider>
+            <CategoriesProvider>
+              <div className='p-4 max-w-xl m-auto'>
+                <Nav />
+                <Toaster />
+                {children}
+              </div>
+            </CategoriesProvider>
+          </MonthlyBudgetProvider>
+        </PersonalFinanceProvider>
+      </ErrorBoundary>
     </ThemeProvider>
   );
 };
