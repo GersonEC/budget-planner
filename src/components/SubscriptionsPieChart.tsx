@@ -29,7 +29,10 @@ export const SubscriptionsPieChart = () => {
     );
 
   return (
-    <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
+    <ChartContainer
+      config={chartConfig}
+      className=' h-80 w-96 min-h-[300px] sm:w-72'
+    >
       <PieChart width={400} height={400}>
         <Pie
           data={subscriptionsCategoryCharData}

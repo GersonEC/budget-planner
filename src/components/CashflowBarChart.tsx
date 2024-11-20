@@ -23,13 +23,16 @@ export function CashflowBarChart() {
   const { monthlyBudget } = useMonthlyBudget();
 
   const chartData = [
-    { name: 'Inflow', value: monthlyBudget.cashflow.inflow },
-    { name: 'Outflow', value: -monthlyBudget.cashflow.outflow },
+    { name: 'Inflow', value: monthlyBudget.cashflow.inflow.totalFlow },
+    { name: 'Outflow', value: -monthlyBudget.cashflow.outflow.totalFlow },
     { name: 'Netflow', value: monthlyBudget.cashflow.netflow },
   ];
 
   return (
-    <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
+    <ChartContainer
+      config={chartConfig}
+      className=' h-80 w-96 min-h-[300px] sm:w-72'
+    >
       <BarChart
         width={500}
         height={300}

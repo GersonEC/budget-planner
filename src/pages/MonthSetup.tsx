@@ -120,8 +120,8 @@ export const MonthSetup = () => {
   };
 
   return (
-    <div className='flex flex-col gap-6 border p-4 max-w-4xl'>
-      <Heading variant='title' className='m-auto'>
+    <div className='flex flex-col gap-6 p-4 max-w-4xl'>
+      <Heading variant='title'>
         Month Setup - {getCurrentMonthInString()}
       </Heading>
       {isThereCashflow ? (

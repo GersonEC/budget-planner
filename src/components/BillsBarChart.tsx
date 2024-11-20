@@ -57,7 +57,10 @@ export const BillsBarChart = () => {
     );
 
   return (
-    <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
+    <ChartContainer
+      config={chartConfig}
+      className=' h-80 w-96 min-h-[300px] sm:w-72 '
+    >
       <BarChart accessibilityLayer data={chartData}>
         <CartesianGrid vertical={false} />
         <XAxis

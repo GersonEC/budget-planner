@@ -47,15 +47,15 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
     localStorage.setItem(type, JSON.stringify(newFlowList));
   };
 
-  const removeFlow = (name: string) => {
-    const newFlows = flowList.flows.filter((f) => f.name !== name);
-    const newFlowList: FlowList = {
-      flows: newFlows,
-      totalFlow: calculateTotalFlow(newFlows),
-    };
-    setFlowList(newFlowList);
-    localStorage.setItem(type, JSON.stringify(newFlows));
-  };
+  // const removeFlow = (name: string) => {
+  //   const newFlows = flowList.flows.filter((f) => f.name !== name);
+  //   const newFlowList: FlowList = {
+  //     flows: newFlows,
+  //     totalFlow: calculateTotalFlow(newFlows),
+  //   };
+  //   setFlowList(newFlowList);
+  //   localStorage.setItem(type, JSON.stringify(newFlows));
+  // };
 
   return (
     <>
@@ -78,7 +78,8 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
         />
         <Button variant={'outline'}>Add</Button>
       </form>
-      <ul>
+      {/* TODO: is it useful to show the flow list? */}
+      {/* <ul>
         {flowList.flows.map((flow) => (
           <li key={flow.name}>
             {flow.name}: {flow.quantity}
@@ -92,7 +93,7 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
             </Button>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </>
   );
 };

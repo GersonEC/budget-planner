@@ -18,10 +18,10 @@ export function CategoryNavBar(props: Props) {
     });
   };
 
-  const liStyle = 'p-2 inline hover:cursor-pointer';
+  const liStyle = ' text-blue-200 hover:cursor-pointer';
 
   return (
-    <ul className='list-reset flex justify-center border-b-2 mb-4'>
+    <ul className='list-reset flex flex-wrap justify-center border-b-2 mb-4 gap-2'>
       <li
         className={
           liStyle +

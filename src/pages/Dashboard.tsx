@@ -11,7 +11,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div>
       <Heading variant='title'>Dashboard</Heading>
-      <section className='flex flex-wrap justify-evenly border'>
+      <section className='flex flex-wrap justify-evenly'>
         <div>
           <Heading variant='subtitle'>
             <Link className='hover:underline' to='/bills'>

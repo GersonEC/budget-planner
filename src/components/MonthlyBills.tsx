@@ -39,7 +39,7 @@ export const MonthlyBills: React.FC<Props> = ({
   };
 
   return (
-    <React.Fragment>
+    <div>
       <div className='flex justify-between items-center'>
         <div>
           <p className='text-blue-400'>
@@ -62,6 +62,6 @@ export const MonthlyBills: React.FC<Props> = ({
         />
         <BillsTable bills={activeBills()} removeBill={removeBill} />
       </div>
-    </React.Fragment>
+    </div>
   );
 };

@@ -9,7 +9,7 @@ type Props = {
 const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
   return (
     <table className='table w-full'>
-      <thead className='text-left'>
+      <thead className='text-center'>
         <tr>
           <th scope='col'>Category</th>
           <th scope='col'>Amount</th>
@@ -21,12 +21,14 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
       <tbody>
         {bills?.map((bill) => {
           return (
-            <tr className='p4' key={bill.id}>
-              <td>{bill.category}</td>
-              <td>{currencyFormat(bill.amount)}</td>
-              <td>{new Date(bill.date).toLocaleDateString('it-IT')}</td>
-              <td>{bill.description}</td>
-              <td>
+            <tr className=' border-b' key={bill.id}>
+              <td className=' p-1'>{bill.category}</td>
+              <td className=' p-1'>{currencyFormat(bill.amount)}</td>
+              <td className=' p-1'>
+                {new Date(bill.date).toLocaleDateString('it-IT')}
+              </td>
+              <td className=' p-1 text-balance'>{bill.description}</td>
+              <td className=' p-1'>
                 <Button
                   className='px-2'
                   variant={'ghost'}

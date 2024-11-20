@@ -30,7 +30,7 @@ export const CategoriesSetup: React.FC<Props> = ({
 }) => {
   return (
     <React.Fragment>
-      <div className='flex items-baseline gap-4'>
+      <div className='flex items-center gap-4'>
         <Button variant='secondary' onClick={copyFromOutflow}>
           Copy from Outflow
         </Button>

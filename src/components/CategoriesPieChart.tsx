@@ -28,7 +28,10 @@ export const CategoriesPieChart = () => {
     );
 
   return (
-    <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
+    <ChartContainer
+      config={chartConfig}
+      className=' h-80 w-96 min-h-[300px] sm:w-72 '
+    >
       <PieRechart width={600} height={600}>
         <Pie
           dataKey='value'
