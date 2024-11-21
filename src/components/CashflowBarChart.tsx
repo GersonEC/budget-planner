@@ -22,6 +22,7 @@ import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 export function CashflowBarChart() {
   const { monthlyBudget } = useMonthlyBudget();
 
+  console.log({ monthlyBudget });
   const chartData = [
     { name: 'Inflow', value: monthlyBudget.cashflow.inflow.totalFlow },
     { name: 'Outflow', value: -monthlyBudget.cashflow.outflow.totalFlow },

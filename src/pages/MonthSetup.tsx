@@ -10,6 +10,7 @@ import { CashFlow } from './Cashflow';
 import { Heading } from '../components/Heading';
 import { currencyFormat, getCurrentMonthInString } from '../lib/utils';
 import { useToast } from '../hooks/use-toast';
+import { usePersonalFinance } from '../context/PersonalFinanceContext';
 
 export const MonthSetup = () => {
   const { toast } = useToast();
@@ -20,6 +21,8 @@ export const MonthSetup = () => {
   const [isCategoryModalOpen, setIsCategoryModalOpen] =
     useState<boolean>(false);
   const navigate = useNavigate();
+  const { finances } = usePersonalFinance();
+  const installmentList: InstallmentList = finances.installmentList;
 
   useEffect(() => {
     const inflowsInSessionStorage = localStorage.getItem('inflow');
@@ -86,9 +89,16 @@ export const MonthSetup = () => {
       bills: [],
       cashflow: {
         ...monthlyBudget.cashflow,
+        outflow: {
+          ...monthlyBudget.cashflow.outflow,
+          totalFlow:
+            monthlyBudget.cashflow.outflow.totalFlow +
+            installmentList.monthlyTotal,
+        },
         netflow:
           monthlyBudget.cashflow.inflow.totalFlow -
-          monthlyBudget.cashflow.outflow.totalFlow,
+          (monthlyBudget.cashflow.outflow.totalFlow +
+            installmentList.monthlyTotal),
       },
     };
     setMonthlyBudget(updatedMonthlyBudget);

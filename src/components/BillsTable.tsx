@@ -21,7 +21,7 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
       <tbody>
         {bills?.map((bill) => {
           return (
-            <tr className=' border-b' key={bill.id}>
+            <tr key={bill.id}>
               <td className=' p-1'>{bill.category}</td>
               <td className=' p-1'>{currencyFormat(bill.amount)}</td>
               <td className=' p-1'>
