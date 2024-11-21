@@ -22,7 +22,6 @@ import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 export function CashflowBarChart() {
   const { monthlyBudget } = useMonthlyBudget();
 
-  console.log({ monthlyBudget });
   const chartData = [
     { name: 'Inflow', value: monthlyBudget.cashflow.inflow.totalFlow },
     { name: 'Outflow', value: -monthlyBudget.cashflow.outflow.totalFlow },
@@ -30,10 +29,7 @@ export function CashflowBarChart() {
   ];
 
   return (
-    <ChartContainer
-      config={chartConfig}
-      className=' h-80 w-96 min-h-[300px] sm:w-72'
-    >
+    <ChartContainer config={chartConfig} className='h-80 min-h-[300px] w-full '>
       <BarChart
         width={500}
         height={300}

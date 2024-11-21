@@ -51,16 +51,13 @@ export const BillsBarChart = () => {
 
   if (chartData.length === 0)
     return (
-      <div className=' h-20 w-96 '>
+      <div className=' h-20 w-96 sm:w-full'>
         <p className=' text-base'>There are no bills data</p>
       </div>
     );
 
   return (
-    <ChartContainer
-      config={chartConfig}
-      className=' h-80 w-96 min-h-[300px] sm:w-72 '
-    >
+    <ChartContainer config={chartConfig} className='h-80 min-h-[300px] w-full'>
       <BarChart accessibilityLayer data={chartData}>
         <CartesianGrid vertical={false} />
         <XAxis

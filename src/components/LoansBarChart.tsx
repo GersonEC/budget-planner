@@ -22,13 +22,16 @@ export const LoansBarChart = () => {
 
   if (loans.length === 0)
     return (
-      <div className=' h-20 w-96 '>
+      <div className=' h-20 w-full'>
         <p className=' text-base'>There are no loans data</p>
       </div>
     );
 
   return (
-    <ChartContainer config={chartConfig} className=' h-80 w-96 min-h-[300px] '>
+    <ChartContainer
+      config={chartConfig}
+      className=' h-80 min-h-[300px] w-full '
+    >
       <BarChart
         width={500}
         height={300}

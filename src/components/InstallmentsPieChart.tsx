@@ -11,16 +11,13 @@ export const InstallmentsPieChart = () => {
 
   if (installments.length === 0)
     return (
-      <div className=' h-20 w-96 '>
+      <div className=' h-20 w-full'>
         <p className=' text-base'>There are no installments data</p>
       </div>
     );
 
   return (
-    <ChartContainer
-      config={chartConfig}
-      className=' h-80 w-96 min-h-[300px] sm:w-72'
-    >
+    <ChartContainer config={chartConfig} className=' h-80 min-h-[300px] w-full'>
       <PieChart width={400} height={400}>
         <Pie
           dataKey='monthlyCost'
