@@ -3,7 +3,7 @@ import { ModeToggle } from './ModeToggle';
 
 export const Nav = () => {
   return (
-    <nav className=' border-b-2 mb-4 flex justify-end'>
+    <nav className='flex justify-end'>
       <Link to='/dashboard'>
         {/* <Button variant={'link'}>Dashboard</Button> */}
       </Link>

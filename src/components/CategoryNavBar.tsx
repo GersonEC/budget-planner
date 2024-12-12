@@ -18,10 +18,11 @@ export function CategoryNavBar(props: Props) {
     });
   };
 
-  const liStyle = ' text-blue-200 hover:cursor-pointer';
+  const liStyle =
+    ' text-gray-200 border px-2 bg-zinc-800 text-gray-300 hover:cursor-pointer rounded shadow-md';
 
   return (
-    <ul className='list-reset flex flex-wrap justify-center border-b-2 mb-4 gap-2'>
+    <ul className='list-reset flex flex-wrap justify-center gap-2 bg-zinc-800 rounded mb-2 p-1 shadow-sm'>
       <li
         className={
           liStyle +
@@ -38,7 +39,7 @@ export function CategoryNavBar(props: Props) {
             return (
               <li
                 className={`${liStyle} ${
-                  props.activeCategory === value ? 'underline' : ''
+                  props.activeCategory === value ? 'bg-zinc-700' : ''
                 }`}
                 key={index}
                 onClick={() => setNewActiveCategory(value)}

@@ -40,21 +40,32 @@ export const MonthlyBills: React.FC<Props> = ({
 
   return (
     <div>
-      <div className='flex justify-between items-center'>
+      <div className='flex justify-between items-baseline mb-2'>
         <div>
-          <p className='text-blue-400'>
-            Monthly Budget: {currencyFormat(budget)}
-          </p>
-          <p className='text-red-400'>Expenses: {currencyFormat(expenses)}</p>
-          <p className='text-green-400'>
-            Remaining: {currencyFormat(budget - expenses)}
-          </p>
+          <div className='flex gap-2'>
+            <p className='text-gray-300 text-sm'>Budget:</p>
+            <p className='text-blue-300 font-semibold text-sm'>
+              {currencyFormat(budget)}
+            </p>
+          </div>
+          <div className='flex gap-2'>
+            <p className='text-gray-300 text-sm'>Expenses: </p>
+            <p className='text-red-300 font-semibold text-sm'>
+              {currencyFormat(expenses)}
+            </p>
+          </div>
+          <div className='flex gap-2'>
+            <p className='text-gray-300 text-sm'>Remaining:</p>{' '}
+            <p className='text-green-300 font-semibold text-sm'>
+              {currencyFormat(budget - expenses)}
+            </p>
+          </div>
         </div>
-        <Button variant='secondary'>
+        <Button variant='link' className='font-bold text-yellow-200'>
           <Link to='/add-bill'>Add new bill</Link>
         </Button>
       </div>
-      <div className='flex flex-col border mt-4 p-2'>
+      <div>
         <CategoryNavBar
           categories={categories}
           activeCategory={activeCategory}
