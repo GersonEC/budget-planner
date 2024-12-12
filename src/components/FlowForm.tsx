@@ -41,7 +41,6 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
     toast({
       variant: 'success',
       title: `${toCapitalize(type)} element added`,
-      description: `${name}: ${quantity}`,
     });
     handleSubmit(type, newFlowList);
     localStorage.setItem(type, JSON.stringify(newFlowList));
@@ -59,24 +58,29 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
 
   return (
     <>
-      <form className='flex gap-2' onSubmit={onSubmit}>
-        <Input
-          name={`${type}-name`}
-          placeholder={`${type} name...`}
-          value={name}
-          min={0}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <Input
-          type='number'
-          name={`${type}-quantity`}
-          value={quantity}
-          min={0}
-          onChange={(e) => setQuantity(Number(e.target.value))}
-          required
-        />
-        <Button variant={'outline'}>Add</Button>
+      <form onSubmit={onSubmit}>
+        <div className='flex flex-col gap-2 my-4'>
+          <div className='flex items-center justify-between'>
+            <p className='text-sm text-gray-300 mb-2'>Add your {type}s</p>
+            <Button variant={'outline'}>Add</Button>
+          </div>
+          <Input
+            name={`${type}-name`}
+            placeholder={`${type} name...`}
+            value={name}
+            min={0}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <Input
+            type='number'
+            name={`${type}-quantity`}
+            value={quantity}
+            min={0}
+            onChange={(e) => setQuantity(Number(e.target.value))}
+            required
+          />
+        </div>
       </form>
       {/* TODO: is it useful to show the flow list? */}
       {/* <ul>

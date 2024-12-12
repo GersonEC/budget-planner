@@ -71,7 +71,6 @@ export const MonthSetup = () => {
       toast({
         variant: 'success',
         title: 'Elements copied from outflow',
-        description: 'The categories has been added correctly.',
       });
     }
   };
@@ -137,25 +136,30 @@ export const MonthSetup = () => {
       {isThereCashflow ? (
         <CashFlow />
       ) : (
-        <div>
+        <div className='border rounded p-4'>
           <Heading variant='subtitle'>Cashflow Setting</Heading>
-          <h2>Inflow</h2>
-          <FlowForm type='inflow' handleSubmit={handleFlowSubmit} />
-          <h2>Outflow</h2>
-          <FlowForm type='outflow' handleSubmit={handleFlowSubmit} />
+          <div className='flex flex-col'>
+            <FlowForm type='inflow' handleSubmit={handleFlowSubmit} />
+            <FlowForm type='outflow' handleSubmit={handleFlowSubmit} />
+          </div>
         </div>
       )}
-      <Heading variant='subtitle'>Budget Setting</Heading>
-      <BudgetSetup budget={budget} setBudget={handleSetBudget} />
-      <Heading variant='subtitle'>Categories Setting</Heading>
-      <CategoriesSetup
-        categories={categories}
-        addCategory={handleAddCategory}
-        copyFromOutflow={handleCopyFromOutflow}
-        removeCategory={handleRemoveCategory}
-        isOpen={isCategoryModalOpen}
-        setIsOpen={(isOpen) => setIsCategoryModalOpen(isOpen)}
-      />
+      <div className='border rounded p-4'>
+        <Heading variant='subtitle'>Budget Setting</Heading>
+        <BudgetSetup budget={budget} setBudget={handleSetBudget} />
+      </div>
+      <div className='border rounded p-4'>
+        <Heading variant='subtitle'>Categories Setting</Heading>
+        <CategoriesSetup
+          categories={categories}
+          addCategory={handleAddCategory}
+          copyFromOutflow={handleCopyFromOutflow}
+          removeCategory={handleRemoveCategory}
+          isOpen={isCategoryModalOpen}
+          setIsOpen={(isOpen) => setIsCategoryModalOpen(isOpen)}
+        />
+      </div>
+
       <Button onClick={handleProceed}>Proceed</Button>
     </div>
   );

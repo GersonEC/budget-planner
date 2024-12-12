@@ -1,6 +1,5 @@
 import React from 'react';
 import { AddCategoryForm } from './AddCategoryForm';
-import { CategoryList } from './CategoryList';
 import { Button } from './ui/button';
 import {
   Dialog,
@@ -21,17 +20,15 @@ interface Props {
 }
 
 export const CategoriesSetup: React.FC<Props> = ({
-  categories,
   isOpen,
   setIsOpen,
   addCategory,
   copyFromOutflow,
-  removeCategory,
 }) => {
   return (
     <React.Fragment>
       <div className='flex items-center gap-4'>
-        <Button variant='secondary' onClick={copyFromOutflow}>
+        <Button variant='outline' onClick={copyFromOutflow}>
           Copy from Outflow
         </Button>
         <p>Or</p>
@@ -51,7 +48,7 @@ export const CategoriesSetup: React.FC<Props> = ({
           </DialogContent>
         </Dialog>
       </div>
-      <CategoryList categories={categories} removeCategory={removeCategory} />
+      {/* <CategoryList categories={categories} removeCategory={removeCategory} /> */}
     </React.Fragment>
   );
 };
