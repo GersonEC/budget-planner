@@ -40,12 +40,14 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
 
   if (bills.length === 0) {
     return (
-      <p className='text-center text-gray-300'>There are no bill to show</p>
+      <p className='text-center text-gray-300 p-2'>
+        There are no bills to show
+      </p>
     );
   }
 
   return (
-    <div>
+    <div className='flex flex-col gap-2'>
       {bills.map((bill) => {
         return <div key={bill.id}>{renderBillCard(bill)}</div>;
       })}

@@ -14,12 +14,13 @@ import {
   SelectValue,
 } from '../components/ui/select';
 import { Heading } from '../components/Heading';
+import { currencyFormat } from '../lib/utils';
 
 const AddBill = () => {
   const { categories, setCategories } = useCategories();
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
   const navigate = useNavigate();
-  const [amount, setAmount] = useState<number | string>('');
+  const [amount, setAmount] = useState<number | string>(0);
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState(categories[0]);
@@ -107,51 +108,75 @@ const AddBill = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+    <div>
       <Heading variant='title'>Add new bill</Heading>
-      <p className='text-yellow-400'>Allocated budget: {allocatedBudget}</p>
-      <p className=' text-green-400'>Remaining budget: {remainingBudget}</p>
-      <label htmlFor='category'>Bill category:</label>
-      <Select
-        name='category'
-        onValueChange={(value) => handleChangeCategory(value)}
-      >
-        <SelectTrigger className='w-[180px]'>
-          <SelectValue placeholder='Choose a category...' />
-        </SelectTrigger>
-        <SelectContent>
-          {categories
-            ? categories.map((value, index) => {
-                return (
-                  <SelectItem key={index} value={value.name}>
-                    {value.name}
-                  </SelectItem>
-                );
-              })
-            : ''}
-        </SelectContent>
-      </Select>
-      <div>
-        <label htmlFor='amount'>Bill amount:</label>
-        <Input name='amount' value={amount} onChange={handleChangeAmount} />
+      <div className='border p-2 flex justify-between mb-2'>
+        <div className='flex gap-2'>
+          <p className='text-gray-300 text-sm'>Allocated budget:</p>
+          <p className='text-yellow-300 font-semibold text-sm'>
+            {currencyFormat(Number(allocatedBudget))}
+          </p>
+        </div>
+        <div className='flex gap-2'>
+          <p className='text-gray-300 text-sm'>Remaining budget:</p>
+          <p className='text-green-300 font-semibold text-sm'>
+            {currencyFormat(Number(remainingBudget))}
+          </p>
+        </div>
       </div>
-      <div className='flex flex-col'>
-        <label htmlFor='description'>Bill description:</label>
-        <Textarea
-          name='description'
-          rows={2}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </div>
-      <div className='flex flex-col'>
-        <label htmlFor='date'>Bill date:</label>
-        <DatePicker date={date} setDate={handleChangeDate} />
-      </div>
-      <Button type='submit' className='w-full'>
-        Add
-      </Button>
-    </form>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+        <div>
+          <label className='text-sm text-slate-300' htmlFor='category'>
+            Bill category:
+          </label>
+          <Select
+            name='category'
+            onValueChange={(value) => handleChangeCategory(value)}
+          >
+            <SelectTrigger className='w-full'>
+              <SelectValue placeholder='Choose a category...' />
+            </SelectTrigger>
+            <SelectContent>
+              {categories
+                ? categories.map((value, index) => {
+                    return (
+                      <SelectItem key={index} value={value.name}>
+                        {value.name}
+                      </SelectItem>
+                    );
+                  })
+                : ''}
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <label className='text-sm text-slate-300' htmlFor='amount'>
+            Bill amount:
+          </label>
+          <Input name='amount' value={amount} onChange={handleChangeAmount} />
+        </div>
+        <div className='flex flex-col'>
+          <label className='text-sm text-slate-300' htmlFor='description'>
+            Bill description:
+          </label>
+          <Textarea
+            name='description'
+            rows={2}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div className='flex flex-col'>
+          <label className='text-sm text-slate-300' htmlFor='date'>
+            Bill date:
+          </label>
+          <DatePicker date={date} setDate={handleChangeDate} />
+        </div>
+        <Button type='submit' className='w-full'>
+          Add
+        </Button>
+      </form>
+    </div>
   );
 };
 
