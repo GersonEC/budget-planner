@@ -19,7 +19,7 @@ export function CategoryNavBar(props: Props) {
   };
 
   const liStyle =
-    ' text-gray-200 border px-2 bg-zinc-800 text-gray-300 hover:cursor-pointer rounded shadow-md';
+    ' text-gray-200 border bg-zinc-800 text-gray-300 hover:cursor-pointer rounded shadow-md';
 
   return (
     <ul className='list-reset flex flex-wrap justify-center gap-2 bg-zinc-800 rounded mb-2 p-1 shadow-sm'>
@@ -39,7 +39,7 @@ export function CategoryNavBar(props: Props) {
             return (
               <li
                 className={`${liStyle} ${
-                  props.activeCategory === value ? 'bg-zinc-700' : ''
+                  props.activeCategory === value ? 'bg-zinc-600 px-1' : ''
                 }`}
                 key={index}
                 onClick={() => setNewActiveCategory(value)}
