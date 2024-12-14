@@ -110,7 +110,7 @@ const AddBill = () => {
   return (
     <div>
       <Heading variant='title'>Add new bill</Heading>
-      <div className='border p-2 flex justify-between mb-2 gap-4'>
+      <div className='flex flex-col items-end mb-2'>
         <div className='flex gap-2'>
           <p className='text-gray-300 text-sm'>Allocated budget:</p>
           <p className='text-yellow-300 font-semibold text-sm'>
