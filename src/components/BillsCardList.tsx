@@ -6,10 +6,10 @@ type Props = {
   removeBill: (id: string) => void;
 };
 
-const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
+const BillsCardList: React.FC<Props> = ({ bills, removeBill }) => {
   const renderBillCard = (bill: Bill) => {
     return (
-      <div className='border p-2 shadow-md'>
+      <div className='border p-2 shadow-md rounded border-slate-200'>
         <div className='flex justify-between items-baseline'>
           <p className='border rounded border-indigo-200 bg-zinc-800 text-center text-indigo-200 px-6 text-sm brightness-150'>
             {bill.category}
@@ -55,4 +55,4 @@ const BillsTable: React.FC<Props> = ({ bills, removeBill }) => {
   );
 };
 
-export default BillsTable;
+export default BillsCardList;

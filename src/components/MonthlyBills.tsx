@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import BillsTable from './BillsTable';
 import { CategoryNavBar } from './CategoryNavBar';
 import { Button } from './ui/button';
 import { Link } from '@tanstack/react-router';
 import { currencyFormat } from '../lib/utils';
+import BillsCardList from './BillsCardList';
 
 interface Props {
   bills: Bill[];
@@ -71,7 +71,7 @@ export const MonthlyBills: React.FC<Props> = ({
           activeCategory={activeCategory}
           setNewActiveCategory={setNewActiveCategory}
         />
-        <BillsTable bills={activeBills()} removeBill={removeBill} />
+        <BillsCardList bills={activeBills()} removeBill={removeBill} />
       </div>
     </div>
   );

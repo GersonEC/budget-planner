@@ -23,12 +23,10 @@ const AddBill = () => {
   const [amount, setAmount] = useState<number | string>(0);
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date());
-  const [category, setCategory] = useState(categories[0]);
+  const [, setCategory] = useState<CategoryForm>();
   const id = useId();
-  const allocatedBudget = category ? category.budget : 0;
-  const remainingBudget = category
-    ? Number(category.budget) - category.expenses
-    : 0;
+  const [allocatedBudget, setAllocatedBudget] = useState(0);
+  const [remainingBudget, setRemainingBudget] = useState(0);
 
   const handleChangeAmount = (event: ChangeEvent) => {
     let newAmount = parseInt((event.target as HTMLInputElement).value, 10);
@@ -38,7 +36,13 @@ const AddBill = () => {
 
   const handleChangeCategory = (value: string) => {
     const updatedCategory = categories.find((c) => c.name === value);
-    if (updatedCategory) setCategory(updatedCategory);
+    if (updatedCategory) {
+      setAllocatedBudget(Number(updatedCategory?.budget));
+      setRemainingBudget(
+        Number(updatedCategory.budget) - updatedCategory.expenses
+      );
+      setCategory(updatedCategory);
+    }
   };
 
   const handleChangeDate = (newDate: Date | undefined) => {
@@ -119,7 +123,11 @@ const AddBill = () => {
         </div>
         <div className='flex gap-2'>
           <p className='text-gray-300 text-sm'>Remaining budget:</p>
-          <p className='text-green-300 font-semibold text-sm'>
+          <p
+            className={`${
+              remainingBudget === 0 ? 'text-red-300' : 'text-green-300'
+            } font-semibold text-sm`}
+          >
             {currencyFormat(Number(remainingBudget))}
           </p>
         </div>

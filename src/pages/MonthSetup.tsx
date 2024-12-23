@@ -11,6 +11,13 @@ import { Heading } from '../components/Heading';
 import { currencyFormat, getCurrentMonthInString } from '../lib/utils';
 import { useToast } from '../hooks/use-toast';
 import { usePersonalFinance } from '../context/PersonalFinanceContext';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../components/ui/dialog';
 
 export const MonthSetup = () => {
   const { toast } = useToast();
@@ -18,6 +25,10 @@ export const MonthSetup = () => {
   const { categories, setCategories } = useCategories();
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
   const [isThereCashflow, setIsThereCashflow] = useState<boolean>(false);
+  const [isOutflowDialogOpen, setIsOutflowDialogOpen] =
+    useState<boolean>(false);
+  const [isCategoryDialogOpen, setIsCategoryDialogOpen] =
+    useState<boolean>(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] =
     useState<boolean>(false);
   const navigate = useNavigate();
@@ -128,6 +139,76 @@ export const MonthSetup = () => {
     setMonthlyBudget(updatedMonthlyBudget);
   };
 
+  const renderShowOutflows = () => {
+    return (
+      <Dialog
+        open={isOutflowDialogOpen}
+        onOpenChange={() => setIsOutflowDialogOpen(!isOutflowDialogOpen)}
+      >
+        <DialogTrigger
+          className='hover:underline text-orange-400 text-sm'
+          onClick={() => setIsOutflowDialogOpen(true)}
+        >
+          check your outflows
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Outflows</DialogTitle>
+            <div className='flex flex-wrap gap-2 justify-center'>
+              {monthlyBudget.cashflow.outflow.flows.map((outflow) => (
+                <div
+                  key={outflow.name}
+                  className='border border-slate-400 rounded py-1 px-2 flex items-center gap-2'
+                >
+                  <span>📤 </span>
+                  {outflow.name}: {currencyFormat(outflow.quantity)}
+                </div>
+              ))}
+            </div>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
+  const renderShowCategories = () => {
+    return (
+      <Dialog
+        open={isCategoryDialogOpen}
+        onOpenChange={() => setIsCategoryDialogOpen(!isCategoryDialogOpen)}
+      >
+        <DialogTrigger
+          className='hover:underline text-orange-400 text-sm'
+          onClick={() => setIsCategoryDialogOpen(true)}
+        >
+          check your categories
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Categories</DialogTitle>
+            <div className='flex flex-wrap gap-2 justify-center'>
+              {categories.map((category) => (
+                <div
+                  key={category.name}
+                  className='border border-slate-400 rounded py-1 px-2 flex items-center gap-2'
+                >
+                  <span>📊 </span>
+                  {category.name}: {currencyFormat(Number(category.budget))}
+                  <Button
+                    variant={'ghost'}
+                    onClick={() => handleRemoveCategory(category.name)}
+                  >
+                    ⛔️
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
   return (
     <div className='flex flex-col gap-6 p-4 max-w-4xl'>
       <Heading variant='title'>
@@ -141,6 +222,7 @@ export const MonthSetup = () => {
           <div className='flex flex-col'>
             <FlowForm type='inflow' handleSubmit={handleFlowSubmit} />
             <FlowForm type='outflow' handleSubmit={handleFlowSubmit} />
+            {renderShowOutflows()}
           </div>
         </div>
       )}
@@ -150,14 +232,17 @@ export const MonthSetup = () => {
       </div>
       <div className='border rounded p-4'>
         <Heading variant='subtitle'>Categories Setting</Heading>
-        <CategoriesSetup
-          categories={categories}
-          addCategory={handleAddCategory}
-          copyFromOutflow={handleCopyFromOutflow}
-          removeCategory={handleRemoveCategory}
-          isOpen={isCategoryModalOpen}
-          setIsOpen={(isOpen) => setIsCategoryModalOpen(isOpen)}
-        />
+        <div className='flex flex-col items-center gap-4'>
+          <CategoriesSetup
+            categories={categories}
+            addCategory={handleAddCategory}
+            copyFromOutflow={handleCopyFromOutflow}
+            removeCategory={handleRemoveCategory}
+            isOpen={isCategoryModalOpen}
+            setIsOpen={(isOpen) => setIsCategoryModalOpen(isOpen)}
+          />
+          {renderShowCategories()}
+        </div>
       </div>
 
       <Button onClick={handleProceed}>Proceed</Button>
