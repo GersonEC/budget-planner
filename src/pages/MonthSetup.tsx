@@ -27,6 +27,7 @@ export const MonthSetup = () => {
   const [isThereCashflow, setIsThereCashflow] = useState<boolean>(false);
   const [isOutflowDialogOpen, setIsOutflowDialogOpen] =
     useState<boolean>(false);
+  const [isInflowDialogOpen, setIsInflowDialogOpen] = useState<boolean>(false);
   const [isCategoryDialogOpen, setIsCategoryDialogOpen] =
     useState<boolean>(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] =
@@ -34,6 +35,8 @@ export const MonthSetup = () => {
   const navigate = useNavigate();
   const { finances } = usePersonalFinance();
   const installmentList: InstallmentList = finances.installmentList;
+  const outflows = monthlyBudget.cashflow.outflow.flows;
+  const inflows = monthlyBudget.cashflow.inflow.flows;
 
   useEffect(() => {
     const inflowsInSessionStorage = localStorage.getItem('inflow');
@@ -151,19 +154,63 @@ export const MonthSetup = () => {
         >
           check your outflows
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className='min-h-max h-1/4'>
           <DialogHeader>
             <DialogTitle>Outflows</DialogTitle>
             <div className='flex flex-wrap gap-2 justify-center'>
-              {monthlyBudget.cashflow.outflow.flows.map((outflow) => (
-                <div
-                  key={outflow.name}
-                  className='border border-slate-400 rounded py-1 px-2 flex items-center gap-2'
-                >
-                  <span>📤 </span>
-                  {outflow.name}: {currencyFormat(outflow.quantity)}
+              {outflows.length === 0 ? (
+                <div className='flex flex-1 items-center justify-center mt-8'>
+                  There are no outflows to show.
                 </div>
-              ))}
+              ) : (
+                outflows.map((outflow) => (
+                  <div
+                    key={outflow.name}
+                    className='border border-slate-400 rounded py-1 px-2 flex items-center gap-2 mt-4'
+                  >
+                    <span>📤 </span>
+                    {outflow.name}: {currencyFormat(outflow.quantity)}
+                  </div>
+                ))
+              )}
+            </div>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
+  const renderShowInflows = () => {
+    return (
+      <Dialog
+        open={isInflowDialogOpen}
+        onOpenChange={() => setIsInflowDialogOpen(!isInflowDialogOpen)}
+      >
+        <DialogTrigger
+          className='hover:underline text-orange-400 text-sm'
+          onClick={() => setIsInflowDialogOpen(true)}
+        >
+          check your inflows
+        </DialogTrigger>
+        <DialogContent className='min-h-max h-1/4'>
+          <DialogHeader>
+            <DialogTitle>Inflows</DialogTitle>
+            <div className='flex flex-wrap gap-2 justify-center'>
+              {inflows.length === 0 ? (
+                <div className='flex flex-1 items-center justify-center mt-8'>
+                  There are no inflows to show.
+                </div>
+              ) : (
+                inflows.map((inflow) => (
+                  <div
+                    key={inflow.name}
+                    className='border border-slate-400 rounded py-1 px-2 flex items-center gap-2 mt-4'
+                  >
+                    <span>📥 </span>
+                    {inflow.name}: {currencyFormat(inflow.quantity)}
+                  </div>
+                ))
+              )}
             </div>
           </DialogHeader>
         </DialogContent>
@@ -183,25 +230,30 @@ export const MonthSetup = () => {
         >
           check your categories
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className='min-h-max h-1/4'>
           <DialogHeader>
             <DialogTitle>Categories</DialogTitle>
             <div className='flex flex-wrap gap-2 justify-center'>
-              {categories.map((category) => (
-                <div
-                  key={category.name}
-                  className='border border-slate-400 rounded py-1 px-2 flex items-center gap-2'
-                >
-                  <span>📊 </span>
-                  {category.name}: {currencyFormat(Number(category.budget))}
-                  <Button
-                    variant={'ghost'}
-                    onClick={() => handleRemoveCategory(category.name)}
-                  >
-                    ⛔️
-                  </Button>
+              {categories.length === 0 ? (
+                <div className='flex flex-1 items-center justify-center mt-8'>
+                  There are no categories to show.
                 </div>
-              ))}
+              ) : (
+                categories.map((category) => (
+                  <div className='flex gap-1' key={category.name}>
+                    <div className='border border-slate-400 rounded py-1 px-2 flex items-center gap-2'>
+                      <span>📊 </span>
+                      {category.name}: {currencyFormat(Number(category.budget))}
+                    </div>
+                    <Button
+                      variant={'ghost'}
+                      onClick={() => handleRemoveCategory(category.name)}
+                    >
+                      ❌
+                    </Button>
+                  </div>
+                ))
+              )}
             </div>
           </DialogHeader>
         </DialogContent>
@@ -217,22 +269,23 @@ export const MonthSetup = () => {
       {isThereCashflow ? (
         <CashFlow />
       ) : (
-        <div className='border rounded p-4'>
+        <div className='border rounded p-4 shadow-xl'>
           <Heading variant='subtitle'>Cashflow Setting</Heading>
           <div className='flex flex-col'>
             <FlowForm type='inflow' handleSubmit={handleFlowSubmit} />
+            {inflows.length > 0 && renderShowInflows()}
             <FlowForm type='outflow' handleSubmit={handleFlowSubmit} />
-            {renderShowOutflows()}
+            {outflows.length > 0 && renderShowOutflows()}
           </div>
         </div>
       )}
-      <div className='border rounded p-4'>
+      <div className='border rounded p-4 shadow-xl'>
         <Heading variant='subtitle'>Budget Setting</Heading>
         <BudgetSetup budget={budget} setBudget={handleSetBudget} />
       </div>
-      <div className='border rounded p-4'>
+      <div className='border rounded p-4 shadow-xl'>
         <Heading variant='subtitle'>Categories Setting</Heading>
-        <div className='flex flex-col items-center gap-4'>
+        <div className='flex flex-col items-center gap-4 shadow-xl'>
           <CategoriesSetup
             categories={categories}
             addCategory={handleAddCategory}
@@ -241,7 +294,7 @@ export const MonthSetup = () => {
             isOpen={isCategoryModalOpen}
             setIsOpen={(isOpen) => setIsCategoryModalOpen(isOpen)}
           />
-          {renderShowCategories()}
+          {categories.length > 0 && renderShowCategories()}
         </div>
       </div>
 

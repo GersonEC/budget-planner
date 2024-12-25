@@ -125,7 +125,7 @@ const AddBill = () => {
           <p className='text-gray-300 text-sm'>Remaining budget:</p>
           <p
             className={`${
-              remainingBudget === 0 ? 'text-red-300' : 'text-green-300'
+              remainingBudget <= 0 ? 'text-red-300' : 'text-green-300'
             } font-semibold text-sm`}
           >
             {currencyFormat(Number(remainingBudget))}

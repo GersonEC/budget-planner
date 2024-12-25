@@ -10,7 +10,7 @@ import {
 } from '../components/ui/dialog';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { Heading } from '../components/Heading';
-import { CategoriesPieChart } from '../components/CategoriesPieChart';
+// import { CategoriesPieChart } from '../components/CategoriesPieChart';
 import { Button } from '../components/ui/button';
 import { useToast } from '../hooks/use-toast';
 
@@ -25,7 +25,6 @@ export const Categories = () => {
     toast({
       variant: 'success',
       title: 'Category removed successfully',
-      description: `Category removed: ${categoryName}`,
     });
   };
 
@@ -37,10 +36,10 @@ export const Categories = () => {
 
   return (
     <div>
-      <div className='flex justify-between items-baseline'>
-        <Heading variant='title'>Categories</Heading>
-        <Button variant='secondary' onClick={() => setIsOpen(true)}>
-          Add new category
+      <Heading variant='title'>Categories</Heading>
+      <div className='flex justify-center'>
+        <Button variant='link' onClick={() => setIsOpen(true)}>
+          <span className='text-orange-400'>Add new category</span>
         </Button>
       </div>
       {/**TODO: Move subscription dialog into a separate component */}
@@ -56,7 +55,7 @@ export const Categories = () => {
         </DialogContent>
       </Dialog>
       <CategoryList categories={categories} removeCategory={removeCategory} />
-      <CategoriesPieChart />
+      {/* <CategoriesPieChart /> */}
     </div>
   );
 };

@@ -1,12 +1,18 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useLocation } from '@tanstack/react-router';
 import { ModeToggle } from './ModeToggle';
+import { Button } from './ui/button';
 
 export const Nav = () => {
+  const location = useLocation();
+
   return (
     <nav className='flex justify-end'>
-      <Link to='/dashboard'>
-        {/* <Button variant={'link'}>Dashboard</Button> */}
-      </Link>
+      {location.pathname !== '/' && (
+        <Link to='/bills'>
+          <Button variant={'link'}>Bills</Button>
+        </Link>
+      )}
+
       <ModeToggle />
     </nav>
   );

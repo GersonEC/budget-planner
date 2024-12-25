@@ -32,7 +32,7 @@ export const CategoriesSetup: React.FC<Props> = ({
           Copy from Outflow
         </Button>
         <p>Or</p>
-        <Dialog open={isOpen}>
+        <Dialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)}>
           <DialogTrigger
             className='hover:underline'
             onClick={() => setIsOpen(true)}

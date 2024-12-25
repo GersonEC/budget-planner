@@ -37,7 +37,7 @@ const App: React.FC<AppProps> = ({ children }) => {
         <PersonalFinanceProvider>
           <MonthlyBudgetProvider>
             <CategoriesProvider>
-              <div className='p-4 max-w-xl m-auto sm:w-full'>
+              <div className='p-2 max-w-xl m-auto sm:w-full'>
                 <Nav />
                 <Toaster />
                 {children}
