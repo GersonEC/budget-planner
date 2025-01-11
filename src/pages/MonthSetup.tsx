@@ -16,7 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '../components/ui/dialog';
-import { HandCoins, Trash2 } from 'lucide-react';
+import { Banknote, HandCoins, Trash2 } from 'lucide-react';
 
 export const MonthSetup = () => {
   const { toast } = useToast();
@@ -57,11 +57,9 @@ export const MonthSetup = () => {
   };
 
   const handleCopyFromOutflow = () => {
-    const outflowsInSessionStorage = localStorage.getItem('outflow');
-    if (outflowsInSessionStorage) {
-      const outflows = JSON.parse(outflowsInSessionStorage) as FlowList;
+    if (outflows) {
       const newCategories: CategoryForm[] = [];
-      outflows.flows.forEach((flow) => {
+      outflows.forEach((flow) => {
         const category: CategoryForm = {
           name: flow.name,
           budget: flow.quantity,
@@ -73,6 +71,11 @@ export const MonthSetup = () => {
       toast({
         variant: 'success',
         title: 'Elements copied from outflow',
+      });
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'There are no outflow elements',
       });
     }
   };
@@ -241,24 +244,23 @@ export const MonthSetup = () => {
         <DialogContent className='min-h-max h-1/4 w-11/12'>
           <DialogHeader>
             <DialogTitle>Categories</DialogTitle>
-            <div className='flex flex-wrap gap-2 justify-center'>
+            <div className='flex flex-wrap gap-2 justify-center mt-8'>
               {categories.length === 0 ? (
                 <div className='flex flex-1 items-center justify-center mt-8'>
                   There are no categories to show.
                 </div>
               ) : (
                 categories.map((category) => (
-                  <div className='flex gap-1' key={category.name}>
-                    <div className='border border-slate-400 rounded py-1 px-2 flex items-center gap-2'>
-                      <span>📊 </span>
-                      {category.name}: {currencyFormat(Number(category.budget))}
-                    </div>
-                    <Button
-                      variant={'ghost'}
+                  <div
+                    key={category.name}
+                    className='border border-slate-400 rounded py-1 px-2 flex items-center gap-2 mt-4'
+                  >
+                    <Banknote className='text-blue-400' />
+                    {category.name}: {currencyFormat(Number(category.budget))}
+                    <Trash2
+                      className='w-5 text-slate-400 hover:text-red-400'
                       onClick={() => handleRemoveCategory(category.name)}
-                    >
-                      ❌
-                    </Button>
+                    />
                   </div>
                 ))
               )}
@@ -285,10 +287,6 @@ export const MonthSetup = () => {
       </div>
 
       <div className='border rounded p-4 shadow-xl'>
-        <Heading variant='subtitle'>Budget Setting</Heading>
-        <BudgetSetup budget={budget} setBudget={handleSetBudget} />
-      </div>
-      <div className='border rounded p-4 shadow-xl'>
         <Heading variant='subtitle'>Categories Setting</Heading>
         <div className='flex flex-col items-center gap-4 shadow-xl'>
           <CategoriesSetup
@@ -301,6 +299,11 @@ export const MonthSetup = () => {
           />
           {categories.length > 0 && renderShowCategories()}
         </div>
+      </div>
+
+      <div className='border rounded p-4 shadow-xl'>
+        <Heading variant='subtitle'>Budget Setting</Heading>
+        <BudgetSetup budget={budget} setBudget={handleSetBudget} />
       </div>
 
       <Button onClick={handleProceed}>Proceed</Button>

@@ -37,7 +37,7 @@ export const CategoriesSetup: React.FC<Props> = ({
             className='hover:underline'
             onClick={() => setIsOpen(true)}
           >
-            Add new Category
+            <Button variant={'outline'}>Add new Category</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
