@@ -31,7 +31,7 @@ export const Bills = () => {
         bills={monthlyBudget.bills}
         budget={monthlyBudget.budget}
         expenses={monthlyBudget.expenses}
-        categories={categoriesText}
+        categoryNames={categoriesText}
         updateBills={updateBills}
       />
     </React.Fragment>

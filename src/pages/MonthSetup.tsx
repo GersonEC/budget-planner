@@ -154,7 +154,7 @@ export const MonthSetup = () => {
         >
           check your outflows
         </DialogTrigger>
-        <DialogContent className='min-h-max h-1/4'>
+        <DialogContent className='min-h-max h-1/4 w-11/12'>
           <DialogHeader>
             <DialogTitle>Outflows</DialogTitle>
             <div className='flex flex-wrap gap-2 justify-center'>
@@ -192,7 +192,7 @@ export const MonthSetup = () => {
         >
           check your inflows
         </DialogTrigger>
-        <DialogContent className='min-h-max h-1/4'>
+        <DialogContent className='min-h-max h-1/4 w-11/12'>
           <DialogHeader>
             <DialogTitle>Inflows</DialogTitle>
             <div className='flex flex-wrap gap-2 justify-center'>
@@ -230,7 +230,7 @@ export const MonthSetup = () => {
         >
           check your categories
         </DialogTrigger>
-        <DialogContent className='min-h-max h-1/4'>
+        <DialogContent className='min-h-max h-1/4 w-11/12'>
           <DialogHeader>
             <DialogTitle>Categories</DialogTitle>
             <div className='flex flex-wrap gap-2 justify-center'>

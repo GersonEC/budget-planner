@@ -4,22 +4,24 @@ import { Button } from './ui/button';
 import { Link } from '@tanstack/react-router';
 import { currencyFormat } from '../lib/utils';
 import BillsCardList from './BillsCardList';
+import { useCategories } from '../context/CategoriesContext';
 
 interface Props {
   bills: Bill[];
   budget: number;
-  categories: string[];
+  categoryNames: string[];
   expenses: number;
   updateBills: (newBills: Bill[]) => void;
 }
 export const MonthlyBills: React.FC<Props> = ({
   bills,
   budget,
-  categories,
+  categoryNames,
   expenses,
   updateBills,
 }) => {
   const [activeCategory, setActiveCategory] = useState('');
+  const { categories, setCategories } = useCategories();
 
   const activeBills = () => {
     return bills
@@ -33,9 +35,26 @@ export const MonthlyBills: React.FC<Props> = ({
     setActiveCategory(category);
   };
 
+  const updatedExpensesCategory = (categoryName: string, amount: number) => {
+    const newCategories = categories.map((category) => {
+      if (category.name === categoryName) {
+        return {
+          ...category,
+          expenses: category.expenses - amount,
+        };
+      }
+      return category;
+    });
+    setCategories(newCategories);
+  };
+
   const removeBill = (id: string) => {
     const newBills = bills.filter((b) => b.id !== id);
-    updateBills(newBills);
+    const bill = bills.find((b) => b.id === id);
+    if (bill) {
+      updatedExpensesCategory(bill.category, bill.amount);
+      updateBills(newBills);
+    }
   };
 
   return (
@@ -67,7 +86,7 @@ export const MonthlyBills: React.FC<Props> = ({
       </div>
       <div>
         <CategoryNavBar
-          categories={categories}
+          categories={categoryNames}
           activeCategory={activeCategory}
           setNewActiveCategory={setNewActiveCategory}
         />
