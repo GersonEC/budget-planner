@@ -37,9 +37,9 @@ export const Categories = () => {
   return (
     <div>
       <Heading variant='title'>Categories</Heading>
-      <div className='flex justify-center'>
-        <Button variant='link' onClick={() => setIsOpen(true)}>
-          <span className='text-orange-400'>Add new category</span>
+      <div className='flex justify-center mb-4'>
+        <Button variant='outline' onClick={() => setIsOpen(true)}>
+          Add new category
         </Button>
       </div>
       {/**TODO: Move subscription dialog into a separate component */}
