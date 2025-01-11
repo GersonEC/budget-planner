@@ -4,6 +4,7 @@ import { Button } from './ui/button';
 import { initialFlowListValue } from '../lib/fakes';
 import { useToast } from '../hooks/use-toast';
 import { toCapitalize } from '../lib/utils';
+import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 
 interface Props {
   type: 'inflow' | 'outflow';
@@ -22,6 +23,7 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
   const [name, setName] = useState<string>('');
   const [quantity, setQuantity] = useState<number | ''>('');
   const [flowList, setFlowList] = useState<FlowList>(initialFlowListValue);
+  const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (e: any) => {
@@ -43,7 +45,26 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
       title: `${toCapitalize(type)} element added`,
     });
     handleSubmit(type, newFlowList);
-    localStorage.setItem(type, JSON.stringify(newFlowList));
+    let updatedMonthlyBudget: MonthlyBudget;
+    if (type === 'inflow') {
+      updatedMonthlyBudget = {
+        ...monthlyBudget,
+        cashflow: {
+          ...monthlyBudget.cashflow,
+          inflow: newFlowList,
+        },
+      };
+      setMonthlyBudget(updatedMonthlyBudget);
+    } else if (type === 'outflow') {
+      updatedMonthlyBudget = {
+        ...monthlyBudget,
+        cashflow: {
+          ...monthlyBudget.cashflow,
+          outflow: newFlowList,
+        },
+      };
+      setMonthlyBudget(updatedMonthlyBudget);
+    }
   };
 
   // const removeFlow = (name: string) => {

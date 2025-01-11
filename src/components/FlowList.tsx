@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { currencyFormat } from '../lib/utils';
 import { initialFlowListValue } from '../lib/fakes';
+import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 
 interface Props {
   type: 'inflow' | 'outflow';
@@ -8,11 +9,17 @@ interface Props {
 
 export const FlowList: React.FC<Props> = ({ type }) => {
   const [flowList, setFlowList] = useState<FlowList>(initialFlowListValue);
+  const { monthlyBudget } = useMonthlyBudget();
+  const outflows = monthlyBudget.cashflow.outflow;
+  const inflows = monthlyBudget.cashflow.inflow;
 
   useEffect(() => {
-    const flowsInSessionStorage = localStorage.getItem(type);
-    if (flowsInSessionStorage) setFlowList(JSON.parse(flowsInSessionStorage));
-  }, [type]);
+    if (type === 'inflow') {
+      setFlowList(inflows);
+    } else if (type === 'outflow') {
+      setFlowList(outflows);
+    }
+  }, [type, inflows, outflows]);
 
   return (
     <ul>

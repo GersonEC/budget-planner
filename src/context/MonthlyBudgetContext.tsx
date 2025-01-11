@@ -37,7 +37,7 @@ export function MonthlyBudgetProvider({
         },
       });
     }
-  }, []);
+  }, [budget]);
 
   /** Check if the month has changed to reset the monthly budget. */
   useEffect(() => {
