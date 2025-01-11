@@ -15,6 +15,7 @@ const BillsCardList: React.FC<Props> = ({ bills, removeBill }) => {
             {bill.category}
           </p>
           <Trash2
+            aria-label='delete'
             className=' w-5 text-slate-400 hover:text-red-400'
             onClick={() => removeBill(bill.id)}
           />

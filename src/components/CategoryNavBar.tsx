@@ -1,4 +1,5 @@
 import { useNavigate } from '@tanstack/react-router';
+import { SquarePen } from 'lucide-react';
 
 interface Props {
   categories: string[];
@@ -22,7 +23,7 @@ export function CategoryNavBar(props: Props) {
     ' text-gray-200 border bg-zinc-800 text-gray-300 hover:cursor-pointer rounded shadow-md';
 
   return (
-    <ul className='list-reset flex flex-wrap justify-center gap-2 bg-zinc-800 rounded mb-2 p-1 shadow-sm'>
+    <ul className='list-reset flex flex-wrap justify-center items-center gap-2 bg-zinc-800 rounded mb-2 p-1 shadow-sm'>
       <li
         className={
           liStyle +
@@ -49,8 +50,8 @@ export function CategoryNavBar(props: Props) {
             );
           })
         : '<li>No categories</li>'}
-      <li className={liStyle} onClick={handleEditCategories}>
-        ✏️
+      <li onClick={handleEditCategories}>
+        <SquarePen className='w-4 text-yellow-200' />
       </li>
     </ul>
   );
