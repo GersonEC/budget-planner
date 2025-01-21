@@ -5,10 +5,11 @@ import { initialFlowListValue } from '../lib/fakes';
 import { useToast } from '../hooks/use-toast';
 import { toCapitalize } from '../lib/utils';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
+import { Label } from './ui/label';
 
 interface Props {
   type: 'inflow' | 'outflow';
-  handleSubmit: (type: 'inflow' | 'outflow', flowList: FlowList) => void;
+  handleSubmit: (flowList: FlowList) => void;
 }
 
 const calculateTotalFlow = (flows: Flow[]) => {
@@ -44,7 +45,8 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
       variant: 'success',
       title: `${toCapitalize(type)} element added`,
     });
-    handleSubmit(type, newFlowList);
+    //handleSubmit(type, newFlowList);
+    handleSubmit(newFlowList);
     let updatedMonthlyBudget: MonthlyBudget;
     if (type === 'inflow') {
       updatedMonthlyBudget = {
@@ -81,21 +83,23 @@ export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
     <>
       <form onSubmit={onSubmit}>
         <div className='flex flex-col gap-2 my-4'>
-          <div className='flex items-center justify-between'>
-            <p className='text-sm text-gray-300 mb-2'>Add your {type}s</p>
-          </div>
+          <Label htmlFor='email'>
+            {type.charAt(0).toUpperCase().concat(type.slice(1))} name
+          </Label>
           <Input
             name={`${type}-name`}
-            placeholder={`${type} name...`}
+            placeholder={`${type === 'inflow' ? 'Salary' : 'Experiences'}`}
             value={name}
             min={0}
             onChange={(e) => setName(e.target.value)}
             required
           />
+          <Label htmlFor='email'>Quantity</Label>
           <Input
             type='number'
             name={`${type}-quantity`}
             value={quantity}
+            placeholder='0'
             min={0}
             onChange={(e) => setQuantity(Number(e.target.value))}
             required

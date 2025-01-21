@@ -28,6 +28,7 @@ const App: React.FC<AppProps> = ({ children }) => {
     } catch (error) {
       console.log(error);
     }*/
+    /*TODO: remove memory storage when backed works properly */
     const categoriesInSessionStorage = localStorage.getItem('categories');
     const budgetInSessionStorage = localStorage.getItem('monthlyBudget');
     if (!budgetInSessionStorage) {

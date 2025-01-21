@@ -17,6 +17,7 @@ import {
   DialogTrigger,
 } from '../components/ui/dialog';
 import { Banknote, HandCoins, Trash2 } from 'lucide-react';
+import { WizardForm } from '../components/WizardForm';
 
 export const MonthSetup = () => {
   const { toast } = useToast();
@@ -280,6 +281,8 @@ export const MonthSetup = () => {
       </Dialog>
     );
   };
+
+  return <WizardForm />;
 
   return (
     <div className='flex flex-col gap-6 p-4 max-w-4xl'>
