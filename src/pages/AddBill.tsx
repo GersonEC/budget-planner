@@ -15,12 +15,13 @@ import {
 } from '../components/ui/select';
 import { Heading } from '../components/Heading';
 import { currencyFormat } from '../lib/utils';
+import { Label } from '../components/ui/label';
 
 const AddBill = () => {
   const { categories, setCategories } = useCategories();
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
   const navigate = useNavigate();
-  const [amount, setAmount] = useState<number | string>(0);
+  const [amount, setAmount] = useState<number | string>('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date());
   const [, setCategory] = useState<CategoryForm>();
@@ -29,8 +30,11 @@ const AddBill = () => {
   const [remainingBudget, setRemainingBudget] = useState(0);
 
   const handleChangeAmount = (event: ChangeEvent) => {
-    let newAmount = parseInt((event.target as HTMLInputElement).value, 10);
-    if (isNaN(newAmount)) newAmount = 0;
+    let newAmount: number | string = parseInt(
+      (event.target as HTMLInputElement).value,
+      10
+    );
+    if (isNaN(newAmount)) newAmount = '';
     setAmount(newAmount);
   };
 
@@ -116,27 +120,25 @@ const AddBill = () => {
       <Heading variant='title'>Add new bill</Heading>
       <div className='flex flex-col items-end mb-2'>
         <div className='flex gap-2'>
-          <p className='text-gray-300 text-sm'>Allocated budget:</p>
-          <p className='text-yellow-300 font-semibold text-sm'>
+          <Label className='text-gray-300'>Allocated budget:</Label>
+          <Label className='text-yellow-300'>
             {currencyFormat(Number(allocatedBudget))}
-          </p>
+          </Label>
         </div>
         <div className='flex gap-2'>
-          <p className='text-gray-300 text-sm'>Remaining budget:</p>
-          <p
+          <Label className='text-gray-300'>Remaining budget:</Label>
+          <Label
             className={`${
               remainingBudget <= 0 ? 'text-red-300' : 'text-green-300'
-            } font-semibold text-sm`}
+            }`}
           >
             {currencyFormat(Number(remainingBudget))}
-          </p>
+          </Label>
         </div>
       </div>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <div>
-          <label className='text-sm text-slate-300' htmlFor='category'>
-            Bill category:
-          </label>
+          <Label htmlFor='category'>Bill category:</Label>
           <Select
             name='category'
             onValueChange={(value) => handleChangeCategory(value)}
@@ -158,15 +160,16 @@ const AddBill = () => {
           </Select>
         </div>
         <div>
-          <label className='text-sm text-slate-300' htmlFor='amount'>
-            Bill amount:
-          </label>
-          <Input name='amount' value={amount} onChange={handleChangeAmount} />
+          <Label htmlFor='amount'>Bill amount:</Label>
+          <Input
+            name='amount'
+            placeholder='0'
+            value={amount}
+            onChange={handleChangeAmount}
+          />
         </div>
         <div className='flex flex-col'>
-          <label className='text-sm text-slate-300' htmlFor='description'>
-            Bill description:
-          </label>
+          <Label htmlFor='description'>Bill description:</Label>
           <Textarea
             name='description'
             rows={2}
@@ -175,9 +178,7 @@ const AddBill = () => {
           />
         </div>
         <div className='flex flex-col'>
-          <label className='text-sm text-slate-300' htmlFor='date'>
-            Bill date:
-          </label>
+          <Label htmlFor='date'>Bill date:</Label>
           <DatePicker date={date} setDate={handleChangeDate} />
         </div>
         <Button type='submit' className='w-full'>

@@ -6,6 +6,7 @@ import { useToast } from '../hooks/use-toast';
 import { toCapitalize } from '../lib/utils';
 import { Label } from './ui/label';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
+import { useCategories } from '../context/CategoriesContext';
 
 interface Props {
   type: 'inflow' | 'outflow';
@@ -25,6 +26,23 @@ export const FlowForm: React.FC<Props> = ({ type, handleAddFlow }) => {
   const [quantity, setQuantity] = useState<number | ''>('');
   const [, setFlowList] = useState<FlowList>(initialFlowListValue);
   const { monthlyBudget } = useMonthlyBudget();
+  const { categories, setCategories } = useCategories();
+
+  const reset = () => {
+    setFlowList(initialFlowListValue);
+    setName('');
+    setQuantity('');
+  };
+
+  const addCategory = (name: string, budget: number) => {
+    const category: CategoryForm = {
+      name,
+      budget,
+      expenses: 0,
+    };
+    const newCategories = [...categories, category];
+    setCategories(newCategories);
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAdd = (e: any) => {
@@ -41,9 +59,10 @@ export const FlowForm: React.FC<Props> = ({ type, handleAddFlow }) => {
         flow,
       ]),
     };
-    setFlowList(initialFlowListValue);
-    setName('');
-    setQuantity('');
+    if (type === 'outflow') {
+      addCategory(flow.name, flow.quantity);
+    }
+    reset();
     toast({
       variant: 'success',
       title: `${toCapitalize(type)} element added`,

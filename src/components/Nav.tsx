@@ -6,7 +6,7 @@ export const Nav = () => {
   const location = useLocation();
 
   return (
-    <nav className='flex justify-end'>
+    <nav className='flex justify-end pb-1 border-b-2'>
       {location.pathname !== '/' && (
         <Link to='/bills'>
           <Button variant={'link'}>Bills</Button>
