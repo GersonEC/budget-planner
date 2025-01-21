@@ -80,7 +80,7 @@ export const MonthSetup = () => {
     }
   };
 
-  const handleProceed = () => {
+  const handleProceed = async () => {
     if (!budget) {
       alert('Please enter a budget');
       return;
@@ -103,6 +103,16 @@ export const MonthSetup = () => {
           monthlyBudget.cashflow.outflow.totalFlow,
       },
     };
+    //Send data to backend here
+    const response = await fetch('http://localhost:3000/api/monthly-budget', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Inform the server about the content type
+      },
+      body: JSON.stringify(updatedMonthlyBudget),
+    });
+    console.log({ response });
+
     setMonthlyBudget(updatedMonthlyBudget);
     navigate({
       to: '/bills',

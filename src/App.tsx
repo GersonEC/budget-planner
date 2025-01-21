@@ -18,6 +18,16 @@ const App: React.FC<AppProps> = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    /*try {
+      const getData = async () => {
+        const data = await fetch(`http://localhost:3000/api/monthly-budget`);
+        const json = await data.json();
+        console.log({ json });
+      };
+      getData();
+    } catch (error) {
+      console.log(error);
+    }*/
     const categoriesInSessionStorage = localStorage.getItem('categories');
     const budgetInSessionStorage = localStorage.getItem('monthlyBudget');
     if (!budgetInSessionStorage) {
