@@ -13,13 +13,16 @@ import {
 import { Button } from './ui/button';
 import { InflowForm } from './InflowForm';
 import { OutflowForm } from './OutflowForm';
+import { BudgetSetup } from './BudgetSetup';
+import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
+import { useNavigate } from '@tanstack/react-router';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const monthSetupSchema = z.object({
   inflow: z.object({
     flows: z.array(
       z.object({
-        type: z.literal('inflow'),
+        type: z.union([z.literal('inflow'), z.literal('outflow')]),
         name: z.string().min(1, {
           message: 'Your inflow name must be greather than 0',
         }),
@@ -33,7 +36,7 @@ const monthSetupSchema = z.object({
   outflow: z.object({
     flows: z.array(
       z.object({
-        type: z.literal('outflow'),
+        type: z.union([z.literal('inflow'), z.literal('outflow')]),
         name: z.string().min(1, {
           message: 'Your outflow must be greather than 0',
         }),
@@ -53,16 +56,15 @@ type MonthSetup = z.infer<typeof monthSetupSchema>;
 
 export const WizardForm = () => {
   const [step, setStep] = useState(1);
-  /*const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      age: 18,
-      occupation: '',
-      interests: [],
-    },
-  });*/
+  const [budget, setBudget] = useState<number | string>('');
+  const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
+  const navigate = useNavigate();
+  const wizardTitle =
+    step === 1
+      ? 'Add your Inflows'
+      : step === 2
+      ? 'Add your Outflows'
+      : 'Set a Budget';
 
   const form = useForm({
     defaultValues: {
@@ -77,21 +79,56 @@ export const WizardForm = () => {
       budget: 0,
     } as MonthSetup,
 
-    onSubmit: async ({ value }) => {
+    onSubmit: async () => {
       const newMonthSetup: MonthSetup = {
         inflow: {
-          flows: value.inflow.flows,
-          totalFlow: value.inflow.totalFlow,
+          flows: monthlyBudget.cashflow.inflow.flows,
+          totalFlow: monthlyBudget.cashflow.inflow.totalFlow,
         },
         outflow: {
-          flows: value.outflow.flows,
-          totalFlow: value.outflow.totalFlow,
+          flows: monthlyBudget.cashflow.outflow.flows,
+          totalFlow: monthlyBudget.cashflow.outflow.totalFlow,
         },
-        budget: value.budget,
+        budget: Number(budget),
       };
       console.log({ newMonthSetup });
+
+      const updatedMonthlyBudget: MonthlyBudget = {
+        month: new Date().getMonth(),
+        year: new Date().getFullYear(),
+        budget: newMonthSetup.budget,
+        expenses: 0,
+        bills: [],
+        cashflow: {
+          inflow: newMonthSetup.inflow,
+          outflow: newMonthSetup.outflow,
+          netflow:
+            newMonthSetup.inflow.totalFlow - newMonthSetup.outflow.totalFlow,
+        },
+      };
+
+      console.log({ updatedMonthlyBudget });
+
+      //Send data to backend here
+      /*const response = await fetch('http://localhost:3000/api/monthly-budget', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // Inform the server about the content type
+        },
+        body: JSON.stringify(updatedMonthlyBudget),
+      });
+      console.log({ response });*/
+
+      setMonthlyBudget(updatedMonthlyBudget);
+      navigate({
+        to: '/bills',
+      });
     },
   });
+
+  const handleSetBudget = (newBudget: number) => {
+    setBudget(Number(newBudget));
+  };
 
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
@@ -99,7 +136,7 @@ export const WizardForm = () => {
   return (
     <Card className='w-[350px]'>
       <CardHeader>
-        <CardTitle>Wizard Form - Step {step}</CardTitle>
+        <CardTitle className='text-gray-300'>{wizardTitle}</CardTitle>
       </CardHeader>
       <form
         onSubmit={(e) => {
@@ -110,7 +147,9 @@ export const WizardForm = () => {
         <CardContent>
           {step === 1 && <InflowForm />}
           {step === 2 && <OutflowForm />}
-          {step === 3 && <h1>Step 3</h1>}
+          {step === 3 && (
+            <BudgetSetup budget={budget} setBudget={handleSetBudget} />
+          )}
         </CardContent>
         <CardFooter className='flex justify-between'>
           {step > 1 && (
@@ -123,7 +162,9 @@ export const WizardForm = () => {
               Next
             </Button>
           ) : (
-            <Button type='submit'>Submit</Button>
+            <Button disabled={budget === ''} type='submit'>
+              Submit
+            </Button>
           )}
         </CardFooter>
       </form>

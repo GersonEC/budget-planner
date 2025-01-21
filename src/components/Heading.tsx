@@ -7,7 +7,11 @@ type Props = ComponentProps<'text'> & {
 
 export const Heading: React.FC<Props> = ({ variant, children }) => {
   if (variant === 'title')
-    return <h1 className='text-2xl font-bold text-white my-1'>{children}</h1>;
+    return (
+      <h1 className='text-2xl font-bold my-1 text-center text-orange-400'>
+        {children}
+      </h1>
+    );
   if (variant === 'subtitle')
     return (
       <h2 className='text-lg font-semibold text-orange-300 my-1'>{children}</h2>

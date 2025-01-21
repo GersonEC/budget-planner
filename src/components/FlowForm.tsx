@@ -4,12 +4,12 @@ import { Button } from './ui/button';
 import { initialFlowListValue } from '../lib/fakes';
 import { useToast } from '../hooks/use-toast';
 import { toCapitalize } from '../lib/utils';
-import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { Label } from './ui/label';
+import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 
 interface Props {
   type: 'inflow' | 'outflow';
-  handleSubmit: (flowList: FlowList) => void;
+  handleAddFlow: (flowList: FlowList) => void;
 }
 
 const calculateTotalFlow = (flows: Flow[]) => {
@@ -19,110 +19,66 @@ const calculateTotalFlow = (flows: Flow[]) => {
   );
 };
 
-export const FlowForm: React.FC<Props> = ({ type, handleSubmit }) => {
+export const FlowForm: React.FC<Props> = ({ type, handleAddFlow }) => {
   const { toast } = useToast();
   const [name, setName] = useState<string>('');
   const [quantity, setQuantity] = useState<number | ''>('');
-  const [flowList, setFlowList] = useState<FlowList>(initialFlowListValue);
-  const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
+  const [, setFlowList] = useState<FlowList>(initialFlowListValue);
+  const { monthlyBudget } = useMonthlyBudget();
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (e: any) => {
+  const handleAdd = (e: any) => {
     e.preventDefault();
-    const inflow: Flow = {
+    const flow: Flow = {
       type,
       name,
       quantity: Number(quantity),
     };
     const newFlowList: FlowList = {
-      flows: [...flowList.flows, inflow],
-      totalFlow: calculateTotalFlow([...flowList.flows, inflow]),
+      flows: [...monthlyBudget.cashflow[type].flows, flow],
+      totalFlow: calculateTotalFlow([
+        ...monthlyBudget.cashflow[type].flows,
+        flow,
+      ]),
     };
-    setFlowList(newFlowList);
+    setFlowList(initialFlowListValue);
     setName('');
-    setQuantity(0);
+    setQuantity('');
     toast({
       variant: 'success',
       title: `${toCapitalize(type)} element added`,
     });
-    //handleSubmit(type, newFlowList);
-    handleSubmit(newFlowList);
-    let updatedMonthlyBudget: MonthlyBudget;
-    if (type === 'inflow') {
-      updatedMonthlyBudget = {
-        ...monthlyBudget,
-        cashflow: {
-          ...monthlyBudget.cashflow,
-          inflow: newFlowList,
-        },
-      };
-      setMonthlyBudget(updatedMonthlyBudget);
-    } else if (type === 'outflow') {
-      updatedMonthlyBudget = {
-        ...monthlyBudget,
-        cashflow: {
-          ...monthlyBudget.cashflow,
-          outflow: newFlowList,
-        },
-      };
-      setMonthlyBudget(updatedMonthlyBudget);
-    }
+    handleAddFlow(newFlowList);
   };
 
-  // const removeFlow = (name: string) => {
-  //   const newFlows = flowList.flows.filter((f) => f.name !== name);
-  //   const newFlowList: FlowList = {
-  //     flows: newFlows,
-  //     totalFlow: calculateTotalFlow(newFlows),
-  //   };
-  //   setFlowList(newFlowList);
-  //   localStorage.setItem(type, JSON.stringify(newFlows));
-  // };
-
   return (
-    <>
-      <form onSubmit={onSubmit}>
-        <div className='flex flex-col gap-2 my-4'>
-          <Label htmlFor='email'>
-            {type.charAt(0).toUpperCase().concat(type.slice(1))} name
-          </Label>
-          <Input
-            name={`${type}-name`}
-            placeholder={`${type === 'inflow' ? 'Salary' : 'Experiences'}`}
-            value={name}
-            min={0}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <Label htmlFor='email'>Quantity</Label>
-          <Input
-            type='number'
-            name={`${type}-quantity`}
-            value={quantity}
-            placeholder='0'
-            min={0}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-            required
-          />
-          <Button variant={'secondary'}>Add</Button>
-        </div>
-      </form>
-      {/* TODO: is it useful to show the flow list? */}
-      {/* <ul>
-        {flowList.flows.map((flow) => (
-          <li key={flow.name}>
-            {flow.name}: {flow.quantity}
-            <Button
-              name='remove'
-              variant='ghost'
-              size='icon'
-              onClick={() => removeFlow(flow.name)}
-            >
-              ⛔️
-            </Button>
-          </li>
-        ))}
-      </ul> */}
-    </>
+    <div className='flex flex-col gap-4 my-4'>
+      <div>
+        <Label htmlFor={`${type}-name`}>{toCapitalize(type)} name</Label>
+        <Input
+          name={`${type}-name`}
+          placeholder={`${type === 'inflow' ? 'Salary' : 'Experiences'}`}
+          value={name}
+          min={0}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <Label htmlFor='email'>Quantity</Label>
+        <Input
+          type='number'
+          name={`${type}-quantity`}
+          value={quantity}
+          placeholder='0'
+          min={0}
+          onChange={(e) => setQuantity(Number(e.target.value))}
+          required
+        />
+      </div>
+      <Button variant={'secondary'} onClick={handleAdd}>
+        Add
+      </Button>
+    </div>
   );
 };
