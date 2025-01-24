@@ -82,3 +82,5 @@ type PersonalFinance = {
   installmentList: InstallmentList;
   loanList: LoanList;
 };
+
+type LoadingStatus = 'idle' | 'loading' | 'success';

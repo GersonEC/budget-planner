@@ -110,14 +110,14 @@ export const WizardForm = () => {
       console.log({ updatedMonthlyBudget });
 
       //Send data to backend here
-      /*const response = await fetch('http://localhost:3000/api/monthly-budget', {
+      const response = await fetch(`http://localhost:3000/api/monthly-budget`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // Inform the server about the content type
         },
         body: JSON.stringify(updatedMonthlyBudget),
       });
-      console.log({ response });*/
+      console.log(response.json());
 
       setMonthlyBudget(updatedMonthlyBudget);
       navigate({

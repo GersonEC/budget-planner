@@ -103,15 +103,34 @@ export const getCurrentMonthInString = () => {
   return today.toLocaleString('default', { month: 'long' });
 };
 
-export const hasMonthChanged = (currentMonth: number): boolean => {
+export const hasMonthChanged = (month: number): boolean => {
   const today = new Date();
-  return today.getMonth() !== currentMonth;
+  return today.getMonth() !== month;
 };
 
-export const isThereMonthlyBudgetInMemory = () => {
-  const monthlyBudgetInSessionStorage = localStorage.getItem('monthlyBudget');
-  if (monthlyBudgetInSessionStorage) {
-    return JSON.parse(monthlyBudgetInSessionStorage) as MonthlyBudget;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const deepObjectEqual = (obj1: any, obj2: any): boolean => {
+  if (obj1 === obj2) return true;
+
+  if (
+    typeof obj1 !== 'object' ||
+    typeof obj2 !== 'object' ||
+    obj1 === null ||
+    obj2 === null
+  ) {
+    return false;
   }
-  return null;
+
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  if (keys1.length !== keys2.length) return false;
+
+  for (const key of keys1) {
+    if (!keys2.includes(key) || !deepObjectEqual(obj1[key], obj2[key])) {
+      return false;
+    }
+  }
+
+  return true;
 };

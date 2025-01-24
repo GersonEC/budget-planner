@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { hasMonthChanged, isThereMonthlyBudgetInMemory } from '../lib/utils';
-import { initialBudgetPlanner, initialMonthlyBudget } from '../lib/fakes';
+import React from 'react';
+import { initialMonthlyBudget } from '../lib/fakes';
 
 const MonthlyBudgetContext = React.createContext<
   | {
@@ -15,59 +14,16 @@ export function MonthlyBudgetProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [budget, setBudget] = React.useState<MonthlyBudget>(
-    isThereMonthlyBudgetInMemory() || initialMonthlyBudget
-  );
-  const [budgetPlanner, setBudgetPlanner] =
-    React.useState<BudgetPlanner>(initialBudgetPlanner);
-
-  /** Check if there is cashflow in session storage. */
-  useEffect(() => {
-    const inflowInSessionStorage = localStorage.getItem('inflow');
-    const outflowInSessionStorage = localStorage.getItem('outflow');
-    if (inflowInSessionStorage && outflowInSessionStorage) {
-      const inflow = JSON.parse(inflowInSessionStorage) as FlowList;
-      const outflow = JSON.parse(outflowInSessionStorage) as FlowList;
-      setBudget({
-        ...budget,
-        cashflow: {
-          inflow,
-          outflow,
-          netflow: inflow.totalFlow - outflow.totalFlow,
-        },
-      });
-    }
-  }, [budget]);
-
-  /** Check if the month has changed to reset the monthly budget. */
-  useEffect(() => {
-    const checkIfNewMonth = () => {
-      const currentMonth: number = budget.month;
-      if (hasMonthChanged(currentMonth)) {
-        const newBudgetPlanner = [...budgetPlanner, budget];
-        setBudgetPlanner(newBudgetPlanner);
-        localStorage.setItem(
-          'budget-planner',
-          JSON.stringify(newBudgetPlanner)
-        );
-        localStorage.removeItem('inflow');
-        localStorage.removeItem('outflow');
-        localStorage.removeItem('categories');
-        localStorage.removeItem('monthlyBudget');
-      }
-    };
-    checkIfNewMonth();
-  }, []);
+  const [budget, setBudget] =
+    React.useState<MonthlyBudget>(initialMonthlyBudget);
 
   const setMonthlyBudget = (newMonthlyBudget: MonthlyBudget) => {
     setBudget(newMonthlyBudget);
-    localStorage.setItem('monthlyBudget', JSON.stringify(newMonthlyBudget));
   };
 
   const value = {
     monthlyBudget: budget,
     setMonthlyBudget,
-    budgetPlanner,
   };
 
   return (
