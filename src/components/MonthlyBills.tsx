@@ -6,6 +6,7 @@ import { currencyFormat } from '../lib/utils';
 import BillsCardList from './BillsCardList';
 import { useCategories } from '../context/CategoriesContext';
 import { BadgeEuro, Coins, HandCoins } from 'lucide-react';
+import { useToast } from '../hooks/use-toast';
 
 interface Props {
   bills: Bill[];
@@ -21,6 +22,7 @@ export const MonthlyBills: React.FC<Props> = ({
   expenses,
   updateBills,
 }) => {
+  const { toast } = useToast();
   const [activeCategory, setActiveCategory] = useState('');
   const { categories, setCategories } = useCategories();
 
@@ -55,6 +57,10 @@ export const MonthlyBills: React.FC<Props> = ({
     if (bill) {
       updatedExpensesCategory(bill.category, bill.amount);
       updateBills(newBills);
+      toast({
+        variant: 'success',
+        title: 'Bill removed correctly',
+      });
     }
   };
 

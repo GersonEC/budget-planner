@@ -1,5 +1,6 @@
 import { Trash2 } from 'lucide-react';
 import { currencyFormat } from '../lib/utils';
+import { ConfirmDialog } from './ConfirmDialog';
 
 type Props = {
   bills: Bill[];
@@ -14,10 +15,14 @@ const BillsCardList: React.FC<Props> = ({ bills, removeBill }) => {
           <p className='border rounded border-indigo-200 bg-zinc-800 text-center text-indigo-200 px-6 text-sm brightness-150'>
             {bill.category}
           </p>
-          <Trash2
-            aria-label='delete'
-            className=' w-5 text-slate-400 hover:text-red-400'
-            onClick={() => removeBill(bill.id)}
+          <ConfirmDialog
+            action={() => removeBill(bill.id)}
+            trigger={
+              <Trash2
+                aria-label='delete'
+                className=' w-5 text-slate-400 hover:text-red-400'
+              />
+            }
           />
         </div>
 
