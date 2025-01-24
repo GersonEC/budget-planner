@@ -116,11 +116,11 @@ const AddBill = () => {
   };
 
   return (
-    <div>
+    <div className=''>
       <Heading variant='title'>Add new bill</Heading>
       <div className='flex flex-col items-end mb-2'>
         <div className='flex gap-2'>
-          <Label className='text-gray-300'>Allocated budget:</Label>
+          <Label className='text-gray-300 mb-1'>Allocated budget:</Label>
           <Label className='text-yellow-300'>
             {currencyFormat(Number(allocatedBudget))}
           </Label>

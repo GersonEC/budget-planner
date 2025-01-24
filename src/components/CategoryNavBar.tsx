@@ -19,11 +19,10 @@ export function CategoryNavBar(props: Props) {
     });
   };
 
-  const liStyle =
-    ' text-gray-200 border bg-zinc-800 text-gray-300 hover:cursor-pointer rounded shadow-md';
+  const liStyle = ' text-gray-200 text-gray-300 hover:cursor-pointer rounded';
 
   return (
-    <ul className='list-reset flex flex-wrap justify-center items-center gap-2 bg-zinc-800 rounded mb-2 p-1 shadow-sm'>
+    <ul className='list-reset flex flex-wrap justify-center items-center gap-2 bg-zinc-800 rounded mb-2 p-1'>
       <li
         className={
           liStyle +
