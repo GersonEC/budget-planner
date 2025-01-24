@@ -23,7 +23,7 @@ export const initialCategoryValue: CategoryForm = {
   expenses: 0,
 };
 
-export const initialFlowListValue: FlowList = {
+export const initialFlowListValue: InflowList = {
   flows: [],
   totalFlow: 0,
 };

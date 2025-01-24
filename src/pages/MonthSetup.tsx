@@ -12,42 +12,37 @@ export const MonthSetup = () => {
   const [status, setStatus] = useState<LoadingStatus>('idle');
 
   useEffect(() => {
-    try {
-      setStatus('loading');
-      const getData = async () => {
+    setStatus('loading');
+    const getData = async () => {
+      try {
         const data = await fetch(`http://localhost:3000/api/monthly-budget`);
-        if (data.ok) {
-          const response = (await data.json()) as MonthlyBudget;
-          const monthlyBudget: MonthlyBudget = {
-            bills: response.bills,
-            budget: response.budget,
-            cashflow: response.cashflow,
-            expenses: response.expenses,
-            month: response.month,
-            year: response.year,
-          };
-          if (hasMonthChanged(monthlyBudget.month)) {
-            navigate({
-              to: '/',
-            });
-          } else {
-            setMonthlyBudget(monthlyBudget);
-            navigate({
-              to: '/bills',
-            });
-          }
-          setStatus('success');
-        } else {
+        const response = (await data.json()) as MonthlyBudget;
+        const monthlyBudget: MonthlyBudget = {
+          bills: response.bills,
+          budget: response.budget,
+          cashflow: response.cashflow,
+          expenses: response.expenses,
+          month: response.month,
+          year: response.year,
+        };
+        if (hasMonthChanged(monthlyBudget.month)) {
           navigate({
             to: '/',
           });
           setStatus('success');
+        } else {
+          setMonthlyBudget(monthlyBudget);
+          navigate({
+            to: '/bills',
+          });
+          setStatus('success');
         }
-      };
-      getData();
-    } catch (error) {
-      console.log(error);
-    }
+      } catch (error) {
+        console.log(error);
+        setStatus('success');
+      }
+    };
+    getData();
   }, [navigate, setMonthlyBudget]);
 
   if (status === 'idle' || status === 'loading') return <Loader />;

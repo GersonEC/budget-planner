@@ -18,7 +18,7 @@ export const InflowForm = () => {
   const inflows = monthlyBudget.cashflow.inflow.flows;
   const [isInflowDialogOpen, setIsInflowDialogOpen] = useState<boolean>(false);
 
-  const handleAddFlow = (flowList: FlowList) => {
+  const handleAddFlow = (flowList: InflowList) => {
     const updatedMonthlyBudget: MonthlyBudget = {
       ...monthlyBudget,
       cashflow: {
@@ -29,7 +29,7 @@ export const InflowForm = () => {
     setMonthlyBudget(updatedMonthlyBudget);
   };
 
-  const handleRemoveFlow = (flow: Flow) => {
+  const handleRemoveFlow = (flow: Inflow) => {
     const newFlows = monthlyBudget.cashflow.inflow.flows.filter(
       (f) => f.name !== flow.name
     );

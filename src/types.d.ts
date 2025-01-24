@@ -12,20 +12,30 @@ type CategoryForm = {
   expenses: number;
 };
 
-type Flow = {
-  type: 'inflow' | 'outflow';
+type Inflow = {
   name: string;
   quantity: number;
 };
 
-type FlowList = {
-  flows: Flow[];
+type Outflow = {
+  name: string;
+  quantity: number;
+  expenses: number;
+};
+
+type InflowList = {
+  flows: Inflow[];
+  totalFlow: number;
+};
+
+type OutflowList = {
+  flows: Outflow[];
   totalFlow: number;
 };
 
 type Cashflow = {
-  inflow: FlowList;
-  outflow: FlowList;
+  inflow: InflowList;
+  outflow: OutflowList;
   netflow: number;
 };
 

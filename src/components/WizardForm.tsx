@@ -22,7 +22,6 @@ const monthSetupSchema = z.object({
   inflow: z.object({
     flows: z.array(
       z.object({
-        type: z.union([z.literal('inflow'), z.literal('outflow')]),
         name: z.string().min(1, {
           message: 'Your inflow name must be greather than 0',
         }),
@@ -36,13 +35,13 @@ const monthSetupSchema = z.object({
   outflow: z.object({
     flows: z.array(
       z.object({
-        type: z.union([z.literal('inflow'), z.literal('outflow')]),
         name: z.string().min(1, {
           message: 'Your outflow must be greather than 0',
         }),
         quantity: z.number().min(1, {
           message: 'Your outflow must be greather than 0',
         }),
+        expenses: z.number(),
       })
     ),
     totalFlow: z.number().min(0),

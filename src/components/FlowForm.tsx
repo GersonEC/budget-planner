@@ -6,14 +6,18 @@ import { useToast } from '../hooks/use-toast';
 import { toCapitalize } from '../lib/utils';
 import { Label } from './ui/label';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
-import { useCategories } from '../context/CategoriesContext';
 
-interface Props {
-  type: 'inflow' | 'outflow';
-  handleAddFlow: (flowList: FlowList) => void;
-}
+type Props =
+  | {
+      type: 'inflow';
+      handleAddFlow: (flowList: InflowList) => void;
+    }
+  | {
+      type: 'outflow';
+      handleAddFlow: (flowList: OutflowList) => void;
+    };
 
-const calculateTotalFlow = (flows: Flow[]) => {
+const calculateTotalFlow = (flows: Inflow[] | Outflow[]) => {
   return flows.reduce(
     (prevValue, currValue) => prevValue + currValue.quantity,
     0
@@ -24,9 +28,11 @@ export const FlowForm: React.FC<Props> = ({ type, handleAddFlow }) => {
   const { toast } = useToast();
   const [name, setName] = useState<string>('');
   const [quantity, setQuantity] = useState<number | ''>('');
-  const [, setFlowList] = useState<FlowList>(initialFlowListValue);
+  const [, setFlowList] = useState<InflowList | OutflowList>(
+    initialFlowListValue
+  );
   const { monthlyBudget } = useMonthlyBudget();
-  const { categories, setCategories } = useCategories();
+  // const { categories, setCategories } = useCategories();
 
   const reset = () => {
     setFlowList(initialFlowListValue);
@@ -34,40 +40,51 @@ export const FlowForm: React.FC<Props> = ({ type, handleAddFlow }) => {
     setQuantity('');
   };
 
-  const addCategory = (name: string, budget: number) => {
-    const category: CategoryForm = {
-      name,
-      budget,
-      expenses: 0,
-    };
-    const newCategories = [...categories, category];
-    setCategories(newCategories);
-  };
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleAdd = (e: any) => {
+  const handleAddOutflow = (e: any) => {
     e.preventDefault();
-    const flow: Flow = {
-      type,
+    const flow: Outflow = {
       name,
       quantity: Number(quantity),
+      expenses: 0,
     };
-    const newFlowList: FlowList = {
-      flows: [...monthlyBudget.cashflow[type].flows, flow],
+    const newFlowList: OutflowList = {
+      flows: [...monthlyBudget.cashflow.outflow.flows, flow],
       totalFlow: calculateTotalFlow([
-        ...monthlyBudget.cashflow[type].flows,
+        ...monthlyBudget.cashflow.outflow.flows,
         flow,
       ]),
     };
-    if (type === 'outflow') {
-      addCategory(flow.name, flow.quantity);
-    }
     reset();
     toast({
       variant: 'success',
       title: `${toCapitalize(type)} element added`,
     });
     handleAddFlow(newFlowList);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleAddInflow = (e: any) => {
+    if (type === 'inflow') {
+      e.preventDefault();
+      const flow: Inflow = {
+        name,
+        quantity: Number(quantity),
+      };
+      const newFlowList: InflowList = {
+        flows: [...monthlyBudget.cashflow.inflow.flows, flow],
+        totalFlow: calculateTotalFlow([
+          ...monthlyBudget.cashflow.inflow.flows,
+          flow,
+        ]),
+      };
+      reset();
+      toast({
+        variant: 'success',
+        title: `${toCapitalize(type)} element added`,
+      });
+      handleAddFlow(newFlowList);
+    }
   };
 
   return (
@@ -95,7 +112,10 @@ export const FlowForm: React.FC<Props> = ({ type, handleAddFlow }) => {
           required
         />
       </div>
-      <Button variant={'secondary'} onClick={handleAdd}>
+      <Button
+        variant={'secondary'}
+        onClick={type === 'inflow' ? handleAddInflow : handleAddOutflow}
+      >
         Add
       </Button>
     </div>

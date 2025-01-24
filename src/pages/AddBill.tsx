@@ -59,7 +59,7 @@ const AddBill = () => {
     category: string,
     date: Date,
     description: string
-  ) => {
+  ): MonthlyBudget => {
     const bill: Bill = { id, amount, category, date, description };
     const updatedBills = [...(monthlyBudget?.bills || []), bill];
     const updatedMonthlyBudgetBills = {
@@ -68,6 +68,7 @@ const AddBill = () => {
       bills: updatedBills,
     };
     setMonthlyBudget(updatedMonthlyBudgetBills);
+    return updatedMonthlyBudgetBills;
   };
 
   const updateMonthlyCategoryBudget = (amount: number, category: string) => {
@@ -86,11 +87,18 @@ const AddBill = () => {
     date: Date,
     description: string
   ) => {
-    updateMonthlyBudgetBill(id, amount, category, date, description);
+    const newMonthlyBudget = updateMonthlyBudgetBill(
+      id,
+      amount,
+      category,
+      date,
+      description
+    );
     updateMonthlyCategoryBudget(amount, category);
     navigate({
       to: '/bills',
     });
+    console.log({ newMonthlyBudget });
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

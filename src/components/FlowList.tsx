@@ -8,7 +8,9 @@ interface Props {
 }
 
 export const FlowList: React.FC<Props> = ({ type }) => {
-  const [flowList, setFlowList] = useState<FlowList>(initialFlowListValue);
+  const [flowList, setFlowList] = useState<InflowList | OutflowList>(
+    initialFlowListValue
+  );
   const { monthlyBudget } = useMonthlyBudget();
   const outflows = monthlyBudget.cashflow.outflow;
   const inflows = monthlyBudget.cashflow.inflow;

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 
 const CategoriesContext = React.createContext<
   | {
@@ -14,13 +14,6 @@ export function CategoriesProvider({
   children: React.ReactNode;
 }) {
   const [cat, setCat] = React.useState<CategoryForm[]>([]);
-
-  useEffect(() => {
-    const categoriesInSessionStorage = localStorage.getItem('categories');
-    if (categoriesInSessionStorage) {
-      setCategories(JSON.parse(categoriesInSessionStorage) as CategoryForm[]);
-    }
-  }, []);
 
   const setCategories = useCallback((newCategories: CategoryForm[]) => {
     setCat(newCategories);
