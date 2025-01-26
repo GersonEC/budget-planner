@@ -11,6 +11,7 @@ import { Subscriptions } from './pages/Subscriptions';
 import { Installments } from './pages/Installments';
 import { Loans } from './pages/Loans';
 import { Dashboard } from './pages/Dashboard';
+import { Home } from './pages/Home';
 
 export const rootRoute = createRootRoute({
   component: () => (
@@ -26,6 +27,12 @@ export const rootRoute = createRootRoute({
 const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
+  component: () => <Home />,
+});
+
+const monthSetupRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/month-setup',
   component: () => <MonthSetup />,
 });
 
@@ -80,11 +87,12 @@ const dashboardRoute = createRoute({
 export const routeTree = rootRoute.addChildren([
   addBillRoute,
   billsRoute,
-  categoriesRoute,
   cashflowRoute,
-  subscriptionsRoute,
-  installmentsRoute,
-  loansRoute,
+  categoriesRoute,
   dashboardRoute,
   indexRoute,
+  installmentsRoute,
+  loansRoute,
+  monthSetupRoute,
+  subscriptionsRoute,
 ]);

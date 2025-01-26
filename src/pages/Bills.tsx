@@ -13,8 +13,6 @@ export const Bills = () => {
   const outflowsText = monthlyBudget.cashflow.outflow.flows.map((c) => c.name);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log({ monthlyBudget });
-
   useEffect(() => {
     setIsLoading(true);
     const compareMonthlyBudget = () => {
@@ -27,13 +25,16 @@ export const Bills = () => {
     compareMonthlyBudget();
   }, [navigate, monthlyBudget]);
 
-  const updateBills = (newBills: Bill[]) => {
+  const updateBills = (
+    updatedMonthlyBudget: MonthlyBudget,
+    newBills: Bill[]
+  ) => {
     const newExpenses = newBills.reduce(
       (prevValue, currValue) => prevValue + currValue.amount,
       0
     );
     setMonthlyBudget({
-      ...monthlyBudget,
+      ...updatedMonthlyBudget,
       bills: newBills,
       expenses: newExpenses,
     });

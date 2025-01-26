@@ -13,7 +13,7 @@ interface Props {
   budget: number;
   outflowNames: string[];
   expenses: number;
-  updateBills: (newBills: Bill[]) => void;
+  updateBills: (updatedMonthlyBudget: MonthlyBudget, newBills: Bill[]) => void;
 }
 export const MonthlyBills: React.FC<Props> = ({
   bills,
@@ -24,7 +24,7 @@ export const MonthlyBills: React.FC<Props> = ({
 }) => {
   const { toast } = useToast();
   const [activeOutflow, setActiveOutflow] = useState('');
-  const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
+  const { monthlyBudget } = useMonthlyBudget();
   const outflows = monthlyBudget.cashflow.outflow.flows;
 
   const activeBills = () => {
@@ -39,7 +39,7 @@ export const MonthlyBills: React.FC<Props> = ({
     setActiveOutflow(category);
   };
 
-  const updatedExpensesCategory = (outflowName: string, amount: number) => {
+  const updatedOutflowExpenses = (outflowName: string, amount: number) => {
     const newOutflows = outflows.map((outflow) => {
       if (outflow.name === outflowName) {
         return {
@@ -49,19 +49,19 @@ export const MonthlyBills: React.FC<Props> = ({
       }
       return outflow;
     });
-    const updatedMonthlyBudgetBills = updateOutflows(
-      monthlyBudget,
-      newOutflows
-    );
-    setMonthlyBudget(updatedMonthlyBudgetBills);
+    const updatedMonthlyBudget = updateOutflows(monthlyBudget, newOutflows);
+    return updatedMonthlyBudget;
   };
 
   const removeBill = (id: string) => {
     const newBills = bills.filter((b) => b.id !== id);
     const bill = bills.find((b) => b.id === id);
     if (bill) {
-      updatedExpensesCategory(bill.outflowName, bill.amount);
-      updateBills(newBills);
+      const updatedMonthlyBudget = updatedOutflowExpenses(
+        bill.outflowName,
+        bill.amount
+      );
+      updateBills(updatedMonthlyBudget, newBills);
       toast({
         variant: 'success',
         title: 'Bill removed correctly',

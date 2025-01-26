@@ -1,4 +1,4 @@
-import { ChangeEvent, useId, useState } from 'react';
+import { ChangeEvent, useEffect, useId, useState } from 'react';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { useNavigate } from '@tanstack/react-router';
 import { Button } from '../components/ui/button';
@@ -13,8 +13,9 @@ import {
   SelectValue,
 } from '../components/ui/select';
 import { Heading } from '../components/Heading';
-import { currencyFormat, updateOutflows } from '../lib/utils';
+import { currencyFormat, deepObjectEqual, updateOutflows } from '../lib/utils';
 import { Label } from '../components/ui/label';
+import { initialMonthlyBudget } from '../lib/fakes';
 
 const AddBill = () => {
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
@@ -28,6 +29,12 @@ const AddBill = () => {
   const [remainingBudget, setRemainingBudget] = useState(0);
 
   const outflows = monthlyBudget.cashflow.outflow.flows;
+
+  useEffect(() => {
+    if (deepObjectEqual(monthlyBudget, initialMonthlyBudget)) {
+      navigate({ to: '/' });
+    }
+  }, [navigate, monthlyBudget]);
 
   const handleChangeAmount = (event: ChangeEvent) => {
     let newAmount: number | string = parseInt(
@@ -53,28 +60,13 @@ const AddBill = () => {
     if (newDate) setDate(newDate);
   };
 
-  const updateMonthlyBudgetBill = (
-    id: string,
+  const updateMonthlyOutflowBudget = (
+    updatedMonthlyBudget: MonthlyBudget,
     amount: number,
-    outflowName: string,
-    date: Date,
-    description: string
-  ): MonthlyBudget => {
-    const bill: Bill = { id, amount, outflowName, date, description };
-    const updatedBills = [...(monthlyBudget?.bills || []), bill];
-    const updatedMonthlyBudgetBills = {
-      ...monthlyBudget,
-      expenses: monthlyBudget.expenses + amount,
-      bills: updatedBills,
-    };
-    setMonthlyBudget(updatedMonthlyBudgetBills);
-    return updatedMonthlyBudgetBills;
-  };
-
-  const updateMonthlyOutflowBudget = (amount: number, outflowName: string) => {
+    outflowName: string
+  ) => {
     const newOutflows = [...outflows];
     const index = newOutflows.findIndex((c) => c.name === outflowName);
-    console.log(newOutflows[index].expenses);
     if (typeof index === 'number') {
       let currentOutflow: Flow = newOutflows[index];
       currentOutflow = {
@@ -83,12 +75,36 @@ const AddBill = () => {
       };
       newOutflows[index] = currentOutflow;
       const updatedMonthlyBudgetBills = updateOutflows(
-        monthlyBudget,
+        updatedMonthlyBudget,
         newOutflows
       );
-      console.log({ updatedMonthlyBudgetBills });
-      setMonthlyBudget(updatedMonthlyBudgetBills);
+      return updatedMonthlyBudgetBills;
     }
+  };
+
+  const updateMonthlyBudgetBill = (
+    id: string,
+    amount: number,
+    outflowName: string,
+    date: Date,
+    description: string
+  ) => {
+    const bill: Bill = { id, amount, outflowName, date, description };
+    const updatedBills = [...(monthlyBudget?.bills || []), bill];
+    const updatedMonthlyBudgetBills = {
+      ...monthlyBudget,
+      cashflow: {
+        ...monthlyBudget.cashflow,
+      },
+      expenses: monthlyBudget.expenses + amount,
+      bills: updatedBills,
+    };
+    const updatedMonthlyBudget = updateMonthlyOutflowBudget(
+      updatedMonthlyBudgetBills,
+      amount,
+      outflowName
+    );
+    if (updatedMonthlyBudget) setMonthlyBudget(updatedMonthlyBudget);
   };
 
   const addBill = (
@@ -99,7 +115,6 @@ const AddBill = () => {
     description: string
   ) => {
     updateMonthlyBudgetBill(id, amount, outflow, date, description);
-    updateMonthlyOutflowBudget(amount, outflow);
     navigate({
       to: '/bills',
     });
@@ -161,11 +176,15 @@ const AddBill = () => {
             <SelectContent>
               {outflows
                 ? outflows.map((value, index) => {
-                    return (
-                      <SelectItem key={index} value={value.name}>
-                        {value.name}
-                      </SelectItem>
-                    );
+                    if (value.name) {
+                      return (
+                        <SelectItem key={index} value={value.name}>
+                          {value.name}
+                        </SelectItem>
+                      );
+                    } else {
+                      return <div key={index}></div>;
+                    }
                   })
                 : ''}
             </SelectContent>

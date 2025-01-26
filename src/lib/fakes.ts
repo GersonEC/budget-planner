@@ -8,8 +8,8 @@ export const initialMonthlyBudget: MonthlyBudget = {
       flows: [
         {
           type: 'inflow',
-          name: 'Salary',
-          quantity: 2000,
+          name: '',
+          quantity: 0,
           expenses: 0,
         },
       ],
@@ -19,9 +19,9 @@ export const initialMonthlyBudget: MonthlyBudget = {
       flows: [
         {
           type: 'outflow',
-          name: 'Experiences',
-          quantity: 100,
-          expenses: 10,
+          name: '',
+          quantity: 0,
+          expenses: 0,
         },
       ],
       totalFlow: 0,
