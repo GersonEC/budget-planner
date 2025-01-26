@@ -134,3 +134,28 @@ export const deepObjectEqual = (obj1: any, obj2: any): boolean => {
 
   return true;
 };
+
+export const calculateTotalFlow = (flows: Flow[]) => {
+  return flows.reduce(
+    (prevValue, currValue) => prevValue + currValue.quantity,
+    0
+  );
+};
+
+export const updateOutflows = (
+  monthlyBudget: MonthlyBudget,
+  newOutflows: Flow[]
+) => {
+  const updatedMonthlyBudgetBills: MonthlyBudget = {
+    ...monthlyBudget,
+    cashflow: {
+      ...monthlyBudget.cashflow,
+      outflow: {
+        ...monthlyBudget.cashflow.outflow,
+        flows: newOutflows,
+        totalFlow: calculateTotalFlow(newOutflows),
+      },
+    },
+  };
+  return updatedMonthlyBudgetBills;
+};

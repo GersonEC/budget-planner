@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { MonthlyBills } from '../components/MonthlyBills';
-import { useCategories } from '../context/CategoriesContext';
 import { Heading } from '../components/Heading';
 import { deepObjectEqual, getCurrentMonthInString } from '../lib/utils';
 import { useNavigate } from '@tanstack/react-router';
@@ -10,10 +9,11 @@ import { Loader } from '../components/Loader';
 
 export const Bills = () => {
   const navigate = useNavigate();
-  const { categories } = useCategories();
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
-  const categoriesText = categories.map((c) => c.name);
+  const outflowsText = monthlyBudget.cashflow.outflow.flows.map((c) => c.name);
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log({ monthlyBudget });
 
   useEffect(() => {
     setIsLoading(true);
@@ -50,7 +50,7 @@ export const Bills = () => {
         bills={monthlyBudget.bills}
         budget={monthlyBudget.budget}
         expenses={monthlyBudget.expenses}
-        categoryNames={categoriesText}
+        outflowNames={outflowsText}
         updateBills={updateBills}
       />
     </React.Fragment>

@@ -5,7 +5,7 @@ import App from './App';
 import { MonthSetup } from './pages/MonthSetup';
 import { Bills } from './pages/Bills';
 import AddBill from './pages/AddBill';
-import { Categories } from './pages/Categories';
+import { Outflows } from './pages/Outflows';
 import { CashFlow } from './pages/Cashflow';
 import { Subscriptions } from './pages/Subscriptions';
 import { Installments } from './pages/Installments';
@@ -44,7 +44,7 @@ const addBillRoute = createRoute({
 const categoriesRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/categories',
-  component: () => <Categories />,
+  component: () => <Outflows />,
 });
 
 const cashflowRoute = createRoute({

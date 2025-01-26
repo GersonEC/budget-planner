@@ -1,61 +1,66 @@
 import React, { useState } from 'react';
-import { CategoryNavBar } from './CategoryNavBar';
+import { OutflowNavBar } from './OutflowNavBar';
 import { Button } from './ui/button';
 import { Link } from '@tanstack/react-router';
-import { currencyFormat } from '../lib/utils';
+import { currencyFormat, updateOutflows } from '../lib/utils';
 import BillsCardList from './BillsCardList';
-import { useCategories } from '../context/CategoriesContext';
 import { BadgeEuro, Coins, HandCoins } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
+import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 
 interface Props {
   bills: Bill[];
   budget: number;
-  categoryNames: string[];
+  outflowNames: string[];
   expenses: number;
   updateBills: (newBills: Bill[]) => void;
 }
 export const MonthlyBills: React.FC<Props> = ({
   bills,
   budget,
-  categoryNames,
+  outflowNames,
   expenses,
   updateBills,
 }) => {
   const { toast } = useToast();
-  const [activeCategory, setActiveCategory] = useState('');
-  const { categories, setCategories } = useCategories();
+  const [activeOutflow, setActiveOutflow] = useState('');
+  const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
+  const outflows = monthlyBudget.cashflow.outflow.flows;
 
   const activeBills = () => {
     return bills
       ?.filter((bill) =>
-        activeCategory ? bill.category === activeCategory : true
+        activeOutflow ? bill.outflowName === activeOutflow : true
       )
       .sort((a, b) => (new Date(a.date) < new Date(b.date) ? 1 : -1));
   };
 
   const setNewActiveCategory = (category: string) => {
-    setActiveCategory(category);
+    setActiveOutflow(category);
   };
 
-  const updatedExpensesCategory = (categoryName: string, amount: number) => {
-    const newCategories = categories.map((category) => {
-      if (category.name === categoryName) {
+  const updatedExpensesCategory = (outflowName: string, amount: number) => {
+    const newOutflows = outflows.map((outflow) => {
+      if (outflow.name === outflowName) {
         return {
-          ...category,
-          expenses: category.expenses - amount,
+          ...outflow,
+          expenses: (outflow.expenses || 0) - amount,
         };
       }
-      return category;
+      return outflow;
     });
-    setCategories(newCategories);
+    const updatedMonthlyBudgetBills = updateOutflows(
+      monthlyBudget,
+      newOutflows
+    );
+    setMonthlyBudget(updatedMonthlyBudgetBills);
   };
 
   const removeBill = (id: string) => {
     const newBills = bills.filter((b) => b.id !== id);
     const bill = bills.find((b) => b.id === id);
     if (bill) {
-      updatedExpensesCategory(bill.category, bill.amount);
+      updatedExpensesCategory(bill.outflowName, bill.amount);
       updateBills(newBills);
       toast({
         variant: 'success',
@@ -95,9 +100,9 @@ export const MonthlyBills: React.FC<Props> = ({
         </Button>
       </div>
       <div className=' flex flex-col gap-4'>
-        <CategoryNavBar
-          categories={categoryNames}
-          activeCategory={activeCategory}
+        <OutflowNavBar
+          outflows={outflowNames}
+          activeCategory={activeOutflow}
           setNewActiveCategory={setNewActiveCategory}
         />
         <BillsCardList bills={activeBills()} removeBill={removeBill} />

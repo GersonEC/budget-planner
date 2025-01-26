@@ -2,12 +2,12 @@ import { useNavigate } from '@tanstack/react-router';
 import { SquarePen } from 'lucide-react';
 
 interface Props {
-  categories: string[];
+  outflows: string[];
   activeCategory: string;
   setNewActiveCategory: (category: string) => void;
 }
 
-export function CategoryNavBar(props: Props) {
+export function OutflowNavBar(props: Props) {
   const navigate = useNavigate();
   const setNewActiveCategory = (category: string) => {
     props.setNewActiveCategory(category);
@@ -34,8 +34,8 @@ export function CategoryNavBar(props: Props) {
       >
         All
       </li>
-      {props.categories
-        ? props.categories.map((value, index) => {
+      {props.outflows
+        ? props.outflows.map((value, index) => {
             return (
               <li
                 className={`${liStyle} ${

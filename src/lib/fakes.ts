@@ -5,11 +5,25 @@ export const initialMonthlyBudget: MonthlyBudget = {
   expenses: 0,
   cashflow: {
     inflow: {
-      flows: [],
+      flows: [
+        {
+          type: 'inflow',
+          name: 'Salary',
+          quantity: 2000,
+          expenses: 0,
+        },
+      ],
       totalFlow: 0,
     },
     outflow: {
-      flows: [],
+      flows: [
+        {
+          type: 'outflow',
+          name: 'Experiences',
+          quantity: 100,
+          expenses: 10,
+        },
+      ],
       totalFlow: 0,
     },
     netflow: 0,
@@ -17,13 +31,14 @@ export const initialMonthlyBudget: MonthlyBudget = {
   bills: [],
 };
 
-export const initialCategoryValue: CategoryForm = {
+export const initialOutflowValue: Flow = {
+  type: 'outflow',
   name: '',
-  budget: '',
+  quantity: 0,
   expenses: 0,
 };
 
-export const initialFlowListValue: InflowList = {
+export const initialFlowListValue: FlowList = {
   flows: [],
   totalFlow: 0,
 };

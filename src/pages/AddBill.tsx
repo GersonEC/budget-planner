@@ -1,5 +1,4 @@
 import { ChangeEvent, useId, useState } from 'react';
-import { useCategories } from '../context/CategoriesContext';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { useNavigate } from '@tanstack/react-router';
 import { Button } from '../components/ui/button';
@@ -14,20 +13,21 @@ import {
   SelectValue,
 } from '../components/ui/select';
 import { Heading } from '../components/Heading';
-import { currencyFormat } from '../lib/utils';
+import { currencyFormat, updateOutflows } from '../lib/utils';
 import { Label } from '../components/ui/label';
 
 const AddBill = () => {
-  const { categories, setCategories } = useCategories();
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
   const navigate = useNavigate();
   const [amount, setAmount] = useState<number | string>('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(new Date());
-  const [, setCategory] = useState<CategoryForm>();
+  const [, setOutflow] = useState<Flow>();
   const id = useId();
   const [allocatedBudget, setAllocatedBudget] = useState(0);
   const [remainingBudget, setRemainingBudget] = useState(0);
+
+  const outflows = monthlyBudget.cashflow.outflow.flows;
 
   const handleChangeAmount = (event: ChangeEvent) => {
     let newAmount: number | string = parseInt(
@@ -39,13 +39,13 @@ const AddBill = () => {
   };
 
   const handleChangeCategory = (value: string) => {
-    const updatedCategory = categories.find((c) => c.name === value);
-    if (updatedCategory) {
-      setAllocatedBudget(Number(updatedCategory?.budget));
+    const updatedOutflow = outflows.find((c) => c.name === value);
+    if (updatedOutflow) {
+      setAllocatedBudget(Number(updatedOutflow?.quantity));
       setRemainingBudget(
-        Number(updatedCategory.budget) - updatedCategory.expenses
+        Number(updatedOutflow.quantity) - (updatedOutflow.expenses || 0)
       );
-      setCategory(updatedCategory);
+      setOutflow(updatedOutflow);
     }
   };
 
@@ -56,11 +56,11 @@ const AddBill = () => {
   const updateMonthlyBudgetBill = (
     id: string,
     amount: number,
-    category: string,
+    outflowName: string,
     date: Date,
     description: string
   ): MonthlyBudget => {
-    const bill: Bill = { id, amount, category, date, description };
+    const bill: Bill = { id, amount, outflowName, date, description };
     const updatedBills = [...(monthlyBudget?.bills || []), bill];
     const updatedMonthlyBudgetBills = {
       ...monthlyBudget,
@@ -71,52 +71,56 @@ const AddBill = () => {
     return updatedMonthlyBudgetBills;
   };
 
-  const updateMonthlyCategoryBudget = (amount: number, category: string) => {
-    const newCategories = [...categories];
-    const index = newCategories.findIndex((c) => c.name === category);
+  const updateMonthlyOutflowBudget = (amount: number, outflowName: string) => {
+    const newOutflows = [...outflows];
+    const index = newOutflows.findIndex((c) => c.name === outflowName);
+    console.log(newOutflows[index].expenses);
     if (typeof index === 'number') {
-      newCategories[index].expenses += amount;
-      setCategories(newCategories);
+      let currentOutflow: Flow = newOutflows[index];
+      currentOutflow = {
+        ...currentOutflow,
+        expenses: (currentOutflow.expenses || 0) + amount,
+      };
+      newOutflows[index] = currentOutflow;
+      const updatedMonthlyBudgetBills = updateOutflows(
+        monthlyBudget,
+        newOutflows
+      );
+      console.log({ updatedMonthlyBudgetBills });
+      setMonthlyBudget(updatedMonthlyBudgetBills);
     }
   };
 
   const addBill = (
     id: string,
     amount: number,
-    category: string,
+    outflow: string,
     date: Date,
     description: string
   ) => {
-    const newMonthlyBudget = updateMonthlyBudgetBill(
-      id,
-      amount,
-      category,
-      date,
-      description
-    );
-    updateMonthlyCategoryBudget(amount, category);
+    updateMonthlyBudgetBill(id, amount, outflow, date, description);
+    updateMonthlyOutflowBudget(amount, outflow);
     navigate({
       to: '/bills',
     });
-    console.log({ newMonthlyBudget });
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    const newCategory = categories.find(
+    const newOutflow = outflows.find(
       (c) => c.name === event.currentTarget[1].value
     );
-    if (newCategory) {
+    if (newOutflow) {
       if (!amount) {
         alert('Please enter an amount');
         return;
       }
-      setCategory(newCategory);
+      setOutflow(newOutflow);
       addBill(
         id,
         Number(amount),
-        newCategory.name || categories[0].name,
+        newOutflow.name || outflows[0].name,
         date,
         description
       );
@@ -155,8 +159,8 @@ const AddBill = () => {
               <SelectValue placeholder='Choose a category...' />
             </SelectTrigger>
             <SelectContent>
-              {categories
-                ? categories.map((value, index) => {
+              {outflows
+                ? outflows.map((value, index) => {
                     return (
                       <SelectItem key={index} value={value.name}>
                         {value.name}

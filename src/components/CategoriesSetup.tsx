@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddCategoryForm } from './AddCategoryForm';
+import { AddCategoryForm } from './AddOutflowForm';
 import { Button } from './ui/button';
 import {
   Dialog,

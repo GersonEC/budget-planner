@@ -1,7 +1,7 @@
 type Bill = {
   id: string;
   amount: number;
-  category: string;
+  outflowName: string;
   date: Date;
   description: string;
 };
@@ -12,30 +12,21 @@ type CategoryForm = {
   expenses: number;
 };
 
-type Inflow = {
+type Flow = {
+  type: 'inflow' | 'outflow';
   name: string;
   quantity: number;
+  expenses?: number;
 };
 
-type Outflow = {
-  name: string;
-  quantity: number;
-  expenses: number;
-};
-
-type InflowList = {
-  flows: Inflow[];
-  totalFlow: number;
-};
-
-type OutflowList = {
-  flows: Outflow[];
+type FlowList = {
+  flows: Flow[];
   totalFlow: number;
 };
 
 type Cashflow = {
-  inflow: InflowList;
-  outflow: OutflowList;
+  inflow: FlowList;
+  outflow: FlowList;
   netflow: number;
 };
 

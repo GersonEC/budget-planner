@@ -3,34 +3,20 @@ import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { initialFlowListValue } from '../lib/fakes';
 import { useToast } from '../hooks/use-toast';
-import { toCapitalize } from '../lib/utils';
+import { calculateTotalFlow, toCapitalize } from '../lib/utils';
 import { Label } from './ui/label';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 
-type Props =
-  | {
-      type: 'inflow';
-      handleAddFlow: (flowList: InflowList) => void;
-    }
-  | {
-      type: 'outflow';
-      handleAddFlow: (flowList: OutflowList) => void;
-    };
-
-const calculateTotalFlow = (flows: Inflow[] | Outflow[]) => {
-  return flows.reduce(
-    (prevValue, currValue) => prevValue + currValue.quantity,
-    0
-  );
+type Props = {
+  type: 'inflow' | 'outflow';
+  handleAddFlow: (flowList: FlowList) => void;
 };
 
 export const FlowForm: React.FC<Props> = ({ type, handleAddFlow }) => {
   const { toast } = useToast();
   const [name, setName] = useState<string>('');
   const [quantity, setQuantity] = useState<number | ''>('');
-  const [, setFlowList] = useState<InflowList | OutflowList>(
-    initialFlowListValue
-  );
+  const [, setFlowList] = useState<FlowList>(initialFlowListValue);
   const { monthlyBudget } = useMonthlyBudget();
   // const { categories, setCategories } = useCategories();
 
@@ -43,12 +29,13 @@ export const FlowForm: React.FC<Props> = ({ type, handleAddFlow }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAddOutflow = (e: any) => {
     e.preventDefault();
-    const flow: Outflow = {
+    const flow: Flow = {
+      type: 'outflow',
       name,
       quantity: Number(quantity),
       expenses: 0,
     };
-    const newFlowList: OutflowList = {
+    const newFlowList: FlowList = {
       flows: [...monthlyBudget.cashflow.outflow.flows, flow],
       totalFlow: calculateTotalFlow([
         ...monthlyBudget.cashflow.outflow.flows,
@@ -67,11 +54,12 @@ export const FlowForm: React.FC<Props> = ({ type, handleAddFlow }) => {
   const handleAddInflow = (e: any) => {
     if (type === 'inflow') {
       e.preventDefault();
-      const flow: Inflow = {
+      const flow: Flow = {
+        type: 'inflow',
         name,
         quantity: Number(quantity),
       };
-      const newFlowList: InflowList = {
+      const newFlowList: FlowList = {
         flows: [...monthlyBudget.cashflow.inflow.flows, flow],
         totalFlow: calculateTotalFlow([
           ...monthlyBudget.cashflow.inflow.flows,

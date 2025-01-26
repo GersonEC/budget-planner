@@ -19,7 +19,7 @@ export const OutflowForm = () => {
     useState<boolean>(false);
   const outflows = monthlyBudget.cashflow.outflow.flows;
 
-  const handleAddFlow = (flowList: OutflowList) => {
+  const handleAddFlow = (flowList: FlowList) => {
     const updatedMonthlyBudget: MonthlyBudget = {
       ...monthlyBudget,
       cashflow: {
@@ -30,7 +30,7 @@ export const OutflowForm = () => {
     setMonthlyBudget(updatedMonthlyBudget);
   };
 
-  const handleRemoveFlow = (flow: Outflow) => {
+  const handleRemoveFlow = (flow: Flow) => {
     const newFlows = monthlyBudget.cashflow.outflow.flows.filter(
       (f) => f.name !== flow.name
     );
