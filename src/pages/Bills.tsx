@@ -10,7 +10,6 @@ import { Loader } from '../components/Loader';
 export const Bills = () => {
   const navigate = useNavigate();
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
-  const outflowsText = monthlyBudget.cashflow.outflow.flows.map((c) => c.name);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -51,7 +50,6 @@ export const Bills = () => {
         bills={monthlyBudget.bills}
         budget={monthlyBudget.budget}
         expenses={monthlyBudget.expenses}
-        outflowNames={outflowsText}
         updateBills={updateBills}
       />
     </React.Fragment>

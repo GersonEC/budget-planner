@@ -4,6 +4,7 @@ import { Input } from './ui/input';
 import { initialOutflowValue } from '../lib/fakes';
 import { useToast } from '../hooks/use-toast';
 import { currencyFormat } from '../lib/utils';
+import { Label } from './ui/label';
 
 type Props = {
   addOutflow: (outflow: Flow) => void;
@@ -16,7 +17,7 @@ export const AddOutflowForm: React.FC<Props> = (props) => {
   const handleAddCategory = () => {
     const { name, quantity } = outflowForm;
     if (!name || !quantity) {
-      alert('Please enter the category and the budget');
+      alert('Please enter the outflow name and the quantity');
       return;
     }
     setOutflowForm(initialOutflowValue);
@@ -32,11 +33,11 @@ export const AddOutflowForm: React.FC<Props> = (props) => {
     <div className='flex flex-col gap-6'>
       <div className='flex flex-col gap-2 mt-2'>
         <div>
-          <label htmlFor='name'>Outflow name</label>
+          <Label htmlFor='name'>Name</Label>
           <Input
             className='bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3'
             name='name'
-            placeholder='experiences...'
+            placeholder='Experiences...'
             value={outflowForm.name}
             onChange={(e) =>
               setOutflowForm({
@@ -47,10 +48,10 @@ export const AddOutflowForm: React.FC<Props> = (props) => {
           />
         </div>
         <div>
-          <label htmlFor='budget'>Outflow quantity</label>
+          <Label htmlFor='quantity'>Quantity</Label>
           <Input
             className='bg-zinc-800 shadow appearance-none border rounded w-full py-2 px-3'
-            name='budget'
+            name='quantity'
             type='number'
             value={outflowForm.quantity}
             onChange={(e) =>

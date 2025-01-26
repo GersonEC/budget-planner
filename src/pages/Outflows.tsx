@@ -45,7 +45,6 @@ export const Outflows = () => {
           Add new outflow
         </Button>
       </div>
-      {/**TODO: Move subscription dialog into a separate component */}
       <Dialog open={isOpen} onOpenChange={() => setIsOpen(false)}>
         <DialogContent>
           <DialogHeader>

@@ -11,14 +11,12 @@ import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 interface Props {
   bills: Bill[];
   budget: number;
-  outflowNames: string[];
   expenses: number;
   updateBills: (updatedMonthlyBudget: MonthlyBudget, newBills: Bill[]) => void;
 }
 export const MonthlyBills: React.FC<Props> = ({
   bills,
   budget,
-  outflowNames,
   expenses,
   updateBills,
 }) => {
@@ -101,7 +99,6 @@ export const MonthlyBills: React.FC<Props> = ({
       </div>
       <div className=' flex flex-col gap-4'>
         <OutflowNavBar
-          outflows={outflowNames}
           activeCategory={activeOutflow}
           setNewActiveCategory={setNewActiveCategory}
         />

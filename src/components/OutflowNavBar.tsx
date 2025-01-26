@@ -1,22 +1,100 @@
-import { useNavigate } from '@tanstack/react-router';
 import { SquarePen } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog';
+import { useState } from 'react';
+import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
+import { updateOutflows } from '../lib/utils';
+import { DialogDescription } from '@radix-ui/react-dialog';
+import { AddOutflowForm } from './AddOutflowForm';
+import { OutflowList } from './OutflowList';
+import { useToast } from '../hooks/use-toast';
+import { Button } from './ui/button';
 
 interface Props {
-  outflows: string[];
   activeCategory: string;
   setNewActiveCategory: (category: string) => void;
 }
 
 export function OutflowNavBar(props: Props) {
-  const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isOutflowListOpen, setIsOutflowListOpen] = useState(false);
+  const [isNewOutflowOpen, setIsNewOutflowOpen] = useState(false);
+  const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
+  const outflows = monthlyBudget.cashflow.outflow.flows;
+  const outflowsText = monthlyBudget.cashflow.outflow.flows.map((c) => c.name);
+
   const setNewActiveCategory = (category: string) => {
     props.setNewActiveCategory(category);
   };
 
-  const handleEditCategories = () => {
-    navigate({
-      to: '/categories',
+  const removeOutflow = (outflowName: string) => {
+    const newOutflows = outflows.filter((c) => c.name !== outflowName);
+    const updatedOutflows = updateOutflows(monthlyBudget, newOutflows);
+    setMonthlyBudget(updatedOutflows);
+    toast({
+      variant: 'success',
+      title: 'Outflow removed successfully',
     });
+  };
+
+  const addOutflow = (outflow: Flow) => {
+    const newOutflows = [...outflows, outflow];
+    const updatedOutflows = updateOutflows(monthlyBudget, newOutflows);
+    setMonthlyBudget(updatedOutflows);
+    setIsNewOutflowOpen(false);
+  };
+
+  const renderAddNewOutflow = () => {
+    return (
+      <Dialog
+        open={isNewOutflowOpen}
+        onOpenChange={() => setIsNewOutflowOpen(!isNewOutflowOpen)}
+      >
+        <DialogTrigger
+          className='hover:underline'
+          onClick={() => setIsNewOutflowOpen(true)}
+          asChild
+        >
+          <Button variant='outline'>Add new outflow</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add new Outflow</DialogTitle>
+            <DialogDescription>Insert your new outflow data:</DialogDescription>
+            <AddOutflowForm addOutflow={addOutflow} />
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
+  };
+
+  const renderOutflowList = () => {
+    return (
+      <Dialog
+        open={isOutflowListOpen}
+        onOpenChange={() => setIsOutflowListOpen(!isOutflowListOpen)}
+      >
+        <DialogTrigger
+          className='hover:underline'
+          onClick={() => setIsOutflowListOpen(true)}
+        >
+          <SquarePen className='w-4 text-yellow-200' />
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Current outflows</DialogTitle>
+            <DialogDescription></DialogDescription>
+            {renderAddNewOutflow()}
+            <OutflowList outflows={outflows} removeOutflow={removeOutflow} />
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
+    );
   };
 
   const liStyle = ' text-gray-200 text-gray-300 hover:cursor-pointer rounded';
@@ -34,8 +112,8 @@ export function OutflowNavBar(props: Props) {
       >
         All
       </li>
-      {props.outflows
-        ? props.outflows.map((value, index) => {
+      {outflowsText
+        ? outflowsText.map((value, index) => {
             return (
               <li
                 className={`${liStyle} ${
@@ -49,9 +127,7 @@ export function OutflowNavBar(props: Props) {
             );
           })
         : '<li>No categories</li>'}
-      <li onClick={handleEditCategories}>
-        <SquarePen className='w-4 text-yellow-200' />
-      </li>
+      <li className='flex'>{renderOutflowList()}</li>
     </ul>
   );
 }

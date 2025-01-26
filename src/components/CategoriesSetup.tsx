@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddCategoryForm } from './AddOutflowForm';
+import { AddOutflowForm } from './AddOutflowForm';
 import { Button } from './ui/button';
 import {
   Dialog,
@@ -14,7 +14,7 @@ interface Props {
   categories: CategoryForm[];
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  addCategory: (category: CategoryForm) => void;
+  addOutflow: (outflow: Flow) => void;
   copyFromOutflow: () => void;
   removeCategory: (category: string) => void;
 }
@@ -22,7 +22,7 @@ interface Props {
 export const CategoriesSetup: React.FC<Props> = ({
   isOpen,
   setIsOpen,
-  addCategory,
+  addOutflow,
   copyFromOutflow,
 }) => {
   return (
@@ -43,7 +43,7 @@ export const CategoriesSetup: React.FC<Props> = ({
             <DialogHeader>
               <DialogTitle>Add new Category</DialogTitle>
               <DialogDescription>insert a new category</DialogDescription>
-              <AddCategoryForm addCategory={addCategory} />
+              <AddOutflowForm addOutflow={addOutflow} />
             </DialogHeader>
           </DialogContent>
         </Dialog>
