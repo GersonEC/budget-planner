@@ -1,4 +1,5 @@
 export const initialMonthlyBudget: MonthlyBudget = {
+  id: '',
   month: new Date().getMonth(),
   year: new Date().getFullYear(),
   budget: 0,

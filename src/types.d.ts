@@ -31,6 +31,7 @@ type Cashflow = {
 };
 
 type MonthlyBudget = {
+  id: string;
   month: number;
   year: number;
   budget: number;

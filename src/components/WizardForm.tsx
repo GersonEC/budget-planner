@@ -96,6 +96,7 @@ export const WizardForm = () => {
       console.log({ newMonthSetup });
 
       const updatedMonthlyBudget: MonthlyBudget = {
+        id: '',
         month: new Date().getMonth(),
         year: new Date().getFullYear(),
         budget: newMonthSetup.budget,

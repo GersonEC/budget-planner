@@ -20,6 +20,7 @@ export const Home = () => {
           setStatus('success');
         } else {
           const monthlyBudget: MonthlyBudget = {
+            id: response.id,
             bills: response.bills,
             budget: response.budget,
             cashflow: response.cashflow,

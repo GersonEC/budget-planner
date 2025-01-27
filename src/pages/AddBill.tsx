@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useId, useState } from 'react';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { useNavigate } from '@tanstack/react-router';
-import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { DatePicker } from '../components/ui/date-picker';
 import { Textarea } from '../components/ui/textarea';
@@ -16,6 +15,7 @@ import { Heading } from '../components/Heading';
 import { currencyFormat, deepObjectEqual, updateOutflows } from '../lib/utils';
 import { Label } from '../components/ui/label';
 import { initialMonthlyBudget } from '../lib/fakes';
+import { ButtonWithLoading } from '../components/ButtonWIthLoading';
 
 const AddBill = () => {
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
@@ -27,6 +27,7 @@ const AddBill = () => {
   const id = useId();
   const [allocatedBudget, setAllocatedBudget] = useState(0);
   const [remainingBudget, setRemainingBudget] = useState(0);
+  const [status, setStatus] = useState<LoadingStatus>('idle');
 
   const outflows = monthlyBudget.cashflow.outflow.flows;
 
@@ -88,7 +89,7 @@ const AddBill = () => {
     outflowName: string,
     date: Date,
     description: string
-  ) => {
+  ): MonthlyBudget | undefined => {
     const bill: Bill = { id, amount, outflowName, date, description };
     const updatedBills = [...(monthlyBudget?.bills || []), bill];
     const updatedMonthlyBudgetBills = {
@@ -104,7 +105,44 @@ const AddBill = () => {
       amount,
       outflowName
     );
-    if (updatedMonthlyBudget) setMonthlyBudget(updatedMonthlyBudget);
+    if (updatedMonthlyBudget) {
+      return updatedMonthlyBudget;
+    }
+    return undefined;
+  };
+
+  const updateMonthlyBudgetApi = async (newMonthlyBudget: MonthlyBudget) => {
+    try {
+      const id = newMonthlyBudget.id;
+      const dataToUpdate = {
+        bills: newMonthlyBudget.bills,
+        cashflow: {
+          outflow: {
+            flows: newMonthlyBudget.cashflow.outflow.flows,
+            totalFlow: newMonthlyBudget.cashflow.outflow.totalFlow,
+          },
+        },
+        expenses: newMonthlyBudget.expenses,
+      };
+      const data = await fetch(
+        `http://localhost:3000/api/monthly-budget/${id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataToUpdate),
+        }
+      );
+      const response = await data.json();
+      if (!response) {
+        navigate({ to: '/bills' });
+        setStatus('success');
+      }
+    } catch (error) {
+      setStatus('success');
+      console.error(error);
+    }
   };
 
   const addBill = (
@@ -114,7 +152,18 @@ const AddBill = () => {
     date: Date,
     description: string
   ) => {
-    updateMonthlyBudgetBill(id, amount, outflow, date, description);
+    setStatus('loading');
+    const updatedMonthlyBudget = updateMonthlyBudgetBill(
+      id,
+      amount,
+      outflow,
+      date,
+      description
+    );
+    if (updatedMonthlyBudget) {
+      updateMonthlyBudgetApi(updatedMonthlyBudget);
+      setMonthlyBudget(updatedMonthlyBudget);
+    }
     navigate({
       to: '/bills',
     });
@@ -212,9 +261,9 @@ const AddBill = () => {
           <Label htmlFor='date'>Bill date:</Label>
           <DatePicker date={date} setDate={handleChangeDate} />
         </div>
-        <Button type='submit' className='w-full'>
+        <ButtonWithLoading type='submit' className='w-full' loading={status}>
           Add
-        </Button>
+        </ButtonWithLoading>
       </form>
     </div>
   );
