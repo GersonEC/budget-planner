@@ -3,6 +3,7 @@ import { hasMonthChanged } from '../lib/utils';
 import { useMonthlyBudget } from '../context/MonthlyBudgetContext';
 import { useNavigate } from '@tanstack/react-router';
 import { Loader } from '../components/Loader';
+import { getMonthlyBudget } from '../api/getMonthlyBudget';
 
 export const Home = () => {
   const navigate = useNavigate();
@@ -13,20 +14,19 @@ export const Home = () => {
     setStatus('loading');
     const getData = async () => {
       try {
-        const data = await fetch(`http://localhost:3000/api/monthly-budget`);
-        const response = (await data.json()) as MonthlyBudget;
-        if (!response) {
+        const data = await getMonthlyBudget();
+        if (!data) {
           navigate({ to: '/month-setup' });
           setStatus('success');
         } else {
           const monthlyBudget: MonthlyBudget = {
-            id: response.id,
-            bills: response.bills,
-            budget: response.budget,
-            cashflow: response.cashflow,
-            expenses: response.expenses,
-            month: response.month,
-            year: response.year,
+            id: data.id,
+            bills: data.bills,
+            budget: data.budget,
+            cashflow: data.cashflow,
+            expenses: data.expenses,
+            month: data.month,
+            year: data.year,
           };
           if (hasMonthChanged(monthlyBudget.month)) {
             navigate({
