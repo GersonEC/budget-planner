@@ -67,32 +67,36 @@ export const MonthlyBills: React.FC<Props> = ({
     }
   };
 
+  const renderMonthlySummary = () => (
+    <div>
+      <div className='flex gap-2 items-center'>
+        <BadgeEuro className='w-4 text-blue-300' />
+        <p className='text-gray-300 text-sm'>Budget:</p>
+        <p className='text-blue-300 font-semibold text-sm'>
+          {currencyFormat(budget)}
+        </p>
+      </div>
+      <div className='flex gap-2 items-center'>
+        <Coins className='w-4 text-red-300' />
+        <p className='text-gray-300 text-sm'>Expenses: </p>
+        <p className='text-red-300 font-semibold text-sm'>
+          {currencyFormat(expenses)}
+        </p>
+      </div>
+      <div className='flex gap-2 items-center'>
+        <HandCoins className='w-4 text-green-300' />
+        <p className='text-gray-300 text-sm'>Remaining:</p>{' '}
+        <p className='text-green-300 font-semibold text-sm'>
+          {currencyFormat(budget - expenses)}
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <div>
       <div className='flex justify-between items-center mb-2'>
-        <div>
-          <div className='flex gap-2 items-center'>
-            <BadgeEuro className='w-4 text-blue-300' />
-            <p className='text-gray-300 text-sm'>Budget:</p>
-            <p className='text-blue-300 font-semibold text-sm'>
-              {currencyFormat(budget)}
-            </p>
-          </div>
-          <div className='flex gap-2 items-center'>
-            <Coins className='w-4 text-red-300' />
-            <p className='text-gray-300 text-sm'>Expenses: </p>
-            <p className='text-red-300 font-semibold text-sm'>
-              {currencyFormat(expenses)}
-            </p>
-          </div>
-          <div className='flex gap-2 items-center'>
-            <HandCoins className='w-4 text-green-300' />
-            <p className='text-gray-300 text-sm'>Remaining:</p>{' '}
-            <p className='text-green-300 font-semibold text-sm'>
-              {currencyFormat(budget - expenses)}
-            </p>
-          </div>
-        </div>
+        {renderMonthlySummary()}
         <Button variant='default'>
           <Link to='/add-bill'>Add new bill</Link>
         </Button>

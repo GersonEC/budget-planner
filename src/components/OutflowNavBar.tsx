@@ -57,10 +57,23 @@ export function OutflowNavBar(props: Props) {
   };
 
   const addOutflow = (outflow: Flow) => {
-    const newOutflows = [...outflows, outflow];
-    const updatedOutflows = updateOutflows(monthlyBudget, newOutflows);
-    setMonthlyBudget(updatedOutflows);
-    setIsNewOutflowOpen(false);
+    try {
+      const newOutflows = [...outflows, outflow];
+      const updatedOutflows = updateOutflows(monthlyBudget, newOutflows);
+      const dataToUpdate = {
+        cashflow: {
+          outflow: {
+            flows: updatedOutflows.cashflow.outflow.flows,
+            totalFlow: updatedOutflows.cashflow.outflow.totalFlow,
+          },
+        },
+      };
+      patchMonthlyBudget(updatedOutflows.id, dataToUpdate);
+      setMonthlyBudget(updatedOutflows);
+      setIsNewOutflowOpen(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const renderAddNewOutflow = () => {

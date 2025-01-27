@@ -17,6 +17,16 @@ import { Label } from '../components/ui/label';
 import { initialMonthlyBudget } from '../lib/fakes';
 import { patchMonthlyBudget } from '../api/patchMonthlyBudget';
 import { ButtonWithLoading } from '../components/ButtonWithLoading';
+import { Button } from '../components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../components/ui/dialog';
+import { HandCoins } from 'lucide-react';
 
 const AddBill = () => {
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
@@ -29,6 +39,7 @@ const AddBill = () => {
   const [allocatedBudget, setAllocatedBudget] = useState(0);
   const [remainingBudget, setRemainingBudget] = useState(0);
   const [status, setStatus] = useState<LoadingStatus>('idle');
+  const [isAvailableOutflowsOpen, setIsAvailableOutflowsOpen] = useState(false);
 
   const outflows = monthlyBudget.cashflow.outflow.flows;
 
@@ -47,7 +58,7 @@ const AddBill = () => {
     setAmount(newAmount);
   };
 
-  const handleChangeCategory = (value: string) => {
+  const handleChangeOutflow = (value: string) => {
     const updatedOutflow = outflows.find((c) => c.name === value);
     if (updatedOutflow) {
       setAllocatedBudget(Number(updatedOutflow?.quantity));
@@ -173,80 +184,146 @@ const AddBill = () => {
     }
   };
 
+  const renderNewBillForm = () => (
+    <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+      <div>
+        <Label htmlFor='outflow'>Outflow:</Label>
+        <Select
+          name='outflow'
+          onValueChange={(value) => handleChangeOutflow(value)}
+        >
+          <SelectTrigger className='w-full'>
+            <SelectValue placeholder='Choose an outflow...' />
+          </SelectTrigger>
+          <SelectContent>
+            {outflows
+              ? outflows.map((value, index) => {
+                  if (value.name) {
+                    return (
+                      <SelectItem key={index} value={value.name}>
+                        {value.name}
+                      </SelectItem>
+                    );
+                  } else {
+                    return <div key={index}></div>;
+                  }
+                })
+              : ''}
+          </SelectContent>
+        </Select>
+      </div>
+      <div>
+        <Label htmlFor='amount'>Amount:</Label>
+        <Input
+          name='amount'
+          placeholder='0'
+          value={amount}
+          onChange={handleChangeAmount}
+        />
+      </div>
+      <div>
+        <Label htmlFor='description'>Description:</Label>
+        <Textarea
+          name='description'
+          rows={2}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+      <div>
+        <Label htmlFor='date'>Date:</Label>
+        <DatePicker date={date} setDate={handleChangeDate} />
+      </div>
+      <ButtonWithLoading type='submit' className='w-full' loading={status}>
+        Add
+      </ButtonWithLoading>
+    </form>
+  );
+
   return (
     <div className=''>
       <Heading variant='title'>Add new bill</Heading>
-      <div className='flex flex-col items-end mb-2'>
-        <div className='flex gap-2'>
-          <Label className='text-gray-300 mb-1'>Allocated budget:</Label>
-          <Label className='text-yellow-300'>
-            {currencyFormat(Number(allocatedBudget))}
-          </Label>
-        </div>
-        <div className='flex gap-2'>
-          <Label className='text-gray-300'>Remaining budget:</Label>
-          <Label
-            className={`${
-              remainingBudget <= 0 ? 'text-red-300' : 'text-green-300'
-            }`}
+      <div className='flex justify-between items-center mb-2'>
+        <Dialog
+          open={isAvailableOutflowsOpen}
+          onOpenChange={() =>
+            setIsAvailableOutflowsOpen(!isAvailableOutflowsOpen)
+          }
+        >
+          <DialogTrigger
+            onClick={() => setIsAvailableOutflowsOpen(true)}
+            asChild
           >
-            {currencyFormat(Number(remainingBudget))}
-          </Label>
+            <Button variant={'secondary'}>Month recap</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Month Outflows Recap</DialogTitle>
+              <DialogDescription>
+                Here is the list of the month outflows until today:
+              </DialogDescription>
+              {outflows.map((outflow) => {
+                const allocated = outflow.quantity;
+                const used = outflow?.expenses || 0;
+                const remainnig = outflow.quantity - (outflow?.expenses || 0);
+                return (
+                  <div
+                    key={outflow.name}
+                    className='border rounded-md grid grid-cols-2 justify-around items-center p-1'
+                  >
+                    <div className='flex gap-2'>
+                      <HandCoins className='text-blue-400' /> {outflow.name}
+                    </div>
+                    <div className='border-l-2 pl-2'>
+                      <div className='flex gap-2'>
+                        <p className='text-gray-300 mb-1'>Allocated budget:</p>
+                        <p className='text-yellow-300'>
+                          {currencyFormat(Number(allocated))}
+                        </p>
+                      </div>
+                      <div className='flex gap-2'>
+                        <p className='text-gray-300'>Budget used:</p>
+                        <p className={'text-orange-300'}>
+                          {currencyFormat(Number(used))}
+                        </p>
+                      </div>
+                      <div className='flex gap-2'>
+                        <p className='text-gray-300'>Remaining budget:</p>
+                        <p
+                          className={`${
+                            remainnig <= 0 ? 'text-red-300' : 'text-green-300'
+                          }`}
+                        >
+                          {currencyFormat(Number(remainnig))}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+        <div>
+          <div className='flex gap-2'>
+            <Label className='text-gray-300 mb-1'>Allocated budget:</Label>
+            <Label className='text-yellow-300'>
+              {currencyFormat(Number(allocatedBudget))}
+            </Label>
+          </div>
+          <div className='flex gap-2'>
+            <Label className='text-gray-300'>Remaining budget:</Label>
+            <Label
+              className={`${
+                remainingBudget <= 0 ? 'text-red-300' : 'text-green-300'
+              }`}
+            >
+              {currencyFormat(Number(remainingBudget))}
+            </Label>
+          </div>
         </div>
       </div>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-        <div>
-          <Label htmlFor='category'>Bill category:</Label>
-          <Select
-            name='category'
-            onValueChange={(value) => handleChangeCategory(value)}
-          >
-            <SelectTrigger className='w-full'>
-              <SelectValue placeholder='Choose a category...' />
-            </SelectTrigger>
-            <SelectContent>
-              {outflows
-                ? outflows.map((value, index) => {
-                    if (value.name) {
-                      return (
-                        <SelectItem key={index} value={value.name}>
-                          {value.name}
-                        </SelectItem>
-                      );
-                    } else {
-                      return <div key={index}></div>;
-                    }
-                  })
-                : ''}
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label htmlFor='amount'>Bill amount:</Label>
-          <Input
-            name='amount'
-            placeholder='0'
-            value={amount}
-            onChange={handleChangeAmount}
-          />
-        </div>
-        <div className='flex flex-col'>
-          <Label htmlFor='description'>Bill description:</Label>
-          <Textarea
-            name='description'
-            rows={2}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div className='flex flex-col'>
-          <Label htmlFor='date'>Bill date:</Label>
-          <DatePicker date={date} setDate={handleChangeDate} />
-        </div>
-        <ButtonWithLoading type='submit' className='w-full' loading={status}>
-          Add
-        </ButtonWithLoading>
-      </form>
+      {renderNewBillForm()}
     </div>
   );
 };
