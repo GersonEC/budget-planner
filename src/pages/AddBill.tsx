@@ -254,7 +254,7 @@ const AddBill = () => {
             onClick={() => setIsAvailableOutflowsOpen(true)}
             asChild
           >
-            <Button variant={'secondary'}>Month recap</Button>
+            <Button variant={'secondary'}>See Month recap</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
