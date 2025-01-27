@@ -1,5 +1,6 @@
 import { Banknote, Trash2 } from 'lucide-react';
 import { currencyFormat } from '../lib/utils';
+import { ConfirmDialog } from './ConfirmDialog';
 
 interface Props {
   outflows: Flow[];
@@ -15,9 +16,14 @@ export const OutflowList: React.FC<Props> = ({ outflows, removeOutflow }) => {
         >
           <Banknote className='text-blue-400' />
           {outflow.name}: {currencyFormat(Number(outflow.quantity))}
-          <Trash2
-            className='w-5 text-slate-400 hover:text-red-400'
-            onClick={() => removeOutflow(outflow.name)}
+          <ConfirmDialog
+            action={() => removeOutflow(outflow.name)}
+            trigger={
+              <Trash2
+                aria-label='delete'
+                className='w-5 text-slate-400 hover:text-red-400'
+              />
+            }
           />
         </li>
       ))}

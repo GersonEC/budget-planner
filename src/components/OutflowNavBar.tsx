@@ -14,6 +14,7 @@ import { AddOutflowForm } from './AddOutflowForm';
 import { OutflowList } from './OutflowList';
 import { useToast } from '../hooks/use-toast';
 import { Button } from './ui/button';
+import { patchMonthlyBudget } from '../api/patchMonthlyBudget';
 
 interface Props {
   activeCategory: string;
@@ -33,13 +34,26 @@ export function OutflowNavBar(props: Props) {
   };
 
   const removeOutflow = (outflowName: string) => {
-    const newOutflows = outflows.filter((c) => c.name !== outflowName);
-    const updatedOutflows = updateOutflows(monthlyBudget, newOutflows);
-    setMonthlyBudget(updatedOutflows);
-    toast({
-      variant: 'success',
-      title: 'Outflow removed successfully',
-    });
+    try {
+      const newOutflows = outflows.filter((c) => c.name !== outflowName);
+      const updatedOutflows = updateOutflows(monthlyBudget, newOutflows);
+      const dataToUpdate = {
+        cashflow: {
+          outflow: {
+            flows: updatedOutflows.cashflow.outflow.flows,
+            totalFlow: updatedOutflows.cashflow.outflow.totalFlow,
+          },
+        },
+      };
+      patchMonthlyBudget(updatedOutflows.id, dataToUpdate);
+      setMonthlyBudget(updatedOutflows);
+      toast({
+        variant: 'success',
+        title: 'Outflow removed successfully',
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const addOutflow = (outflow: Flow) => {

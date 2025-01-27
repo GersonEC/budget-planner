@@ -15,7 +15,8 @@ import { Heading } from '../components/Heading';
 import { currencyFormat, deepObjectEqual, updateOutflows } from '../lib/utils';
 import { Label } from '../components/ui/label';
 import { initialMonthlyBudget } from '../lib/fakes';
-import { ButtonWithLoading } from '../components/ButtonWIthLoading';
+import { patchMonthlyBudget } from '../api/patchMonthlyBudget';
+import { ButtonWithLoading } from '../components/ButtonWithLoading';
 
 const AddBill = () => {
   const { monthlyBudget, setMonthlyBudget } = useMonthlyBudget();
@@ -111,40 +112,6 @@ const AddBill = () => {
     return undefined;
   };
 
-  const updateMonthlyBudgetApi = async (newMonthlyBudget: MonthlyBudget) => {
-    try {
-      const id = newMonthlyBudget.id;
-      const dataToUpdate = {
-        bills: newMonthlyBudget.bills,
-        cashflow: {
-          outflow: {
-            flows: newMonthlyBudget.cashflow.outflow.flows,
-            totalFlow: newMonthlyBudget.cashflow.outflow.totalFlow,
-          },
-        },
-        expenses: newMonthlyBudget.expenses,
-      };
-      const data = await fetch(
-        `http://localhost:3000/api/monthly-budget/${id}`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(dataToUpdate),
-        }
-      );
-      const response = await data.json();
-      if (!response) {
-        navigate({ to: '/bills' });
-        setStatus('success');
-      }
-    } catch (error) {
-      setStatus('success');
-      console.error(error);
-    }
-  };
-
   const addBill = (
     id: string,
     amount: number,
@@ -161,7 +128,22 @@ const AddBill = () => {
       description
     );
     if (updatedMonthlyBudget) {
-      updateMonthlyBudgetApi(updatedMonthlyBudget);
+      try {
+        const dataToUpdate = {
+          bills: updatedMonthlyBudget.bills,
+          cashflow: {
+            outflow: {
+              flows: updatedMonthlyBudget.cashflow.outflow.flows,
+              totalFlow: updatedMonthlyBudget.cashflow.outflow.totalFlow,
+            },
+          },
+          expenses: updatedMonthlyBudget.expenses,
+        };
+        patchMonthlyBudget(updatedMonthlyBudget.id, dataToUpdate);
+      } catch (error) {
+        console.error(error);
+        setStatus('success');
+      }
       setMonthlyBudget(updatedMonthlyBudget);
     }
     navigate({
