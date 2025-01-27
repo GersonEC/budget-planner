@@ -1,7 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { CashflowBarChart } from '../components/CashflowBarChart';
 import { Heading } from '../components/Heading';
-import { CategoriesPieChart } from '../components/CategoriesPieChart';
 import { BillsBarChart } from '../components/BillsBarChart';
 import { SubscriptionsPieChart } from '../components/SubscriptionsPieChart';
 import { InstallmentsPieChart } from '../components/InstallmentsPieChart';
@@ -19,14 +18,6 @@ export const Dashboard: React.FC = () => {
             </Link>
           </Heading>
           <BillsBarChart />
-        </div>
-        <div>
-          <Heading variant='subtitle'>
-            <Link className='hover:underline' to='/categories'>
-              Categories
-            </Link>
-          </Heading>
-          <CategoriesPieChart />
         </div>
         <div>
           <Heading variant='subtitle'>
